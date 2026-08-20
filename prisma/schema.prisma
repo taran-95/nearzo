@@ -15,7 +15,32 @@ datasource db {
 model Product {
   id Int @id @default(autoincrement())
   name String
+  price Decimal
   description String
-  cost Decimal
+
+  images ProductImage[]
+
   uploaded_at DateTime   @default(now()) @db.Timestamp
+
+  store_name String
+  store_location String
+}
+
+model ProductImage {
+  id Int @id @default(autoincrement())
+
+  product Product @relation(fields:[productId], references: [id], onDelete: Cascade)
+  productId Int
+
+  filename String
+  originalname String
+  path String
+  mimeType String
+  size Int
+  uploadedAt DateTime @default(now())
+
+  position Int @default(0)
+  isPrimary Boolean @default(false)
+
+  @@index([productId, position])
 }
