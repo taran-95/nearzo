@@ -1,17 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<link rel="stylesheet" href="style-home.css">
+	<link rel="stylesheet" href="../style-home.css">
 	<title>NearZo Just Search it-up</title>
 </head>
 <body class="uploadbody">
 	<header class="navbar">
-		<a href="index.html">NearZo</a>
-		<nav>	
-		<a href="index.html">Home</a>
-		<a href="products.html">Product</a>
-		<a href="upload.html">For Business</a>
-		</nav></header>
+    <a href="../index.html">NearZo</a>
+    <nav>
+        <a href="../index.html">Home</a>
+        <a href="products.html">Products</a>
+        <a href="uploadProduct.html">For Business</a>
+
+        <!-- LOGIN DROPDOWN -->
+        <div class="nav-dropdown">
+            <a href="../auth/userLogin.html" class="nav-btn">Login ▾</a>
+            <div class="dropdown-menu">
+                <a href="../auth/userLogin.html">Login as User</a>
+                <a href="../auth/buisnessLogin.html">Login as Business</a>
+            </div>
+        </div>
+
+        <!-- REGISTER DROPDOWN -->
+        <div class="nav-dropdown">
+            <a href="../auth/userRegister.html" class="nav-btn">Register ▾</a>
+            <div class="dropdown-menu">
+                <a href="../auth/userRegister.html">Register as User</a>
+                <a href="../auth/buisnessRegister.html">Register as Business</a>
+            </div>
+        </div>
+    </nav>
+</header>
  <main class="upload-page">
  	<div class="upload-heading">
  		<h1>List Your Products</h1>
@@ -42,12 +61,6 @@
        				<option value="Low Stock">Low Stock</option>
        				<option value="Out of Stock">Out of Stock</option>
     			</select><br>
-
-   				<label>Store Name</label>
-    			<input type="text" id="storeName" placeholder="e.g. Alfiz ka Store" required><br>
-
-				<label>Store Location</label>
-				<input type="text" id="storeLocation" placeholder="e.g. Jogeshwari West" required><br>
 
 				<div id="error-div" style="color:red; display:none"></div>
     

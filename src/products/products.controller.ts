@@ -1,10 +1,13 @@
-import { BadRequestException, Body, Controller, FileTypeValidator, Get, MaxFileSizeValidator, ParseFilePipe, Post, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { BadRequestException, Body, Controller, FileTypeValidator, Get, MaxFileSizeValidator, ParseFilePipe, Post, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ProductsService } from './products.service.js';
 import { UploadProductDto } from './dtos/uploadProduct.dto.js';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage, Multer } from 'multer';
 import { extname } from 'path';
 import { randomUUID } from 'crypto';
+import { SessionAuthGuard } from '../auth/guards/sessionAuth.guard.js';
+import { UserTypeGuard } from '../auth/guards/userType.guard.js';
+import { UserTypes } from '../auth/decorators/userTypes.decorator.js';
 
 @Controller('products')
 export class ProductsController {
@@ -13,6 +16,13 @@ export class ProductsController {
     @Get()
     getProducts() {
         return this.productsService.getProducts();
+    }
+
+    @UseGuards(SessionAuthGuard, UserTypeGuard)
+    @UserTypes('shop')
+    @Get('upload')
+    getUploadProductPage() {
+        return { message: 'logged in' };
     }
 
     @Post()

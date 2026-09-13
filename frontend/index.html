@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<link href="https://fonts.googleapis.com/css2?family=Bitcount+Ink:wght@100..900&family=Rubik+Spray+Paint&display=swap" rel="stylesheet">
 
 
 	<link rel="stylesheet" href="style-home.css">
@@ -8,13 +9,31 @@
 </head>
 <body>
 	<header class="navbar">
-		<a href="index.html">NearZo</a>
-	<nav>	
-		<a href="index.html">Home</a>
-		<a href="products.html">Product</a>
-		<a href="upload.html">For Business</a>
-	</nav>
- 	</header>
+    <a href="index.html">NearZo</a>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="products/products.html">Products</a>
+        <a href="products/uploadProduct.html">For Business</a>
+
+        <!-- LOGIN DROPDOWN -->
+        <div class="nav-dropdown">
+            <a href="auth/userLogin.html" class="nav-btn">Login ▾</a>
+            <div class="dropdown-menu">
+                <a href="auth/userLogin.html">Login as User</a>
+                <a href="auth/buisnessLogin.html">Login as Business</a>
+            </div>
+        </div>
+
+        <!-- REGISTER DROPDOWN -->
+        <div class="nav-dropdown">
+            <a href="auth/userRegister.html" class="nav-btn">Register ▾</a>
+            <div class="dropdown-menu">
+                <a href="auth/userRegister.html">Register as User</a>
+                <a href="auth/buisnessRegister.html">Register as Business</a>
+            </div>
+        </div>
+    </nav>
+</header>
  <main>	<!-- page 1 -->
  	<section class="first-row">
  			
@@ -54,28 +73,30 @@
  					<p style="margin-bottom: 0;">How our platform works</p>
  					<h2 style="margin-top:0">Stop searching.
  						<br/> Stop finding.</h2>
- 					<div class="steps">
- 						<div class="step">
- 							<div class="step-number">01
- 								<h3>Search</h3>
- 								<p>Search for the product you need.</p>
- 							</div>
- 						</div>
- 						<div class="step">
- 							<div class="step-number">02
- 								<h3>Discover</h3>
- 								<p>See products available from local stores.</p>
- 							</div>
- 						</div>
- 						<div class="step">
- 							<div class="step-number">03
- 								<h3>Visit</h3>
- 								<p>Know the avaliablity before visiting the store</p>
- 							</div>
- 						</div>
+					<div class="steps">
 
+					    <div class="step">
+					        <div class="step-number">01</div>
+					        <div class="step-icon">🔍</div>
+					        <h3>Search</h3>
+					        <p>Search for the product you need near your location.</p>
+					    </div>
 
- 					</div>
+					    <div class="step">
+					        <div class="step-number">02</div>
+					        <div class="step-icon">📍</div>
+					        <h3>Discover</h3>
+					        <p>See products available from nearby local stores.</p>
+					    </div>
+
+					    <div class="step">
+					        <div class="step-number">03</div>
+					        <div class="step-icon">🏪</div>
+					        <h3>Visit</h3>
+					        <p>Check availability before visiting the store.</p>
+					    </div>
+
+					</div>
 
  				</div>
 

@@ -44,3 +44,28 @@ model ProductImage {
 
   @@index([productId, position])
 }
+
+model User {
+  id Int @id @default(autoincrement())
+
+  name String
+  email String @unique
+  phone String
+  passwordHash String
+
+  registered_at DateTime @default(now())
+}
+
+model Shop {
+  id Int @id @default(autoincrement())
+
+  store_name String
+  owner_name String
+  location String
+
+  email String @unique
+  phone String
+  passwordHash String
+
+  registered_at DateTime @default(now())
+}

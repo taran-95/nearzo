@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    
+    <link rel="stylesheet" href="../style-auth.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bitcount+Ink:wght@100..900&family=Rubik+Spray+Paint&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <title>NearZo Registration</title>
+</head>
+<body>
+    <header class="navbar">
+    <a href="../index.html">NearZo</a>
+    <nav>
+        <a href="../index.html">Home</a>
+        <a href="../products/products.html">Products</a>
+        <a href="../products/uploadProduct.html">For Business</a>
+
+        <!-- LOGIN DROPDOWN -->
+        <div class="nav-dropdown">
+            <a href="userLogin.html" class="nav-btn">Login ▾</a>
+            <div class="dropdown-menu">
+                <a href="userLogin.html">Login as User</a>
+                <a href="buisnessLogin.html">Login as Business</a>
+            </div>
+        </div>
+
+        <!-- REGISTER DROPDOWN -->
+        <div class="nav-dropdown">
+            <a href="userRegister.html" class="nav-btn">Register ▾</a>
+            <div class="dropdown-menu">
+                <a href="userRegister.html">Register as User</a>
+                <a href="buisnessRegister.html">Register as Business</a>
+            </div>
+        </div>
+    </nav>
+</header>
+    <!-- <div class="circle"></div> -->
+
+    <div class="register-box">
+    <form method="POST" id="userRegisterForm">
+        <div class="icon-box">
+            <i class="fa-solid fa-user-plus"></i>
+        </div>
+
+        <h2>Create Account</h2>
+
+        <p class="text">
+            Register as a user to access all the features.
+        </p>
+
+        <div class="input">
+            <i class="fa-solid fa-user"></i>
+            <input type="text" placeholder="User Name" id="name">
+        </div>
+
+        <div class="input">
+            <i class="fa-solid fa-envelope"></i>
+            <input type="email" placeholder="Email" id="email">
+        </div>
+
+        <div class="input">
+            <i class="fa-solid fa-phone"></i>
+            <input type="tel" placeholder="Phone Number" id="phone">
+        </div>
+
+        <div class="input">
+            <i class="fa-solid fa-lock"></i>
+            <input type="password" placeholder="Password" id="password">
+        </div>
+
+        <div class="input">
+            <i class="fa-solid fa-lock"></i>
+            <input type="password" placeholder="Confirm Password" id="confirmPassword">
+        </div>
+
+        <div class="error" id="error-div"></div>
+        <button class="btn">Register</button>
+    </form>
+
+        <p class="login-text">
+            Already have an account?
+        </p>
+
+        <a href="index.html" class="login-btn">
+            Login
+        </a>
+
+    </div>
+
+    <script>
+        const form = document.getElementById("userRegisterForm");
+        const errorDiv = document.getElementById("error-div");
+
+        form.addEventListener("submit", async function(e) {
+            e.preventDefault();
+            
+            const password = document.getElementById("password").value;
+            const confirmPassword = document.getElementById("confirmPassword").value;
+
+            if(password !== confirmPassword) {
+                errorDiv.textContent = "Password doesn't match";
+                return;
+            }
+
+            const data = {
+                name: document.getElementById("name").value,
+                email: document.getElementById("email").value,
+                phone: document.getElementById("phone").value,
+                password: password
+            };
+
+            try {
+                const response = await fetch('http://localhost:3000/auth/register/user', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.message);
+                }
+
+                window.location.href = "/";
+            } catch (error) {
+                errorDiv.textContent = error.message;
+            }
+
+        });
+    </script>
+
+</body>
+</html>

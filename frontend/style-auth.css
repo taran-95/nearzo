@@ -1,0 +1,496 @@
+@import url('style-home.css');
+
+
+.icon-box {
+    width: 60px;
+    height: 60px;
+    margin: -60px auto 20px;
+    background: white;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 22px;
+}
+
+.text {
+    color: #666;
+    font-size: 14px;
+    margin: 15px 0 25px;
+    line-height: 22px;
+}
+
+.error {
+    color: #c70404;
+    font-size: 14px;
+    margin: 15px 0 25px;
+    line-height: 22px;
+}
+
+
+.input {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.input input {
+    width: 100%;
+    height: 50px;
+    border: none;
+    outline: none;
+    background: #eef1f4;
+    border-radius: 10px;
+    padding: 0 45px;
+    font-size: 14px;
+}
+
+.input i {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+    color: gray;
+}
+
+.show {
+    left: auto !important;
+    right: 15px;
+}
+
+.link {
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.link a {
+    text-decoration: none;
+    color: #444;
+    font-size: 13px;
+}
+
+.btn {
+    width: 100%;
+    height: 50px;
+    border: none;
+    border-radius: 10px;
+    background: #2563eb;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.2s ease;
+}
+
+.btn:hover {
+    background: #1d4ed8;
+}
+
+.login-text {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: #666;
+    font-size: 14px;
+}
+
+.login-btn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    text-decoration: none;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    color: #222;
+    font-weight: bold;
+    text-align: center;
+    transition: 0.3s;
+}
+
+.login-btn:hover {
+    background: #f2f2f2;
+}
+
+/* LOGIN PAGE*/
+.login-box {
+    width: 360px;
+    margin: 100px auto;
+    padding: 35px;
+    background: rgba(255, 255, 255, 0.92);
+    border-radius: 20px;
+    backdrop-filter: blur(12px);
+    text-align: center;
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.18);
+    position: relative;
+    z-index: 1;
+}
+
+.login-box h1 {
+    font-size: 26px;
+    color: #0f172a;
+    font-weight: 700;
+}
+
+/*USER REGISTRATION PAGE*/
+.register-box {
+    width: 380px;
+    margin: 80px auto;
+    padding: 35px;
+    background: rgba(255, 255, 255, 0.92);
+    border-radius: 20px;
+    backdrop-filter: blur(12px);
+    text-align: center;
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.18);
+    position: relative;
+    z-index: 1;
+}
+
+.register-box h2 {
+    font-size: 26px;
+    color: #0f172a;
+    font-weight: 700;
+}
+
+/* BUSINESS REGISTRATION PAGE */
+.business-register-box {
+    width: 960px;
+    max-width: calc(100% - 40px);
+    margin: 70px auto 60px;
+    padding: 35px 40px 40px;
+    background: rgba(255, 255, 255, 0.94);
+    border-radius: 20px;
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.18);
+    position: relative;
+    z-index: 1;
+    box-sizing: border-box;
+}
+
+.business-register-box .business-icon {
+    width: 60px;
+    height: 60px;
+    margin: -65px auto 20px;
+    background: #ffffff;
+    color: #2563eb;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 22px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.business-register-box h2 {
+    margin: 0;
+    text-align: center;
+    font-size: 28px;
+    font-weight: 700;
+    color: #222;
+}
+
+.business-text {
+    margin: 10px 0 28px;
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+    line-height: 21px;
+}
+
+/* Two-column side-by-side grid */
+.form-sections-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: start;
+    margin-bottom: 22px;
+}
+
+.form-section {
+    width: 100%;
+    padding: 22px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+}
+
+.form-section h3 {
+    margin: 0 0 5px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #222;
+}
+
+.form-section h3 i {
+    color: #2563eb;
+    margin-right: 8px;
+}
+
+.section-description {
+    margin: 0 0 18px;
+    font-size: 13px;
+    color: #777;
+}
+
+.business-register-box .input {
+    width: 100%;
+    position: relative;
+    margin-bottom: 14px;
+}
+
+.business-register-box .input input,
+.business-register-box .input select {
+    width: 100%;
+    height: 50px;
+    padding: 0 42px;
+    border: 1px solid transparent;
+    outline: none;
+    background: #eef1f4;
+    border-radius: 10px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    color: #333;
+    transition: 0.2s;
+}
+
+.business-register-box .input input::placeholder {
+    color: #777;
+}
+
+.business-register-box .input input:focus,
+.business-register-box .input select:focus,
+.business-register-box .input textarea:focus {
+    background: #ffffff;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+}
+
+.business-register-box .input > i {
+    position: absolute;
+    left: 15px;
+    top: 25px;
+    transform: translateY(-50%);
+    color: #777;
+    font-size: 14px;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.business-register-box .select-input select {
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    color: #555;
+}
+
+.business-register-box .textarea-input {
+    height: 90px;
+}
+
+.business-register-box .input textarea {
+    width: 100%;
+    height: 90px;
+    padding: 14px 15px 14px 42px;
+    border: 1px solid transparent;
+    outline: none;
+    background: #eef1f4;
+    border-radius: 10px;
+    resize: vertical;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    color: #333;
+    transition: 0.2s;
+}
+
+.business-register-box .input textarea::placeholder {
+    color: #777;
+}
+
+.business-register-box .textarea-input > i {
+    top: 22px;
+    transform: none;
+}
+
+.time-row {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 18px;
+}
+
+.time-field {
+    width: 100%;
+}
+
+.time-field label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #444;
+}
+
+.time-field label i {
+    color: #2563eb;
+    margin-right: 5px;
+}
+
+.time-field input[type="time"] {
+    width: 100%;
+    height: 45px;
+    padding: 0 12px;
+    border: 1px solid #d5dce5;
+    border-radius: 9px;
+    background: #ffffff;
+    font-size: 14px;
+    color: #333;
+    outline: none;
+    cursor: pointer;
+}
+
+.time-field input[type="time"]:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+}
+
+.working-days {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.working-days > label {
+    display: block;
+    margin-bottom: 9px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #444;
+}
+
+.working-days > label i {
+    color: #2563eb;
+    margin-right: 5px;
+}
+
+.days-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+}
+
+.day-option input {
+    display: none;
+}
+
+.day-option span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 38px;
+    border: 1px solid #d5dce5;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #555;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.day-option input:checked + span {
+    background: #2563eb;
+    border-color: #2563eb;
+    color: #ffffff;
+}
+
+.day-option span:hover {
+    border-color: #2563eb;
+    color: #2563eb;
+}
+
+.day-option input:checked + span:hover {
+    color: #ffffff;
+}
+
+.business-register-btn {
+    display: flex;
+    width: 100%;
+    height: 50px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5px;
+    background: #2563eb;
+    color: #ffffff;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.business-register-btn:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+}
+
+.business-register-box .login-text {
+    margin: 20px 0 10px;
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+}
+
+.business-register-box .login-btn {
+    display: flex;
+    width: 100%;
+    height: 46px;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    background: #ffffff;
+    border: 1px solid #d5d5d5;
+    border-radius: 10px;
+    color: #222;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.business-register-box .login-btn:hover {
+    background: #f5f5f5;
+    border-color: #bbb;
+}
+
+/* AUTH RESPONSIVE RULES*/
+@media (max-width: 850px) {
+    .form-sections-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .business-register-box {
+        width: calc(100% - 30px);
+        padding: 30px 20px 30px;
+        margin-top: 70px;
+    }
+
+    .form-section {
+        padding: 18px;
+    }
+
+    .time-row {
+        grid-template-columns: 1fr;
+    }
+
+    .days-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 7px;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-box,
+    .register-box {
+        width: calc(100% - 30px);
+        margin: 70px auto;
+        padding: 30px 20px;
+    }
+}
