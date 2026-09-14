@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
     if(!res.ok) {
         console.error("Login as a shop to upload products."); //throw an error
-        window.location.href = "../index.html"; //redirect to index.html
+        //window.location.href = "../index.html"; //redirect to index.html
     }
 
     const uploadForm = document.querySelector(".uploadForm");

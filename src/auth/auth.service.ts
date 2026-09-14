@@ -55,12 +55,12 @@ export class AuthService {
         const shop = await this.shopService.findByEmail(dto.email);
 
         if(!shop) {
-            throw new UnauthorizedException('Invalid Email or Password');
+            throw new UnauthorizedException('Invalid email or password');
         }
 
         const valid = await bcrypt.compare(dto.password, shop.passwordHash);
         if(!valid) {
-            throw new UnauthorizedException("Invalid email Or password");
+            throw new UnauthorizedException("Invalid email or password");
         }
 
         return {
@@ -87,7 +87,7 @@ export class AuthService {
             id: user.id,
             name: user.name,
             email: user.email,
-            userType: 'shop' as const,
+            userType: 'user' as const,
         };
     }
 

@@ -25,6 +25,8 @@ export class ProductsController {
         return { message: 'logged in' };
     }
 
+    @UseGuards(SessionAuthGuard, UserTypeGuard)
+    @UserTypes('shop')
     @Post()
     @UseInterceptors(FilesInterceptor('images', 5, {
         limits: {

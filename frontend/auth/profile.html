@@ -3,15 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Bitcount+Ink:wght@100..900&family=Rubik+Spray+Paint&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style/style-auth.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <title>My Profile</title>
 
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 600px;
-      margin: 50px auto;
-      padding: 20px;
-    }
 
     .profile {
       border: 1px solid #ddd;
@@ -45,7 +43,8 @@
 </head>
 
 <body>
-
+  <header id="header" class="navbar"></header>
+	<script src="/scripts/header.js"></script> 
   <h1>My Profile</h1>
 
   <p id="loading">Loading profile...</p>
@@ -200,28 +199,24 @@
     // LOGOUT
     // -------------------------
 
-    document.getElementById('logoutButton').addEventListener('click', async () => {
-
+    document.getElementById('logoutButton').addEventListener('click', async (e) => {
       try {
-
         const response = await fetch('http://localhost:3000/auth/logout', {
           method: 'POST',
           credentials: 'include'
         });
-
+        console.log("hi");
         const result = await response.json();
 
         if (!response.ok) {
           throw new Error(result.message || 'Logout failed');
         }
 
-        alert('Logged out successfully');
-
-        // Redirect to login page
-        window.location.href = 'login.html';
+        message.textContent = 'Logged out successfully';
+        setTimeout(() => {window.location.href = "/";}, 2000);
 
       } catch (error) {
-        console.log("here");
+        console.log("err");
         document.getElementById('message').textContent =
           error.message;
 
@@ -237,4 +232,3 @@
 
 </body>
 </html>
-```

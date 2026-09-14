@@ -5,38 +5,17 @@
     
     <link href="https://fonts.googleapis.com/css2?family=Bitcount+Ink:wght@100..900&family=Rubik+Spray+Paint&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../style-auth.css">
+    <link rel="stylesheet" href="/style/style-auth.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <title>NearZo Login</title>
 </head>
 <body>
-
-    <header class="navbar">
-    <a href="../index.html">NearZo</a>
-    <nav>
-        <a href="../index.html">Home</a>
-        <a href="../products/products.html">Products</a>
-        <a href="../products/uploadProduct.html">For Business</a>
-
-        <!-- LOGIN DROPDOWN -->
-        <div class="nav-dropdown">
-            <a href="userLogin.html" class="nav-btn">Login ▾</a>
-            <div class="dropdown-menu">
-                <a href="userLogin.html">Login as User</a>
-                <a href="buisnessLogin.html">Login as Business</a>
-            </div>
-        </div>
-
-        <!-- REGISTER DROPDOWN -->
-        <div class="nav-dropdown">
-            <a href="userRegister.html" class="nav-btn">Register ▾</a>
-            <div class="dropdown-menu">
-                <a href="userRegister.html">Register as User</a>
-                <a href="buisnessRegister.html">Register as Business</a>
-            </div>
-        </div>
-    </nav>
-</header>  
+    <header id="header" class="navbar"></header>
+	<script src="/scripts/header.js"></script> 
+    <script src="/scripts/auth_guard.js"></script>
+    <script>
+        requireLoggedOut();
+    </script>
 
     <div class="circle"></div>
 
@@ -48,9 +27,7 @@
 
             <h1>Sign in with email</h1>
 
-            <p class="text">
-                Enter Login details here<br>
-            </p>
+            <p class="text">Enter Login details here<br></p>
 
             <div class="input">
                 <i class="fa-solid fa-envelope"></i>
@@ -63,9 +40,8 @@
                 <i class="fa-solid fa-eye-slash show"></i>
             </div>
 
-            <div class="link">
-                <a href="userRegister.html">Forgot password?</a>
-            </div>
+            <div class="link"><a href="/auth/userRegister.html">Forgot password?</a></div>
+
             <div class="error" id="error-div"></div>
             <button class="btn" >Get Started</button>
         </form>
@@ -98,7 +74,9 @@
                     throw new Error(error.message);
                 }
 
-                window.location.href = "/"
+                errorDiv.textContent = "Login Successful. Redirecting...";
+                errorDiv.style.color = "Green";
+                setTimeout(() => {window.location.href = "/";}, 2000);
             } catch (error) {
                 errorDiv.textContent = error.message;
             }

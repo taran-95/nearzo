@@ -1,61 +1,36 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <title>Products — NearZo</title>
+        <link rel="stylesheet" href="/style/style-home.css">
+    </head>
 
-<head>
-    <title>Products — NearZo</title>
-    <link rel="stylesheet" href="../style-home.css">
+    <body>
+        <header id="header" class="navbar"></header>
+        <script src="/scripts/header.js"></script>
 
-</head>
-<body>
-<header class="navbar">
-    <a href="../index.html">NearZo</a>
-    <nav>
-        <a href="../index.html">Home</a>
-        <a href="products.html">Products</a>
-        <a href="uploadProduct.html">For Business</a>
-
-        <!-- LOGIN DROPDOWN -->
-        <div class="nav-dropdown">
-            <a href="../auth/userLogin.html" class="nav-btn">Login ▾</a>
-            <div class="dropdown-menu">
-                <a href="../auth/userLogin.html">Login as User</a>
-                <a href="../auth/buisnessLogin.html">Login as Business</a>
+        <main class="products-page">
+            <section class="products-header"> 
+                <div>
+                <span>Find the products here.</span>
+                <h2>Discover products near you.</h2></div>
+            </section>
+            
+            <!-- search bar -->
+            <form class="hero-search" action="" id="">
+                <span class="search-symbol">⌕</span>
+                <input type="text" name="search" placeholder="Search for a product...">
+                <button type="submit"> Search</button>
+            </form>
             </div>
-        </div>
+                        
+            
+            <!-- products display -->
+            <section>
+                <div id="productsGrid" class="products-grid"></div> 
+            </section>
 
-        <!-- REGISTER DROPDOWN -->
-        <div class="nav-dropdown">
-            <a href="../auth/userRegister.html" class="nav-btn">Register ▾</a>
-            <div class="dropdown-menu">
-                <a href="../auth/userRegister.html">Register as User</a>
-                <a href="../auth/buisnessRegister.html">Register as Business</a>
-            </div>
-        </div>
-    </nav>
-</header>
-
-<main class="products-page">
-    <section class="products-header"> 
-        <div>
-        <span>Find the products here.</span>
-        <h2>Discover products near you.</h2></div>
-    </section>
-    
-    <!-- search bar -->
-    <form class="hero-search" action="" id="">
- 					<span class="search-symbol">⌕</span>
- 					<input type="text" name="search" placeholder="Search for a product...">
- 					<button type="submit"> Search</button>
- 				</form>
-			</div>
-				
-    
-      <!-- products display -->
-    <section>
-       <div id="productsGrid" class="products-grid"></div> 
-    </section>
-
-</main>
-<script src="products.js"></script>
-</body>
+        </main>
+        <script src="/scripts/products.js"></script>
+    </body>
 </html>
