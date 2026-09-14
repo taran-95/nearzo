@@ -8,6 +8,11 @@
 	<body class="uploadbody">
 		<header id="header" class="navbar"></header>
 		<script src="/scripts/header.js"></script>
+		<script src="/scripts/auth_guard.js"></script>
+		<script>
+			requireLogin();
+			requireUserTypeShop();
+		</script>
 
 		<main class="upload-page">
 			<div class="upload-heading"><h1>List Your Products</h1></div>
@@ -39,14 +44,81 @@
 							<option value="Out of Stock">Out of Stock</option>
 						</select><br>
 
-						<div id="error-div" style="color:red; display:none"></div>
-			
+						<div class="error" id="error-div"></div>
 						<button type="submit" class="submit-button">Add Product</button>
 					</form>
 				</section>
 					
 			</div>
 		</main>
-	<script src="/scripts/uploadProduct.js"></script>
+	<script>
+		document.addEventListener("DOMContentLoaded", async () => {
+
+		try {
+			const uploadForm = document.querySelector(".uploadForm");
+			const errorDiv = document.getElementById("error-div");
+			if (!uploadForm) {
+				throw new Error("Error loading page");
+			};
+
+			uploadForm.addEventListener("submit", async function(e) {
+				e.preventDefault();
+
+				const imageInput = document.getElementById("productImage");
+				const files = imageInput ? imageInput.files : null;
+
+				const storeDetailsRes = await fetch("http://localhost:3000/auth/me", {
+					method: "GET",
+					credentials: "include"
+				});
+
+				if(!storeDetailsRes.ok) {
+					const error = await storeDetailsRes.json();
+					throw new Error(error.message);
+				}
+
+				const storeDetails = await getUser();
+
+				const saveAndRedirect = async() => {
+					//restriction price and number
+					const rawPrice = document.getElementById("productPrice")?.value || "0";
+					const cleanedPrice = rawPrice.replace(/[^0-9.]/g, '') || "0";
+
+					const formData = new FormData();
+					formData.append('name', document.getElementById("productName")?.value.trim() || "");
+					formData.append('price', cleanedPrice);
+					formData.append('description', document.getElementById("productDescription")?.value.trim() || "");
+					formData.append('store_name', storeDetails.user.store_name);
+					formData.append('store_location', storeDetails.user.location);
+					if(files?.length) {
+						for(const file of files) {
+							formData.append('images', file);
+						}
+					}
+
+					console.log(formData.get('store_name'));
+
+					const response = await fetch("http://localhost:3000/products", {
+						method: "POST",
+						credentials: "include",
+						body: formData
+					});
+
+					if(!response.ok) {
+						const error = await response.json();
+						throw new Error(error.message);
+					}
+
+					errorDiv.textContent = "Product Uploaded Successfully. Redirecting...";
+                	errorDiv.style.color = "Green";
+                	setTimeout(() => {window.location.href = "/";}, 2000);
+				};
+				saveAndRedirect();
+			});
+		} catch (error) {
+			errorDiv.textContent = error.message;
+		}
+	});
+	</script>
 	</body>
 </html>

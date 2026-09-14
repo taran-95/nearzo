@@ -8,8 +8,8 @@ export class ProductsService {
 
     constructor(private readonly prisma: PrismaService) {}
 
-    getProducts() {
-        return this.prisma.product.findMany({
+    async getProducts() {
+        return await this.prisma.product.findMany({
             include: {
                 images: {
                     orderBy: {
@@ -35,7 +35,7 @@ export class ProductsService {
             isPrimary: index === 0 ? true : false
         }));
 
-        return this.prisma.productImage.createMany({
+        return await this.prisma.productImage.createMany({
             data: images,
         });
     }
