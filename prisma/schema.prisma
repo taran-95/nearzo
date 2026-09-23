@@ -12,24 +12,87 @@ datasource db {
   provider = "postgresql"
 }
 
+enum ProductType {
+  CUSTOM
+  IDENTIFIED
+}
+
+enum ProductSource {
+  UPC_DEV
+  OPENFOODFACTS
+  UPCITEMDB
+}
+
+model ProductApiUsage {
+  id Int @id @default(autoincrement())
+  provider ProductSource @unique
+  
+  limit Int
+  remaining Int
+  resetAt DateTime
+
+  disabledUntil DateTime?
+
+  updated_at DateTime @updatedAt
+}
+
 model Product {
   id Int @id @default(autoincrement())
-  name String
-  price Decimal
-  description String
 
+  type ProductType
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  customProduct CustomProduct?
+  identifiedProduct IdentifiedProduct?
+  offers Offer[]
+
+  @@index([type])
+}
+
+model CustomProduct {
+  productId Int @id
+  name String
+  description String
   images ProductImage[]
 
-  uploaded_at DateTime   @default(now()) @db.Timestamp
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
 
-  store_name String
-  store_location String
+model IdentifiedProduct {
+  productId Int @id
+  gtin String
+  sourceProvider ProductSource
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([gtin])
+  @@index([sourceProvider])
+}
+
+model Offer {
+  id Int @id @default(autoincrement())
+
+  productId Int
+  sellerId Int
+  price Decimal
+  quantity Int
+  searchKeywords String[] @default([])
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  seller Shop @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@index([sellerId])
 }
 
 model ProductImage {
   id Int @id @default(autoincrement())
 
-  product Product @relation(fields:[productId], references: [id], onDelete: Cascade)
+  customProduct CustomProduct @relation(fields:[productId], references: [productId], onDelete: Cascade)
   productId Int
 
   filename String
@@ -68,4 +131,6 @@ model Shop {
   passwordHash String
 
   registered_at DateTime @default(now())
+
+  offers Offer[]
 }

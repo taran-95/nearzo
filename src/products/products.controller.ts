@@ -1,6 +1,6 @@
-import { BadRequestException, Body, Controller, FileTypeValidator, Get, MaxFileSizeValidator, ParseFilePipe, Post, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
+import { BadRequestException, Body, Controller, FileTypeValidator, Get, MaxFileSizeValidator, Param, ParseFilePipe, ParseIntPipe, Post, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ProductsService } from './products.service.js';
-import { UploadProductDto } from './dtos/uploadProduct.dto.js';
+import { UploadCustomProductDto } from './dtos/uploadCustomProduct.dto.js';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage, Multer } from 'multer';
 import { extname } from 'path';
@@ -18,16 +18,21 @@ export class ProductsController {
         return this.productsService.getProducts();
     }
 
-    @UseGuards(SessionAuthGuard, UserTypeGuard)
-    @UserTypes('shop')
-    @Get('upload')
-    getUploadProductPage() {
-        return { message: 'logged in' };
+    @Get(':id')
+    getProduct(@Param("id", ParseIntPipe) id: number) {
+        return this.productsService.getProduct(id);
+    }
+
+    //@UseGuards(SessionAuthGuard, UserTypeGuard)
+    //@UserTypes('shop')
+    @Post('identified/:identifier')
+    async uploadIdentifiedProduct(@Param("identifier") identifier: String) {
+        return await this.productsService.uploadIdentifiedProduct(identifier);
     }
 
     @UseGuards(SessionAuthGuard, UserTypeGuard)
     @UserTypes('shop')
-    @Post()
+    @Post('custom')
     @UseInterceptors(FilesInterceptor('images', 5, {
         limits: {
             fileSize: 5 * 1024 * 1024,
@@ -61,13 +66,15 @@ export class ProductsController {
             },
         }),
     }))
-    uploadProduct(@Body() uploadProductDto: UploadProductDto,
+    uploadCustomProduct(@Body() uploadCustomProductDto: UploadCustomProductDto,
                     @UploadedFiles() files) 
     {
         if (!files || files.length === 0) {
             throw new BadRequestException('At least one product image is required');
         }
-        return this.productsService.uploadProduct(uploadProductDto, files);
+        return this.productsService.uploadCustomProduct(uploadCustomProductDto, files);
     }
+
+
 
 }

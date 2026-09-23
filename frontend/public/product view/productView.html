@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Product Details — NearZo</title>
+        <link href="https://fonts.googleapis.com/css2?family=Bitcount+Ink:wght@100..900&family=Rubik+Spray+Paint&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+        <link rel="stylesheet" href="/style/style-home.css">
+    </head>
+
+    <body class="products-body">
+        <header id="header" class="navbar"></header>
+        <script src="/scripts/header.js"></script>
+
+        <main class="product-view-main">
+            <!-- Breadcrumb / Back Link -->
+            <div class="product-view-breadcrumb">
+                <a href="/products/products" class="product-view-back-link">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Products
+                </a>
+                <span style="color: #94a3b8; font-size: 14px;">/</span>
+                <span id="breadcrumbTitle" style="color: #64748b; font-size: 14px; font-weight: 500;">Product Info</span>
+            </div>
+
+            <!-- Main Single Product Showcase Card -->
+            <div class="product-view-card">
+                <!-- Left Column: Media Showcase -->
+                <div class="product-view-media-col">
+                    <div class="product-view-img-box">
+                        <img id="viewProductImg" src="" alt="Product Image" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'64\' height=\'64\' fill=\'%2394a3b8\' viewBox=\'0 0 16 16\'%3E%3Cpath d=\'M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z\'/%3E%3Cpath d=\'M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z\'/%3E%3C/svg%3E';">
+                    </div>
+                </div>
+
+                <!-- Right Column: Product Info & Stores -->
+                <div class="product-view-info-col">
+                    <div class="product-view-meta-row">
+                        <span class="product-view-cat-badge" id="viewProductCategory">Category</span>
+                        <span class="product-view-stock-tag in" id="viewStockBadge">In Stock</span>
+                    </div>
+
+                    <h1 class="product-view-title" id="viewProductTitle">Product Title</h1>
+
+                    <!-- Price Box -->
+                    <div class="product-view-price-box">
+                        <div>
+                            <span class="product-view-price-label">Best Local Price</span>
+                            <div class="product-view-price-num" id="viewProductPrice">₹0</div>
+                        </div>
+                        <span class="drawer-stores-count-badge" id="viewStoresCountBadge">2 Nearby Stores</span>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="product-view-desc-section">
+                        <h3 class="product-view-desc-title">
+                            <i class="fa-solid fa-circle-info" style="color: #2563eb;"></i> Product Description
+                        </h3>
+                        <p class="product-view-desc-text" id="viewProductDesc">Full product description.</p>
+                    </div>
+
+                    <!-- Stores Carrying This Product -->
+                    <div class="product-view-stores-section">
+                        <h3 class="product-view-stores-title">
+                            <i class="fa-solid fa-store" style="color: #2563eb;"></i> Available Nearby Stores
+                        </h3>
+                        <div class="stores-cards-list" id="viewStoresList">
+                            <!-- Populated via JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <script>
+            const API_BASE = 'http://localhost:3000';
+
+            const DUMMY_PRODUCTS = [
+                {
+                    id: 'master-iphone-16',
+                    name: 'Apple iPhone 16 (128 GB, Purple)',
+                    category: 'Smartphones & Tech',
+                    description: 'Features Camera Control, 48MP Fusion camera with 2x optical Telephoto, next-generation photographic styles, and the ultra-efficient A18 chip designed for Apple Intelligence.',
+                    price: 79900,
+                    imageUrl: '/assets/products/iphone-16-purple.webp',
+                    store_name: 'iPlanet Apple Reseller',
+                    store_location: 'Phoenix Marketcity, Ground Floor',
+                    stores: [
+                        {
+                            name: 'iPlanet Apple Premium Reseller',
+                            location: 'Phoenix Marketcity, G-04',
+                            distanceMeters: 280,
+                            distanceText: '280m away',
+                            rating: 4.9,
+                            reviewsCount: 512,
+                            stock: 'In Stock',
+                            stockStatus: 'in',
+                            price: 79900,
+                            lastUpdated: 'Updated 10 mins ago'
+                        },
+                        {
+                            name: 'Croma Electronics Hub',
+                            location: '100ft Road, Indiranagar',
+                            distanceMeters: 450,
+                            distanceText: '450m away',
+                            rating: 4.7,
+                            reviewsCount: 890,
+                            stock: 'Low Stock',
+                            stockStatus: 'low',
+                            price: 78499,
+                            lastUpdated: 'Updated 1 hour ago'
+                        }
+                    ]
+                },
+                {
+                    id: 'master-rtx-4090',
+                    name: 'NVIDIA GeForce RTX 4090 24GB GDDR6X',
+                    category: 'Computers & Graphics',
+                    description: 'The ultimate GeForce GPU delivering an enormous leap in raw performance, efficiency, and DLSS 3 AI-powered graphics. Experience ultra-high performance gaming and incredible creative power.',
+                    price: 174999,
+                    imageUrl: '/assets/products/rtx-4090.webp',
+                    store_name: 'Ankit Infotech PCStudio',
+                    store_location: 'SP Road Electronics Market',
+                    stores: [
+                        {
+                            name: 'Ankit Infotech (PCStudio)',
+                            location: 'SP Road Main Electronic Lane',
+                            distanceMeters: 380,
+                            distanceText: '380m away',
+                            rating: 4.9,
+                            reviewsCount: 740,
+                            stock: 'In Stock',
+                            stockStatus: 'in',
+                            price: 174999,
+                            lastUpdated: 'Updated 20 mins ago'
+                        },
+                        {
+                            name: 'Golchha Computer Systems',
+                            location: 'SP Road Commercial Complex',
+                            distanceMeters: 620,
+                            distanceText: '620m away',
+                            rating: 4.6,
+                            reviewsCount: 290,
+                            stock: 'Low Stock',
+                            stockStatus: 'low',
+                            price: 172900,
+                            lastUpdated: 'Updated 4 hours ago'
+                        }
+                    ]
+                },
+                {
+                    id: 'master-dolo-650',
+                    name: 'Dolo 650 Paracetamol (15 Tablets Strip)',
+                    category: 'Healthcare & Medicine',
+                    description: 'Fast-acting fever and mild-to-moderate pain relief formulation. Trusted fever reducer and painkiller containing 650mg Paracetamol for fast symptomatic recovery.',
+                    price: 34,
+                    imageUrl: '/assets/products/dolo-650.webp',
+                    store_name: 'Apollo Pharmacy 24/7',
+                    store_location: 'Corner Main Road, Near Metro',
+                    stores: [
+                        {
+                            name: 'Apollo Pharmacy 24/7',
+                            location: 'Corner 12th Cross, Near Metro Gate 2',
+                            distanceMeters: 95,
+                            distanceText: '95m away',
+                            rating: 4.9,
+                            reviewsCount: 620,
+                            stock: 'In Stock',
+                            stockStatus: 'in',
+                            price: 34,
+                            lastUpdated: 'Updated 5 mins ago'
+                        },
+                        {
+                            name: 'MedPlus Chemist & Druggist',
+                            location: 'Cross Street 4th Block Market',
+                            distanceMeters: 420,
+                            distanceText: '420m away',
+                            rating: 4.7,
+                            reviewsCount: 380,
+                            stock: 'In Stock',
+                            stockStatus: 'in',
+                            price: 32,
+                            lastUpdated: 'Updated 40 mins ago'
+                        }
+                    ]
+                }
+            ];
+
+            function escapeHtml(str) {
+                if (!str) return '';
+                return String(str)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#039;');
+            }
+
+            function getProductImageUrl(product) {
+                if (product.imageUrl) return product.imageUrl;
+                if (!product.images || product.images.length === 0 || !product.images[0] || !product.images[0].path) {
+                    return '';
+                }
+                const cleanPath = product.images[0].path.replace(/\\/g, '/');
+                const pathWithSlash = cleanPath.startsWith('/') ? cleanPath : '/' + cleanPath;
+                return API_BASE + pathWithSlash;
+            }
+
+            function renderProductDetails(product) {
+                const imgElem = document.getElementById('viewProductImg');
+                const titleElem = document.getElementById('viewProductTitle');
+                const breadcrumbTitle = document.getElementById('breadcrumbTitle');
+                const catElem = document.getElementById('viewProductCategory');
+                const descElem = document.getElementById('viewProductDesc');
+                const priceElem = document.getElementById('viewProductPrice');
+                const storesBadge = document.getElementById('viewStoresCountBadge');
+                const storeNameElem = document.getElementById('viewFeatureStore');
+                const locationElem = document.getElementById('viewFeatureLocation');
+                const stockElem = document.getElementById('viewFeatureStock');
+                const stockBadge = document.getElementById('viewStockBadge');
+                const storesList = document.getElementById('viewStoresList');
+
+                const imgUrl = product.imageUrl || getProductImageUrl(product);
+                if (imgElem && imgUrl) {
+                    imgElem.src = imgUrl;
+                    imgElem.alt = product.name;
+                }
+
+                if (titleElem) titleElem.textContent = product.name;
+                if (breadcrumbTitle) breadcrumbTitle.textContent = product.name;
+                if (catElem) catElem.textContent = product.category || 'General';
+                if (descElem) descElem.textContent = product.description || 'Verified product listing offered by local retail stores.';
+
+                const stores = product.stores || [];
+                const minPrice = stores.length > 0 ? Math.min(...stores.map(s => s.price)) : product.price;
+
+                if (priceElem) priceElem.textContent = `₹${Number(minPrice).toLocaleString('en-IN')}`;
+                if (storesBadge) storesBadge.textContent = `${stores.length} Nearby Stores`;
+                if (storeNameElem) storeNameElem.textContent = product.store_name || 'Verified Partner';
+                if (locationElem) locationElem.textContent = product.store_location || 'Neighborhood Market';
+                if (stockElem) stockElem.textContent = 'In Stock';
+
+                if (storesList) {
+                    if (stores.length === 0) {
+                        storesList.innerHTML = '<p style="color: #64748b; font-size: 14px;">No stores currently listed for this product.</p>';
+                    } else {
+                        storesList.innerHTML = stores.map(store => {
+                            const formattedStorePrice = Number(store.price).toLocaleString('en-IN');
+                            const stockClass = store.stockStatus || (store.stock === 'In Stock' ? 'in' : (store.stock === 'Low Stock' ? 'low' : 'out'));
+
+                            return `
+                                <article class="store-card">
+                                    <div class="store-card-header">
+                                        <div class="store-card-title-group">
+                                            <div class="store-card-name">
+                                                <i class="fa-solid fa-store" style="color: #2563eb;"></i>
+                                                <span>${escapeHtml(store.name)}</span>
+                                            </div>
+                                            <div class="store-card-location">
+                                                <i class="fa-solid fa-location-dot" style="color: #ef4444;"></i>
+                                                <span>${escapeHtml(store.location)}</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="store-card-badges">
+                                            <span class="store-rating-badge">
+                                                <i class="fa-solid fa-star"></i> ${store.rating} (${store.reviewsCount})
+                                            </span>
+                                            <span class="store-stock-tag ${stockClass}">
+                                                ${escapeHtml(store.stock)}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="store-card-info-row">
+                                        <div class="store-distance-info">
+                                            <i class="fa-solid fa-person-walking"></i>
+                                            <span>${escapeHtml(store.distanceText || (store.distanceMeters + 'm away'))}</span>
+                                        </div>
+                                        <div class="store-price-info">
+                                            <span class="store-price-currency">₹</span>
+                                            <span class="store-price-amount">${formattedStorePrice}</span>
+                                        </div>
+                                        <div class="store-updated-info">
+                                            <i class="fa-regular fa-clock"></i>
+                                            <span>${escapeHtml(store.lastUpdated || 'Recently updated')}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="store-card-actions">
+                                        <button type="button" class="btn-reserve">
+                                            <i class="fa-solid fa-bookmark"></i> Reserve Here
+                                        </button>
+                                        <button type="button" class="btn-direction">
+                                            <i class="fa-solid fa-diamond-turn-right"></i> Directions
+                                        </button>
+                                    </div>
+                                </article>
+                            `;
+                        }).join('');
+                    }
+                }
+            }
+
+            async function initProductView() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const productId = urlParams.get('id') || 'master-iphone-16';
+
+                // Check dummy products first
+                const dummyMatch = DUMMY_PRODUCTS.find(p => String(p.id) === String(productId));
+                if (dummyMatch) {
+                    renderProductDetails(dummyMatch);
+                    return;
+                }
+
+                // If not found in dummy, fetch from backend API
+                try {
+                    const res = await fetch(`${API_BASE}/products`, { method: 'GET' });
+                    if (res.ok) {
+                        const backendProducts = await res.json();
+                        const found = backendProducts.find(p => String(p.id) === String(productId));
+                        if (found) {
+                            const rawPrice = Number(found.price) || 0;
+                            const adapted = {
+                                id: String(found.id),
+                                name: found.name,
+                                category: found.category || 'General Product',
+                                description: found.description || 'Verified product listing offered by local retail stores.',
+                                price: rawPrice,
+                                images: found.images,
+                                store_name: found.store_name || 'Verified Partner Store',
+                                store_location: found.store_location || 'Local Community Hub',
+                                stores: [
+                                    {
+                                        name: found.store_name || 'Verified Partner Store',
+                                        location: found.store_location || 'Local Community Hub',
+                                        distanceMeters: 250,
+                                        distanceText: '250m away',
+                                        rating: 4.8,
+                                        reviewsCount: 84,
+                                        stock: 'In Stock',
+                                        stockStatus: 'in',
+                                        price: rawPrice,
+                                        lastUpdated: 'Updated today'
+                                    },
+                                    {
+                                        name: 'Neighborhood Express Mart',
+                                        location: 'Main Commercial Avenue',
+                                        distanceMeters: 800,
+                                        distanceText: '800m away',
+                                        rating: 4.6,
+                                        reviewsCount: 42,
+                                        stock: 'Low Stock',
+                                        stockStatus: 'low',
+                                        price: rawPrice + 20,
+                                        lastUpdated: 'Updated 2 hrs ago'
+                                    }
+                                ]
+                            };
+                            renderProductDetails(adapted);
+                            return;
+                        }
+                    }
+                } catch (err) {
+                    console.warn('Could not fetch product from backend:', err);
+                }
+
+                // Fallback to default demo product
+                renderProductDetails(DUMMY_PRODUCTS[0]);
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initProductView);
+            } else {
+                initProductView();
+            }
+        </script>
+    </body>
+</html>

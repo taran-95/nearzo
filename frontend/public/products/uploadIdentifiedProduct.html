@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="/style/style-home.css">
+		<title>NearZo Just Search it-up</title>
+	</head>
+
+	<body class="uploadbody">
+		<header id="header" class="navbar"></header>
+		<script src="/scripts/header.js"></script>
+		<script src="/scripts/auth_guard.js"></script>
+		<script>
+			requireLogin();
+			requireUserTypeShop();
+		</script>
+
+		<main class="upload-page">
+			<div class="upload-heading"><h1>List Your Products</h1></div>
+
+			<div class="upload-layout">
+				<section class="upload-card">
+					<h2>Add Product</h2>
+					<p>Enter your product details below.</p>
+
+					<form class="uploadForm" method="POST">
+						<label>Barcode Number</label>
+						<input type="number" id="identifier" placeholder="Barcode Number. eg. 890.." required><br>
+			
+						<div class="error" id="error-div"></div>
+						<button type="submit" class="submit-button">Add Product</button>
+					</form>
+				</section>
+					
+			</div>
+		</main>
+	<script>
+		document.addEventListener("DOMContentLoaded", async () => {
+			const uploadForm = document.querySelector(".uploadForm");
+			const errorDiv = document.getElementById("error-div");
+		
+			uploadForm.addEventListener("submit", async function(e) {
+				e.preventDefault();
+				
+				try {	
+					const identifier = document.getElementById("identifier").value.replace(/\s+/g, "");
+
+					const response = await fetch(`http://localhost:3000/products/identified/${identifier}`, {
+						method: "POST",
+						credentials: "include"
+					});
+                    
+					if(!response.ok) {
+						const error = await response.json();
+						throw new Error(error.message);
+					}
+
+                    const result = await response.json();
+                    console.log(result);
+					
+                    errorDiv.textContent = "Product Uploaded Successfully. Redirecting...";
+					errorDiv.style.color = "Green";
+					//setTimeout(() => {window.location.href = "/";}, 2000);
+				} catch (error) {
+					errorDiv.textContent = error.message;
+				}
+			});
+		});
+	</script>
+	</body>
+</html>

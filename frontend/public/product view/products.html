@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Products — NearZo</title>
+        <link href="https://fonts.googleapis.com/css2?family=Bitcount+Ink:wght@100..900&family=Rubik+Spray+Paint&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+        <link rel="stylesheet" href="/style/style-home.css">
+    </head>
+
+    <body class="products-body">
+        <header id="header" class="navbar"></header>
+        <script src="/scripts/header.js"></script>
+
+        <!-- Main Products Page Container (adjusts to 50% when drawer is open) -->
+        <main class="products-page" id="productsPageContainer">
+            <section class="products-header"> 
+                <span>All Products</span>
+                <h2>Discover products near you.</h2>
+            </section>
+            
+            <!-- Products Toolbar (Search) -->
+            <div class="products-toolbar">
+                <form class="hero-search" id="searchForm" onsubmit="return false;">
+                    <span class="search-symbol">⌕</span>
+                    <input type="text" id="searchInput" placeholder="Search by product name, category, description, or store...">
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="empty-state" style="display: none;">
+                <i class="fa-solid fa-box-open empty-state-icon"></i>
+                <h3>No Products Found</h3>
+                <p>No products matched your search.</p>
+                <a href="/products/uploadProduct" class="empty-state-btn">+ Add Your Product</a>
+            </div>
+
+            <!-- Products Display (4 cards normally, adjusts to 2 cards when drawer is open) -->
+            <section>
+                <div id="productsGrid" class="products-grid"></div> 
+            </section>
+        </main>
+
+        <!-- Slide-in Product Detail Drawer -->
+        <aside id="productDrawer" class="product-drawer">
+            <!-- Full Product View Button (Circle with 3 lines on left side, in same line as close button) -->
+            <button type="button" class="drawer-view-full-btn" id="viewFullProductBtn" title="View Full Product Page">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10" stroke-width="2"></circle>
+                    <line x1="7" y1="8.5" x2="17" y2="8.5"></line>
+                    <line x1="7" y1="12" x2="17" y2="12"></line>
+                    <line x1="7" y1="15.5" x2="17" y2="15.5"></line>
+                </svg>
+            </button>
+
+            <!-- Close button (Cross at top right corner) -->
+            <button type="button" class="drawer-close-btn" id="closeDrawerBtn" title="Close Product Details">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="drawer-scroll-content">
+                <!-- TOP SECTION: Specific Product Details (Expanded) -->
+                <section class="drawer-top-section">
+                    <div class="drawer-img-box" id="drawerImgBox">
+                        <img id="drawerProductImg" src="" alt="Product Image">
+                    </div>
+
+                    <div class="drawer-product-meta">
+                        <span class="drawer-category-pill" id="drawerProductCategory">Electronics</span>
+                        <span class="drawer-brand-badge" id="drawerBrandBadge"><i class="fa-solid fa-circle-check"></i> Verified Store</span>
+                    </div>
+
+                    <h2 class="drawer-product-title" id="drawerProductTitle">Product Title</h2>
+                    
+                    <p class="drawer-product-desc" id="drawerProductDesc">Detailed product description will go here.</p>
+
+                    <div class="drawer-price-card">
+                        <div class="drawer-price-info">
+                            <span class="drawer-price-label">Best Local Price Starting At</span>
+                            <div class="drawer-price-row">
+                                <span class="drawer-price-val" id="drawerProductPrice">₹0</span>
+                                <span class="drawer-stores-count-badge" id="drawerStoresCountBadge">Available Stores</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- BOTTOM SECTION: Available Stores Details in Card Format -->
+                <section class="drawer-bottom-section">
+                    <div class="drawer-stores-header">
+                        <div class="stores-section-title">
+                            <i class="fa-solid fa-store" style="color: #2563eb;"></i>
+                            <span>Stores Carrying This Product</span>
+                        </div>
+                        <span class="stores-filter-hint">Filter Radius:</span>
+                    </div>
+
+                    <!-- Radius Filter Pills (100m, 500m, 1km, 3km, 5km, All) -->
+                    <div class="radius-pills-row" id="radiusPillsRow">
+                        <button type="button" class="radius-pill" data-radius="100">
+                            <i class="fa-solid fa-person-walking"></i> 100m
+                        </button>
+                        <button type="button" class="radius-pill" data-radius="500">
+                            <i class="fa-solid fa-person-walking"></i> 500m
+                        </button>
+                        <button type="button" class="radius-pill" data-radius="1000">
+                            <i class="fa-solid fa-bicycle"></i> 1 km
+                        </button>
+                        <button type="button" class="radius-pill" data-radius="3000">
+                            <i class="fa-solid fa-motorcycle"></i> 3 km
+                        </button>
+                        <button type="button" class="radius-pill" data-radius="5000">
+                            <i class="fa-solid fa-car-side"></i> 5 km
+                        </button>
+                        <button type="button" class="radius-pill active" data-radius="all">
+                            <i class="fa-solid fa-earth-asia"></i> All
+                        </button>
+                    </div>
+
+                    <!-- Sort Controls (Cheapest, Nearest, Highest Rated) -->
+                    <div class="drawer-sort-row">
+                        <span class="drawer-offers-summary" id="drawerOffersSummary">Showing available stores</span>
+                        <div class="sort-select-wrapper">
+                            <label for="storeSortSelect"><i class="fa-solid fa-arrow-down-short-wide"></i> Sort:</label>
+                            <select id="storeSortSelect" class="store-sort-select">
+                                <option value="cheapest">Cheapest Price</option>
+                                <option value="nearest">Nearest Distance</option>
+                                <option value="rating">Highest Rated</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Available Stores Card List Container -->
+                    <div class="stores-cards-list" id="drawerStoresList">
+                        <!-- Populated dynamically via JS -->
+                    </div>
+                </section>
+            </div>
+        </aside>
+
+        <!-- Backdrop overlay for closing drawer when clicking outside -->
+        <div id="drawerBackdrop" class="drawer-backdrop"></div>
+
+        <script src="/scripts/products.js"></script>
+    </body>
+</html>

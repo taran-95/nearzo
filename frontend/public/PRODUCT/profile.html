@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Bitcount+Ink:wght@100..900&family=Rubik+Spray+Paint&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style/style-auth.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <title>My Profile</title>
+
+  <style>
+
+    .profile {
+      margin:10px;
+      justify-content: space-between;
+      width: 400px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 25px;
+      margin-top: 20px;
+      
+
+    }
+    .profile:hover{
+      transition: 0.3s;
+      translate: 0px -15px;
+      
+    }
+    .field {
+      margin-bottom: 15px;
+    }
+
+    .label {
+      font-weight: bold;
+
+    }
+
+    button {
+      padding: 10px 20px;
+      cursor: pointer;
+      margin-top: 15px;
+      border-radius: 15px;
+      box-shadow:3px 3px 15px ;
+    }
+
+    #message {
+      margin-top: 20px;
+    }
+
+    #loading {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <header id="header" class="navbar"></header>
+	<script src="/scripts/header.js"></script> 
+  <h1>My Profile</h1>
+
+  <p id="loading">Loading profile...</p>
+  <p id="message"></p>
+
+  <div id="profile" class="profile" style="display:flex, flex-direction:row;">
+
+    <div class="field">
+      <span class="label">Account Type:</span>
+      <span id="userType"></span>
+    </div>
+
+    <!-- User 1 fields -->
+    <div id="user1Fields" style="display: flex;">
+
+      <div class="field">
+        <span class="label">Name:</span>
+        <span id="name"></span>
+      </div>
+
+      <div class="field">
+        <span class="label">Email:</span>
+        <span id="email1"></span>
+      </div>
+
+      <div class="field">
+        <span class="label">Registered:</span>
+        <span id="registeredAt1"></span>
+      </div>
+
+    </div>
+
+    <!-- User 2 fields -->
+    <div id="user2Fields" style="display: gird;">
+
+      <div class="field">
+        <span class="label">Store Name:</span>
+        <span id="storeName"></span>
+      </div>
+
+      <div class="field">
+        <span class="label">Owner Name:</span>
+        <span id="ownerName"></span>
+      </div>
+
+      <div class="field">
+        <span class="label">Location:</span>
+        <span id="location"></span>
+      </div>
+
+      <div class="field">
+        <span class="label">Email:</span>
+        <span id="email2"></span>
+      </div>
+
+      <div class="field">
+        <span class="label">Registered:</span>
+        <span id="registeredAt2"></span>
+      </div>
+
+    </div>
+
+    <button id="logoutButton">Logout</button>
+
+  </div>
+
+
+  <script>
+
+    async function loadProfile() {
+      const loading = document.getElementById('loading');
+      const message = document.getElementById('message');
+      const profile = document.getElementById('profile');
+
+      try {
+
+        const response = await fetch('http://localhost:3000/auth/me', {
+          method: 'GET',
+          credentials: 'include'
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.message || 'You are not logged in');
+        }
+
+        loading.style.display = 'none';
+        profile.style.display = 'block';
+
+        const userType = result.userType;
+        const user = result.user;
+
+        document.getElementById('userType').textContent =
+          userType === 'user' ? 'User' : 'Shop';
+
+
+        // -------------------------
+        // USER 1
+        // -------------------------
+        if (userType === 'user') {
+        
+          document.getElementById('user1Fields').style.display = 'block';
+
+          document.getElementById('name').textContent =
+            user.name;
+
+          document.getElementById('email1').textContent =
+            user.email;
+
+          document.getElementById('registeredAt1').textContent =
+            new Date(user.registered_at).toLocaleString();
+        }
+
+
+        // -------------------------
+        // USER 2
+        // -------------------------
+
+        if (userType === 'shop') {
+          document.getElementById('user2Fields').style.display = 'block';
+
+          document.getElementById('storeName').textContent =
+            user.store_name;
+
+          document.getElementById('ownerName').textContent =
+            user.owner_name;
+
+          document.getElementById('location').textContent =
+            user.location;
+
+          document.getElementById('email2').textContent =
+            user.email;
+
+          document.getElementById('registeredAt2').textContent =
+            new Date(user.registered_at).toLocaleString();
+        }
+
+      } catch (error) {
+
+        loading.style.display = 'none';
+
+        message.textContent = error.message;
+
+        // If not logged in, send user to login page
+        // window.location.href = 'login.html';
+      }
+    }
+
+
+    // -------------------------
+    // LOGOUT
+    // -------------------------
+
+    document.getElementById('logoutButton').addEventListener('click', async (e) => {
+      try {
+        const response = await fetch('http://localhost:3000/auth/logout', {
+          method: 'POST',
+          credentials: 'include'
+        });
+        console.log("hi");
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.message || 'Logout failed');
+        }
+
+        message.textContent = 'Logged out successfully';
+        setTimeout(() => {window.location.href = "/";}, 2000);
+
+      } catch (error) {
+        console.log("err");
+        document.getElementById('message').textContent =
+          error.message;
+
+      }
+
+    });
+
+
+    // Load profile when page opens
+    loadProfile();
+
+  </script>
+
+</body>
+</html>
