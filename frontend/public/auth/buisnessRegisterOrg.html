@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <!-- Same fonts as existing NearZo pages -->
+    <link href="https://fonts.googleapis.com/css2?family=Bitcount+Ink:wght@100..900&family=Rubik+Spray+Paint&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Your existing CSS -->
+    <link rel="stylesheet" href="/style/style-auth.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <title>NearZo Business Registration</title>
+</head>
+
+<body>
+    <header id="header" class="navbar"></header>
+	<script src="/scripts/header.js"></script>
+    <script src="/scripts/auth_guard.js"></script>
+    <script>
+        requireLoggedOut();
+    </script>
+
+
+    <div class="business-register-box">
+        <form method="POST" id="buisnessRegisterForm">
+            <!-- ICON -->
+            <div class="icon-box business-icon">
+                <i class="fa-solid fa-store"></i>
+            </div>
+
+
+            <h2>Register Your Business</h2>
+
+            <p class="business-text">Create your business account and add your store details.</p>
+            <!-- =========================
+                OWNER DETAILS
+            ========================== -->
+            <div class="form-section">
+                <h3><i class="fa-solid fa-user"></i>Owner Details</h3>
+
+                <p class="section-description">Enter the details of the business owner.</p>
+
+                <!-- Owner/User Name -->
+                <div class="input">
+                    <i class="fa-solid fa-user"></i>
+                    <input type="text" placeholder="Owner / User Name" id="owner_name">
+                </div>
+
+
+                <!-- Business Email -->
+                <div class="input">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input type="email" placeholder="Business Email" id="email">
+                </div>
+
+
+                <!-- Phone Number -->
+                <div class="input">
+                    <i class="fa-solid fa-phone"></i>
+                    <input type="tel" placeholder="Phone Number" id="phone">
+                </div>
+
+
+                <!-- Password -->
+                <div class="input">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" placeholder="Password" id="password">
+                </div>
+
+
+                <!-- Confirm Password -->
+                <div class="input">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" placeholder="Confirm Password" id="confirmPassword">
+                </div>
+
+            </div>
+            <!-- =========================
+                STORE DETAILS
+            ========================== -->
+            <div class="form-section">
+
+                <h3><i class="fa-solid fa-shop"></i>Store Details</h3>
+
+                <p class="section-description">Tell us about your business or store.</p>
+
+
+                <!-- Business / Store Name -->
+                <div class="input">
+                    <i class="fa-solid fa-store"></i>
+                    <input type="text" placeholder="Business / Store Name" id="store_name">
+                </div>
+
+                <!-- Store Address -->
+                <div class="input textarea-input">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <textarea placeholder="Store Address" id="address"></textarea>
+                </div>
+            </div>
+
+            <div class="error" id="error-div"></div>
+            <!-- REGISTER BUTTON -->
+
+            <button class="business-register-btn">Create Business Account</button>
+        </form>
+
+        <p class="login-text">Already have a business account?</p>
+
+        <a href="/auth/buisnessLogin.html" class="login-btn">Login</a>
+    </div>
+
+    <script>
+        const form = document.getElementById("buisnessRegisterForm");
+        const errorDiv = document.getElementById("error-div");
+
+        form.addEventListener("submit", async function(e) {
+            e.preventDefault();
+
+            const password = document.getElementById("password").value;
+            const confirmPassword = document.getElementById("confirmPassword").value;
+
+            if(password !== confirmPassword) {
+                errorDiv.textContent = "Password doesn't match";
+                return;
+            }
+
+            const data = {
+                store_name: document.getElementById('store_name').value,
+                owner_name: document.getElementById('owner_name').value,
+                address: document.getElementById('address').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                password: password
+            };
+
+            try {
+                const response = await fetch('http://localhost:3000/auth/register/shop', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify(data)
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.message);
+                }
+
+                errorDiv.textContent = "Registered Successfully. Redirecting...";
+                errorDiv.style.color = "Green";
+                setTimeout(() => {window.location.href = "/";}, 2000);
+            } catch (error) {
+                errorDiv.textContent = error.message;
+            }
+        });
+    </script>
+</body>
+</html>

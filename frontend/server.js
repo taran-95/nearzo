@@ -11,7 +11,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 
 // SSR route
-app.get('/product', async (req, res) => {
+app.get('/productList', async (req, res) => {
     const response = await fetch("http://localhost:3000/products", {method: "GET"});
 
     if(!response.ok) {
@@ -26,7 +26,7 @@ app.get('/product', async (req, res) => {
     });
 });
 
-app.get('/product/:id', async (req, res) => {
+app.get('/productListing/:id', async (req, res) => {
     const productId = req.params.id;
 
     const productRes = await fetch(`http://localhost:3000/products/${productId}`, {method: "GET"});

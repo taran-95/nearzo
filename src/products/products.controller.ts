@@ -26,7 +26,7 @@ export class ProductsController {
     //@UseGuards(SessionAuthGuard, UserTypeGuard)
     //@UserTypes('shop')
     @Post('identified/:identifier')
-    async uploadIdentifiedProduct(@Param("identifier") identifier: String) {
+    async uploadIdentifiedProduct(@Param("identifier") identifier: string) {
         return await this.productsService.uploadIdentifiedProduct(identifier);
     }
 

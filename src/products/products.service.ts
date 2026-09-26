@@ -1,4 +1,4 @@
-import { BadGatewayException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadGatewayException, BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { UploadCustomProductDto } from './dtos/uploadCustomProduct.dto.js';
 import { ProductSource, ProductType } from '../generated/prisma/enums.js';
@@ -10,7 +10,58 @@ export class ProductsService {
     constructor(private readonly prisma: PrismaService) {}
 
     async getProducts() {
-        const products = await this.prisma.product.findMany({
+        const customProducts = await this.prisma.product.findMany({
+            where: {
+                type: ProductType.CUSTOM
+            },
+            include: {
+                customProduct: {
+                    include: {
+                        images: true
+                    }
+                }
+            }
+        });
+
+        const identifiedProductRecords = await this.prisma.product.findMany({
+            where: {
+                type: ProductType.IDENTIFIED
+            },
+            include: {
+                identifiedProduct: true
+            }
+        });
+
+        const updatedRecords = await Promise.all(
+            identifiedProductRecords.map(async (product) => {
+                if (product.identifiedProduct?.sourceProvider === ProductSource.UPCITEMDB) {
+                    try {
+                        const productObj = await this.callUpcItemDbApi(product.identifiedProduct.gtin);
+
+                        return {
+                        ...product,
+                        identifiedProduct: {
+                            ...product.identifiedProduct,
+                            ...productObj,
+                        },
+                    };
+                    } catch (error) {
+                        // call other apis
+                    }
+                }
+
+                return;
+            })
+        );
+        
+        const products = [...customProducts, ...updatedRecords];
+        console.log(products);
+        return products;
+    }
+
+    async getProduct(id: number) {
+        const product = await this.prisma.product.findUnique({
+            where: {id},
             include: {
                 customProduct: {
                     include: {
@@ -21,27 +72,49 @@ export class ProductsService {
             }
         });
 
-        
-    }
+        if (product?.identifiedProduct) {
+            if (product.identifiedProduct?.sourceProvider === ProductSource.UPCITEMDB) {
+                    try {
+                        const productObj = await this.callUpcItemDbApi(product.identifiedProduct.gtin);
 
-    async getProduct(id: number) {
-        return this.prisma.product.findUnique({
-            where: {id},
-            include: {
-                customProduct: {
-                    include: {
-                        images: true
+                        return {
+                        ...product,
+                        identifiedProduct: {
+                            ...product.identifiedProduct,
+                            ...productObj,
+                        },
+                    };
+                    } catch (error) {
+                        // call other apis
                     }
-                },
-                identifiedProduct: true
             }
-        })
+        }
+        return product;
     }
 
-    async uploadIdentifiedProduct(identifier: String) {
+    async uploadIdentifiedProduct(identifier: string) {
         if (await this.canQueryApi(ProductSource.UPCITEMDB)) {
             const product = await this.callUpcItemDbApi(identifier);
-            return product.items[0];
+            try {
+                const productRecord = await this.prisma.product.create({
+                    data: {
+                        type: ProductType.IDENTIFIED,
+
+                        identifiedProduct: {
+                            create: {
+                                gtin: identifier,
+                                sourceProvider: ProductSource.UPCITEMDB
+                            }
+                        },
+                    },
+                    include: {
+                        identifiedProduct: true
+                    }
+                });
+                return productRecord;
+            } catch (error) {
+                throw new BadRequestException("Error fetching product details. The product was probably uploaded previously. Try searching for it and creating offer for it.");
+            }
         }
     }
 
@@ -73,9 +146,11 @@ export class ProductsService {
             isPrimary: index === 0 ? true : false
         }));
 
-        return await this.prisma.productImage.createMany({
+        const productImages = await this.prisma.productImage.createMany({
             data: images,
         });
+
+        return {product, productImages};
     }
 
     async callUpcItemDbApi(identifier: String) {
@@ -93,10 +168,16 @@ export class ProductsService {
             throw new BadGatewayException(error.message);
         }
 
-        const product = await response.json();
+        const rawProduct = await response.json();
         
-        if(product.total === 0) {
+        if(rawProduct.total === 0) {
             throw new NotFoundException("No product found");
+        }
+        
+        const product = {
+            name: rawProduct.items[0].title,
+            description: rawProduct.items[0].description,
+            images: rawProduct.items[0].images
         }
 
         return product;

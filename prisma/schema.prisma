@@ -124,7 +124,8 @@ model Shop {
 
   store_name String
   owner_name String
-  location String
+  address String
+  location Unsupported("geography(Point, 4326)")
 
   email String @unique
   phone String

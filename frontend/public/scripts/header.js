@@ -8,7 +8,7 @@ async function loadHeader() {
             <a href="/">NearZo</a>
             <nav>
                 <a href="/">Home</a>
-                <a href="/products/products">Products</a>
+                <a href="/productList">Products</a>
                 <a href="/products/uploadProduct">For Business</a>
 
                 <!-- LOGIN DROPDOWN -->
@@ -35,7 +35,7 @@ async function loadHeader() {
             <a href="/">NearZo</a>
             <nav>
                 <a href="/">Home</a>
-                <a href="/products/products">Products</a>
+                <a href="/productList">Products</a>
                 <a href="/products/uploadProduct">For Business</a>
                 <a href="/auth/profile">Profile</a>
             </nav>

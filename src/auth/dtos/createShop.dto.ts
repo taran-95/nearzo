@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsEmail, MinLength, MaxLength } from "class-validator";
+import { IsNotEmpty, IsString, IsEmail, MinLength, MaxLength, IsNumber } from "class-validator";
 
 export class CreateShopDto {
     
@@ -12,7 +12,15 @@ export class CreateShopDto {
 
     @IsString()
     @IsNotEmpty()
-    location: string
+    address: string
+
+    @IsNumber()
+    @IsNotEmpty()
+    latitude: number
+
+    @IsNumber()
+    @IsNotEmpty()
+    longitude: number
 
     @IsEmail()
     @IsNotEmpty()

@@ -44,25 +44,26 @@
                 <section>
                     <div id="productsGrid" class="products-grid">
                         <% products.forEach(product => { %>
-                            <% if (product.customProduct) { %>
+                            <% const productData = product.customProduct ? product.customProduct : product.identifiedProduct; %>
+                            <% if (productData) { %>
                                 <!--TODO: escape html-->
-                                <article onclick="window.location.href='/products/<%= product.customProduct.productId %>'" class="product-card" title="Click to view local stores and details">
-                                <!--<article class="product-card" onclick="openProductDrawer(escapeHtml('<%= product.customProduct.productId %>'))" title="Click to view local stores and details">-->
+                                <article onclick="window.location.href='/productListing/<%= productData.productId %>'" class="product-card" title="Click to view local stores and details">
+                                <!--<article class="product-card" onclick="openProductDrawer(escapeHtml('<%# productData.productId %>'))" title="Click to view local stores and details">-->
                                     <div class="product-img-wrapper">
                                         <!--TODO: cleaner image code and multiple image support-->
-                                        <!--<img id="viewProductImg-<%= product.customProduct.productId %>" src="http://localhost:3000/<%= product.customProduct.images[0].path %>" alt="Product Image" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'64\' height=\'64\' fill=\'%2394a3b8\' viewBox=\'0 0 16 16\'%3E%3Cpath d=\'M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z\'/%3E%3Cpath d=\'M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z\'/%3E%3C/svg%3E';">-->
-                                        <% if(product.customProduct.images?.length > 0) { %>                                        
-                                            <img id="viewProductImg-<%= product.customProduct.productId %>" src="http://localhost:3000/<%= product.customProduct.images[0].path %>" alt="Product Image">                               
+                                        <!--<img id="viewProductImg-<%# productData.productId %>" src="http://localhost:3000/<%# productData.images[0].path %>" alt="Product Image" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'64\' height=\'64\' fill=\'%2394a3b8\' viewBox=\'0 0 16 16\'%3E%3Cpath d=\'M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z\'/%3E%3Cpath d=\'M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z\'/%3E%3C/svg%3E';">-->
+                                        <% if(productData.images?.length > 0) { %>                                        
+                                            <img id="viewProductImg-<%= productData.productId %>" src="http://localhost:3000/<%= productData.images[0].path %>" alt="Product Image">                               
                                         <% } else { %>
-                                            <img id="viewProductImg-<%= product.customProduct.productId %>" src="data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'64\' height=\'64\' fill=\'%2394a3b8\' viewBox=\'0 0 16 16\'%3E%3Cpath d=\'M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z\'/%3E%3Cpath d=\'M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z\'/%3E%3C/svg%3E'" alt="Product Image">    
+                                            <img id="viewProductImg-<%= productData.productId %>" src="data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'64\' height=\'64\' fill=\'%2394a3b8\' viewBox=\'0 0 16 16\'%3E%3Cpath d=\'M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z\'/%3E%3Cpath d=\'M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z\'/%3E%3C/svg%3E'" alt="Product Image">    
                                         <% } %>
                                         <span class="stock-badge badge-in-stock">In Stock</span>
                                     </div>
 
                                     <div class="product-info">
-                                        <h3 class="product-title" title="<%= product.customProduct.name %>"><%= product.customProduct.name %></h3>
-                                        <p class="product-desc" title="<%= product.customProduct.description %>">
-                                            <%= product.customProduct.description || 'No description provided.' %>
+                                        <h3 class="product-title" title="<%= productData.name %>"><%= productData.name %></h3>
+                                        <p class="product-desc" title="<%= productData.description %>">
+                                            <%= productData.description || 'No description provided.' %>
                                         </p>
 
                                         <!--

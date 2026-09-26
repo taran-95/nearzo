@@ -72,7 +72,8 @@
 				errorDiv.textContent = error.message;
 			}
 			const product = await productResponse.json();
-			productNameH2.textContent = "Create offer for " + product.customProduct.name;
+			const productData = product.customProduct ? product.customProduct : product.identifiedProduct;
+			productNameH2.textContent = "Create offer for " + productData.name;
 		
 			uploadForm.addEventListener("submit", async function(e) {
 				e.preventDefault();

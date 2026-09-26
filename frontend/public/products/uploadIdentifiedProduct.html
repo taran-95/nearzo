@@ -55,11 +55,10 @@
 					}
 
                     const result = await response.json();
-                    console.log(result);
 					
                     errorDiv.textContent = "Product Uploaded Successfully. Redirecting...";
 					errorDiv.style.color = "Green";
-					//setTimeout(() => {window.location.href = "/";}, 2000);
+					setTimeout(() => {window.location.href = `/offers/createOffer?productId=${result.id}`;}, 2000);
 				} catch (error) {
 					errorDiv.textContent = error.message;
 				}

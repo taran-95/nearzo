@@ -1,0 +1,151 @@
+/* ==========================
+   Store Location Map block
+   ========================== */
+
+.map-block {
+    position: relative;
+    margin-top: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Search input reuses the existing ".input" look, so we just add
+   positioning for the suggestions dropdown */
+.map-search-input {
+    position: relative;
+}
+
+.map-search-input input {
+    width: 100%;
+}
+
+.suggestions-dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    max-height: 240px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+}
+
+.suggestions-dropdown.open {
+    display: block;
+}
+
+.suggestion-item {
+    padding: 10px 14px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.suggestion-item:hover,
+.suggestion-item.active {
+    background: #f5f7ff;
+}
+
+.suggestion-item i {
+    margin-top: 3px;
+    color: #888;
+    flex-shrink: 0;
+}
+
+.suggestion-empty {
+    padding: 10px 14px;
+    font-size: 13px;
+    color: #888;
+}
+
+/* Locate button */
+.locate-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 10px 14px;
+    background: #fff;
+    border: 1.5px solid #d8d8d8;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.locate-btn:hover {
+    background: #f5f7ff;
+    border-color: #a9b6ff;
+}
+
+.locate-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.locate-btn i {
+    color: #5468ff;
+}
+
+.map-hint {
+    font-size: 12.5px;
+    color: #888;
+    margin: 0;
+}
+
+/* Map container */
+#store-map {
+    width: 100%;
+    height: 280px;
+    border-radius: 12px;
+    border: 1.5px solid #e0e0e0;
+    overflow: hidden;
+    z-index: 0;
+}
+
+/* Resolved address preview */
+.resolved-address-box {
+    background: #f5f7ff;
+    border: 1px solid #dfe4ff;
+    border-radius: 10px;
+    padding: 10px 14px;
+}
+
+.resolved-address-title {
+    margin: 0 0 4px 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: #5468ff;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+#resolved-address-text {
+    margin: 0;
+    font-size: 13.5px;
+    color: #444;
+    line-height: 1.4;
+}
+
+.location-error {
+    font-size: 13px;
+    color: #e53935;
+    margin: 0;
+}

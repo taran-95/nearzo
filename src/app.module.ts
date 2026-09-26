@@ -8,9 +8,10 @@ import { AuthModule } from './auth/auth.module.js';
 import { UsersModule } from './users/users.module.js';
 import { ShopModule } from './shop/shop.module.js';
 import { OffersModule } from './offers/offers.module.js';
+import { RedisModule } from './redis/redis.module.js';
 
 @Module({
-  imports: [ProductsModule, PrismaModule, AuthModule, UsersModule, ShopModule, OffersModule],
+  imports: [ProductsModule, PrismaModule, AuthModule, UsersModule, ShopModule, OffersModule, RedisModule],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })

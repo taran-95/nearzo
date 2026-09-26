@@ -14,6 +14,12 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
+    <!-- Leaflet (map rendering) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css">
+
+    <!-- Store location map styles -->
+    <link rel="stylesheet" href="/style/business-location-map.css">
+
     <title>NearZo Business Registration</title>
 </head>
 
@@ -37,12 +43,9 @@
             <h2>Register Your Business</h2>
 
             <p class="business-text">Create your business account and add your store details.</p>
-
-
             <!-- =========================
                 OWNER DETAILS
             ========================== -->
-
             <div class="form-section">
                 <h3><i class="fa-solid fa-user"></i>Owner Details</h3>
 
@@ -83,12 +86,9 @@
                 </div>
 
             </div>
-
-
             <!-- =========================
                 STORE DETAILS
             ========================== -->
-
             <div class="form-section">
 
                 <h3><i class="fa-solid fa-shop"></i>Store Details</h3>
@@ -105,7 +105,43 @@
                 <!-- Store Address -->
                 <div class="input textarea-input">
                     <i class="fa-solid fa-location-dot"></i>
-                    <textarea placeholder="Store Address" id="location"></textarea>
+                    <textarea placeholder="Store Address" id="address"></textarea>
+                </div>
+
+                <!-- =========================
+                    STORE LOCATION MAP
+                ========================== -->
+                <div class="map-block">
+
+                    <!-- Address search -->
+                    <div class="input map-search-input">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="location-search" placeholder="Search for your store's address" autocomplete="off">
+                        <div id="location-suggestions" class="suggestions-dropdown"></div>
+                    </div>
+
+                    <!-- Use my location -->
+                    <button type="button" id="locate-me-btn" class="locate-btn">
+                        <i class="fa-solid fa-location-crosshairs"></i>
+                        <span>Use My Current Location</span>
+                    </button>
+
+                    <p class="map-hint">Search an address, click "Use My Current Location", or drag the pin to fine-tune it.</p>
+
+                    <!-- Map -->
+                    <div id="store-map"></div>
+
+                    <!-- Resolved address preview -->
+                    <div id="resolved-address" class="resolved-address-box" style="display:none;">
+                        <p class="resolved-address-title"><i class="fa-solid fa-map-pin"></i> Pinned Location</p>
+                        <p id="resolved-address-text"></p>
+                    </div>
+
+                    <p id="location-error" class="location-error" style="display:none;"></p>
+
+                    <!-- Coordinates submitted with the form -->
+                    <input type="hidden" id="store_lat" name="store_lat" value="">
+                    <input type="hidden" id="store_lon" name="store_lon" value="">
                 </div>
             </div>
 
@@ -119,6 +155,12 @@
 
         <a href="/auth/buisnessLogin.html" class="login-btn">Login</a>
     </div>
+
+    <!-- Leaflet (map rendering) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+
+    <!-- Store location map logic -->
+    <script src="/scripts/business-location-map.js"></script>
 
     <script>
         const form = document.getElementById("buisnessRegisterForm");
@@ -135,13 +177,23 @@
                 return;
             }
 
+            const storeLat = document.getElementById("store_lat").value;
+            const storeLon = document.getElementById("store_lon").value;
+
+            if (!storeLat || !storeLon) {
+                errorDiv.textContent = "Please pin your store's location on the map";
+                return;
+            }
+
             const data = {
                 store_name: document.getElementById('store_name').value,
                 owner_name: document.getElementById('owner_name').value,
-                location: document.getElementById('location').value,
+                address: document.getElementById('address').value,
                 email: document.getElementById('email').value,
                 phone: document.getElementById('phone').value,
-                password: password
+                password: password,
+                store_lat: parseFloat(storeLat),
+                store_lon: parseFloat(storeLon)
             };
 
             try {
@@ -167,8 +219,5 @@
             }
         });
     </script>
-
-
 </body>
-
 </html>
