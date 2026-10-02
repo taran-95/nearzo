@@ -78,6 +78,8 @@ model Offer {
   price Decimal
   quantity Int
   searchKeywords String[] @default([])
+  searchVector Unsupported("tsvector")? @map("search_vector")
+
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -87,6 +89,7 @@ model Offer {
 
   @@index([productId])
   @@index([sellerId])
+  @@index([searchVector], type: Gin)
 }
 
 model ProductImage {
