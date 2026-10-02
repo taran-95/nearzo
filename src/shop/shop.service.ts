@@ -19,17 +19,34 @@ export class ShopService {
         });
     }
 
-    create(createShopDto: CreateShopDto) {
-        return this.prisma.shop.create({
-            data: {
-                store_name: createShopDto.store_name,
-                owner_name: createShopDto.owner_name,
-                location: createShopDto.location,
-                email: createShopDto.email,
-                phone: createShopDto.phone,
-                passwordHash: createShopDto.password,
-            },
-        });
+    async create(createShopDto: CreateShopDto) {
+        await this.prisma.$executeRaw`
+            INSERT INTO "Shop" ("store_name", "owner_name", "address", "location", "email", "phone", "passwordHash")
+            VALUES (
+                ${createShopDto.store_name}, 
+                ${createShopDto.owner_name}, 
+                ${createShopDto.address},
+                ST_SetSRID(ST_MakePoint(${createShopDto.longitude}, ${createShopDto.latitude}), 4326)::geography,
+                ${createShopDto.email}, 
+                ${createShopDto.phone}, 
+                ${createShopDto.password})
+        `;
+
+        return this.findByEmail(createShopDto.email);
+    }
+
+    async findStoresInRadiusMeters(radiusMeters: number, latitude: number, longitude: number) {
+        const stores = await this.prisma.$queryRaw`
+            SELECT 
+            id,
+            store_name,
+            owner_name,
+            address,
+            email,
+            phone,
+            registered_at
+
+        `;
     }
 
 }

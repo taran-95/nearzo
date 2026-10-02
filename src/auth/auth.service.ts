@@ -22,6 +22,10 @@ export class AuthService {
         dto.password = passwordHash;
 
         const shop = await this.shopService.create(dto);
+        
+        if(!shop) {
+            throw new Error("Failed to register Shop. Internal Server Error");
+        }
 
         return {
             id: shop.id,

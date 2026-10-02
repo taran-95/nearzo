@@ -18,7 +18,7 @@
             <% const productData = product.customProduct ? product.customProduct : product.identifiedProduct; %>
             <!-- Breadcrumb / Back Link -->
             <div class="product-view-breadcrumb">
-                <a href="/products" class="product-view-back-link">
+                <a href="/productList" class="product-view-back-link">
                     <i class="fa-solid fa-arrow-left"></i> Back to Products
                 </a>
                 <span style="color: #94a3b8; font-size: 14px;">/</span>
@@ -26,7 +26,7 @@
             </div>
 
             <!-- Main Single Product Showcase Card -->
-            <div class="product-view-card">
+            <div class="product-view-card" id="productCard" data-productId="<%= productData.productId %>">
                 <!-- Left Column: Media Showcase -->
                 <div class="product-view-media-col">
                     <div class="product-view-img-box">
@@ -65,64 +65,14 @@
                             <%= productData.description || 'No description provided.' %>
                         </p>
                     </div>
-
+                    <div class="error" id="error-div"></div>
                     <!-- Stores Carrying This Product -->
                     <div class="product-view-stores-section">
                         <h3 class="product-view-stores-title">
                             <i class="fa-solid fa-store" style="color: #2563eb;"></i> Available Nearby Stores
                         </h3>
                         <div class="stores-cards-list" id="viewStoresList">
-                            <% offers.forEach(offer => { %>
-                                <article class="store-card">
-                                    <div class="store-card-header">
-                                        <div class="store-card-title-group">
-                                            <div class="store-card-name">
-                                                <i class="fa-solid fa-store" style="color: #2563eb;"></i>
-                                                <span><%= offer.seller.store_name %></span>
-                                            </div>
-                                            <div class="store-card-location">
-                                                <i class="fa-solid fa-location-dot" style="color: #ef4444;"></i>
-                                                <span><%= offer.seller.location %></span>
-                                            </div>
-                                        </div>
-
-                                        <div class="store-card-badges">
-                                            <span class="store-rating-badge">
-                                                <!--<i class="fa-solid fa-star"></i> ${store.rating} (${store.reviewsCount})-->
-                                            </span>
-                                            <span class="store-stock-tag ${stockClass}">
-                                                <!--${escapeHtml(store.stock)}-->
-                                                <%= offer.quantity %>
-                                            </span>
-                                        </div>
-                                    </div>
-
-                                    <div class="store-card-info-row">
-                                        <div class="store-distance-info">
-                                            <i class="fa-solid fa-person-walking"></i>
-                                            <!--<span>${escapeHtml(store.distanceText || (store.distanceMeters + 'm away'))}</span>-->
-                                        </div>
-                                        <div class="store-price-info">
-                                            <span class="store-price-currency">₹</span>
-                                            <span class="store-price-amount"><%= offer.price %></span>
-                                        </div>
-                                        <div class="store-updated-info">
-                                            <i class="fa-regular fa-clock"></i>
-                                            <!--<span>${escapeHtml(store.lastUpdated || 'Recently updated')}</span>-->
-                                            <span><%= offer.updated_at %></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="store-card-actions">
-                                        <button type="button" class="btn-reserve">
-                                            <i class="fa-solid fa-bookmark"></i> Reserve Here
-                                        </button>
-                                        <button type="button" class="btn-direction">
-                                            <i class="fa-solid fa-diamond-turn-right"></i> Directions
-                                        </button>
-                                    </div>
-                                </article>
-                            <% });%>
+                            Loading...
                         </div>
                     </div>
                 </div>
@@ -131,6 +81,10 @@
 
         <script>
             const API_BASE = 'http://localhost:3000';
+
+            const productId = Number(document.getElementById('productCard').dataset.productid);
+            const storeListDiv = document.getElementById('viewStoresList');
+            const errorDiv = document.getElementById('error-div');
 
             function escapeHtml(str) {
                 if (!str) return '';
@@ -151,6 +105,71 @@
                 const pathWithSlash = cleanPath.startsWith('/') ? cleanPath : '/' + cleanPath;
                 return API_BASE + pathWithSlash;
             }
+
+            function loadStores() {
+                navigator.geolocation.getCurrentPosition(
+                    async ({ coords }) => {
+                        try {
+                            const response = await fetch(`http://localhost:3000/offers/nearby?productId=${productId}&radius=5000&lat=${coords.latitude}&long=${coords.longitude}`);
+                            
+                            if(!response.ok) {
+                                const error = await response.json();
+                                throw new Error(error.message);
+                            }
+
+                            const offers = await response.json();
+                            
+                            storeListDiv.innerHTML = offers.map(offer => {
+                                const formattedStorePrice = Number(offer.price).toLocaleString('en-IN');
+                                return `
+                                    <article class="store-card">
+                                        <div class="store-card-header">
+                                            <div class="store-card-title-group">
+                                                <div class="store-card-name">
+                                                    <i class="fa-solid fa-store" style="color: #2563eb;"></i>
+                                                    <span>${escapeHtml(offer.store_name)}</span>
+                                                </div>
+                                                <div class="store-card-location">
+                                                    <i class="fa-solid fa-location-dot" style="color: #ef4444;"></i>
+                                                    <span>${escapeHtml(offer.address)}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="store-card-info-row">
+                                            <div class="store-distance-info">
+                                                <i class="fa-solid fa-person-walking"></i>
+                                                <span>${escapeHtml(offer.distance_km.toFixed(2) + 'km away')}</span>
+                                            </div>
+                                            <div class="store-price-info">
+                                                <span class="store-price-currency">₹</span>
+                                                <span class="store-price-amount">${formattedStorePrice}</span>
+                                            </div>
+                                            <div class="store-updated-info">
+                                                <i class="fa-regular fa-clock"></i>
+                                                <span>${escapeHtml(offer.updated_at || 'Recently updated')}</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="store-card-actions">
+                                            <button type="button" class="btn-reserve">
+                                                <i class="fa-solid fa-bookmark"></i> Reserve Here
+                                            </button>
+                                            <button type="button" class="btn-direction">
+                                                <i class="fa-solid fa-diamond-turn-right"></i> Directions
+                                            </button>
+                                        </div>
+                                    </article>
+                                `;
+                            }).join('');
+
+                        } catch (error) {
+                            errorDiv.textContent = error.message;
+                        }
+                });
+            }
+
+            loadStores();
         </script>
     </body>
 </html>

@@ -34,28 +34,35 @@ export class ProductsService {
 
         const updatedRecords = await Promise.all(
             identifiedProductRecords.map(async (product) => {
-                if (product.identifiedProduct?.sourceProvider === ProductSource.UPCITEMDB) {
-                    try {
-                        const productObj = await this.callUpcItemDbApi(product.identifiedProduct.gtin);
-
-                        return {
-                        ...product,
-                        identifiedProduct: {
-                            ...product.identifiedProduct,
-                            ...productObj,
-                        },
-                    };
-                    } catch (error) {
-                        // call other apis
+                try {
+                    const identifier = product.identifiedProduct?.gtin;
+                    if(!identifier) {
+                        console.error(`${product.id} not stored properly in db`);
+                        return product;
                     }
+                    const productObj = await this.callApi(identifier);
+
+                    if(!productObj) {
+                        throw new NotFoundException(`Product with identifier ${identifier} not found`);
+                    }
+
+                    return {
+                    ...product,
+                    identifiedProduct: {
+                        ...product.identifiedProduct,
+                        ...productObj,
+                    },
+                };
+                } catch (error) {
+                    console.error(`Failed to fetch identified products: ${error}`)
                 }
 
-                return;
+                return product;
             })
         );
         
         const products = [...customProducts, ...updatedRecords];
-        console.log(products);
+        //console.log(products);
         return products;
     }
 
@@ -72,49 +79,67 @@ export class ProductsService {
             }
         });
 
-        if (product?.identifiedProduct) {
-            if (product.identifiedProduct?.sourceProvider === ProductSource.UPCITEMDB) {
-                    try {
-                        const productObj = await this.callUpcItemDbApi(product.identifiedProduct.gtin);
+        if(!product) {
+            throw new NotFoundException(`Product with ID ${id} not found.`);
+        }
 
-                        return {
-                        ...product,
-                        identifiedProduct: {
-                            ...product.identifiedProduct,
-                            ...productObj,
-                        },
-                    };
-                    } catch (error) {
-                        // call other apis
-                    }
+        if (product?.identifiedProduct) {
+            try {
+                const productObj = await this.callApi(product.identifiedProduct.gtin);
+
+                if(!productObj) {
+                    throw new NotFoundException(`Product with identifier ${product.identifiedProduct.gtin} not found`);
+                }
+
+                return {
+                ...product,
+                identifiedProduct: {
+                    ...product.identifiedProduct,
+                    ...productObj,
+                },
+            };
+            } catch (error) {
+                console.error('Failed to fetch from identified product: ', error);
             }
         }
         return product;
     }
 
     async uploadIdentifiedProduct(identifier: string) {
-        if (await this.canQueryApi(ProductSource.UPCITEMDB)) {
-            const product = await this.callUpcItemDbApi(identifier);
-            try {
-                const productRecord = await this.prisma.product.create({
-                    data: {
-                        type: ProductType.IDENTIFIED,
-
-                        identifiedProduct: {
-                            create: {
-                                gtin: identifier,
-                                sourceProvider: ProductSource.UPCITEMDB
-                            }
-                        },
-                    },
-                    include: {
-                        identifiedProduct: true
-                    }
-                });
-                return productRecord;
-            } catch (error) {
-                throw new BadRequestException("Error fetching product details. The product was probably uploaded previously. Try searching for it and creating offer for it.");
+        const exist = await this.prisma.product.findMany({
+            where: {
+                type: ProductType.IDENTIFIED,
+                identifiedProduct: {
+                    gtin: identifier
+                }
             }
+        });
+        if(exist) {
+            throw new BadRequestException("Error fetching product details. The product was probably uploaded previously. Try searching for it and creating offer for it.");
+        } 
+        const product = await this.callApi(identifier);
+        if(!product) {
+            throw new NotFoundException(`Product with identifier ${identifier} not found`);
+        }
+        try {
+            const productRecord = await this.prisma.product.create({
+                data: {
+                    type: ProductType.IDENTIFIED,
+
+                    identifiedProduct: {
+                        create: {
+                            gtin: identifier,
+                            sourceProvider: ProductSource.UPCITEMDB
+                        }
+                    },
+                },
+                include: {
+                    identifiedProduct: true
+                }
+            });
+            return productRecord;
+        } catch (error) {
+            throw new BadRequestException("Error creating identified product record.");
         }
     }
 
@@ -153,7 +178,112 @@ export class ProductsService {
         return {product, productImages};
     }
 
-    async callUpcItemDbApi(identifier: String) {
+    ///TODO: Refactor
+    async callApi(identifier: string, sourceProvider: ProductSource = ProductSource.UPC_DEV) {
+        if(sourceProvider === ProductSource.UPC_DEV && await this.canQueryApi(ProductSource.UPC_DEV)) {
+            try {
+                console.log("upcdev");
+                return await this.callUpcDevApi(identifier);
+            } catch (error) {
+                console.error(error);
+                if(await this.canQueryApi(ProductSource.OPENFOODFACTS)) {
+                    try {
+                        console.log("openfoodfacts");
+                        return await this.callOpenFoodFactApi(identifier);
+                    } catch (error) {
+                        console.error(error);
+                        if(await this.canQueryApi(ProductSource.UPCITEMDB)) {
+                            try {
+                                console.log("upcitemdb");
+                                return await this.callUpcItemDbApi(identifier);
+                            } catch (error) {
+                                console.error(error);
+                                console.error("All apis failed.");
+                            }
+                        }
+                    }
+                }
+            }
+        } else if(sourceProvider === ProductSource.OPENFOODFACTS && await this.canQueryApi(ProductSource.OPENFOODFACTS)) {
+            try {
+                console.log("openfoodfacts");
+                return await this.callOpenFoodFactApi(identifier);
+            } catch (error) {
+                console.error(error);
+                if(await this.canQueryApi(ProductSource.UPC_DEV)) {
+                    try {
+                        console.log("upcdev");
+                        return await this.callUpcDevApi(identifier);
+                    } catch (error) {
+                        console.error(error);
+                        if(await this.canQueryApi(ProductSource.UPCITEMDB)) {
+                            try {
+                                console.log("upcitemdb");
+                                return await this.callUpcItemDbApi(identifier);
+                            } catch (error) {
+                                console.error(error);
+                                console.error("All apis failed.");
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            if(await this.canQueryApi(ProductSource.UPCITEMDB)) {
+                try {
+                    console.log("upcitemdb");
+                    return await this.callUpcItemDbApi(identifier);
+                } catch (error) {
+                    console.error(error);
+                    if(await this.canQueryApi(ProductSource.UPC_DEV)) {
+                        try {
+                            console.log("upcdev");
+                            return await this.callUpcDevApi(identifier);
+                        } catch (error) {
+                            console.error(error);
+                            if(await this.canQueryApi(ProductSource.OPENFOODFACTS)) {
+                                try {
+                                    console.log("openfoodfacts");
+                                    return await this.callOpenFoodFactApi(identifier);
+                                } catch (error) {
+                                    console.error(error);
+                                    console.error("All apis failed.");
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    async callUpcDevApi(identifier: string) {
+        const response = await fetch(`https://upc.dev/v1/product/${identifier}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        });
+
+        ///TODO: Change order perhaps
+        this.updateApiUsage(ProductSource.UPC_DEV, response.headers);
+
+        if(!response.ok) {
+            const error = await response.json();
+            throw new BadGatewayException(error.message);
+        }
+
+        const rawProduct = await response.json();
+
+        const product = {
+            name: rawProduct.data.name,
+            description: rawProduct.data.description,
+            images: [rawProduct.data.image_url]
+        }
+        return product;
+    }
+
+    async callUpcItemDbApi(identifier: string) {
         const response = await fetch(`https://api.upcitemdb.com/prod/trial/lookup?upc=${identifier}`, {
             method: "GET",
             headers: {
@@ -161,6 +291,7 @@ export class ProductsService {
             },
         });
         
+        ///TODO: Change order perhaps
         this.updateApiUsage(ProductSource.UPCITEMDB, response.headers);
         
         if(!response.ok) {
@@ -171,7 +302,7 @@ export class ProductsService {
         const rawProduct = await response.json();
         
         if(rawProduct.total === 0) {
-            throw new NotFoundException("No product found");
+            throw new NotFoundException("No product found: upcitemdb");
         }
         
         const product = {
@@ -183,7 +314,36 @@ export class ProductsService {
         return product;
     }
 
+    async callOpenFoodFactApi(identifier: string) {
+        const response = await fetch(`https://world.openfoodfacts.org/api/v2/product/${identifier}.json`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        });
 
+        ///TODO: Change order perhaps
+        this.updateApiUsage(ProductSource.UPC_DEV, response.headers);
+
+        if(!response.ok) {
+            const error = await response.json();
+            throw new BadGatewayException(error.message);
+        }
+
+        const rawProduct = await response.json();
+
+        if(rawProduct.status === 0) {
+            throw new NotFoundException("No product found: openfoodfacts");
+        }
+
+        const product = {
+            name: rawProduct.product.brand_owner,
+            description: rawProduct.product.product_name_en ? rawProduct.product.product_name_en:rawProduct.product.product_name,
+            images: [rawProduct.product.image_url]
+        }
+
+        return product;
+    }
 
    async canQueryApi(api: ProductSource) {
         const usage = await this.prisma.productApiUsage.findUnique({where: {provider: api}});

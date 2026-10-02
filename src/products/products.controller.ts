@@ -19,8 +19,8 @@ export class ProductsController {
     }
 
     @Get(':id')
-    getProduct(@Param("id", ParseIntPipe) id: number) {
-        return this.productsService.getProduct(id);
+    async getProduct(@Param("id", ParseIntPipe) id: number) {
+        return await this.productsService.getProduct(id);
     }
 
     //@UseGuards(SessionAuthGuard, UserTypeGuard)

@@ -14,6 +14,4 @@ CREATE EXTENSION IF NOT EXISTS postgis;
 ALTER TABLE "Shop"
 ADD COLUMN "location" geography(Point, 4326);
 
-CREATE INDEX "Place_location_idx"
-ON "Shop"
-USING GIST ("location");
+CREATE INDEX shop_location_gist_idx ON "Shop" USING GIST (location);

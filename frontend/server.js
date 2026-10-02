@@ -30,21 +30,23 @@ app.get('/productListing/:id', async (req, res) => {
     const productId = req.params.id;
 
     const productRes = await fetch(`http://localhost:3000/products/${productId}`, {method: "GET"});
+    
     if(!productRes.ok) {
         const error = await productRes.json();
         throw new Error(error.message);
     }
 
     const product = await productRes.json();
-
+    
     const offerRes = await fetch(`http://localhost:3000/offers/product/${product.id}`)
+    
     if(!offerRes.ok) {
         const error = await productRes.json();
         throw new Error(error.message);
     }
-
+  
     const offers = await offerRes.json();
-
+  
     res.render('products/productView', {product, offers});
 });
 

@@ -36,7 +36,7 @@ async function loadHeader() {
             <nav>
                 <a href="/">Home</a>
                 <a href="/productList">Products</a>
-                <a href="/products/uploadProduct">For Business</a>
+                <a href="/products/uploadProductTypeSelectMenu">For Business</a>
                 <a href="/auth/profile">Profile</a>
             </nav>
             `;
