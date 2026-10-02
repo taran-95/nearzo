@@ -25,6 +25,11 @@ export class OffersController {
         return this.offersService.getNearByOffers(productId, radius, latitude, longitude);
     }
 
+    @Get('search')
+    search(@Query('query') query: string) {
+        return this.offersService.search(query);
+    }
+
     @UseGuards(SessionAuthGuard, UserTypeGuard)
     @UserTypes("shop")
     @Post()

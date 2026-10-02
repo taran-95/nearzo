@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { CreateOfferDto } from './dtos/createOffer.dto.js';
+import { ProductsService } from '../products/products.service.js';
 
 @Injectable()
 export class OffersService {
-    constructor(private readonly prisma: PrismaService) {}
+    constructor(private readonly prisma: PrismaService, private readonly products: ProductsService) {}
 
     async createOffer(dto: CreateOfferDto, sellerId: number) {
         return this.prisma.offer.create({
@@ -65,5 +66,41 @@ export class OffersService {
         `;
 
         return results;
+    }
+
+    async search(query: string) {
+        const tokens = query
+            .toLowerCase()
+            .replace(/[^\p{L}\p{N}]+/gu, ' ')
+            .trim()
+            .split(/\s+/)
+            .filter(Boolean);
+
+        if (tokens.length === 0) return [];
+
+        // "creamy pea" -> "creamy & pea:*"
+        const tsquery = tokens
+            .map((t, i) => (i === tokens.length - 1 ? `${t}:*` : t))
+            .join(' & ');
+
+        // 1. Best-ranked offer per product
+        const rows = await this.prisma.$queryRaw<{ id: number; rank: number }[]>`
+            SELECT "productId" AS id,
+                MAX(ts_rank(search_vector, to_tsquery('english', ${tsquery}))) AS rank
+            FROM "Offer"
+            WHERE search_vector @@ to_tsquery('english', ${tsquery})
+            GROUP BY "productId"
+            ORDER BY rank DESC
+            LIMIT 10
+        `;
+
+        if (rows.length === 0) return [];
+
+        // 2. Load the products with the regular client
+        const products = await this.products.getProductsByIds(rows.map((r) => r.id));
+
+        // 3. `IN` doesn't preserve order, so restore the ranking
+        const byId = new Map(products.map((p) => [p.id, p]));
+        return rows.map((r) => byId.get(r.id)).filter((p) => p !== undefined);
     }
 }

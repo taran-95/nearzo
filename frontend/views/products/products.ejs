@@ -23,7 +23,7 @@
             
             <!-- Products Toolbar (Search) -->
             <div class="products-toolbar">
-                <form class="hero-search" id="searchForm" onsubmit="return false;">
+                <form class="hero-search" id="searchForm">
                     <span class="search-symbol">⌕</span>
                     <input type="text" id="searchInput" placeholder="Search by product name, category, description, or store...">
                     <button type="submit">Search</button>
@@ -202,5 +202,95 @@
         <div id="drawerBackdrop" class="drawer-backdrop"></div>
 
         <script src="/scripts/products.js"></script>
+        <script>
+            const searchForm = document.getElementById('searchForm');
+            const searchInput = document.getElementById('searchInput');
+
+            const productsGrid = document.getElementById('productsGrid');
+
+            let debounceTimer = null;
+            let controller = null;
+
+            searchInput.addEventListener('input', async () => {
+                const query = searchInput.value;
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(() => runSearch(query), 250);
+            });
+
+            async function runSearch(input) {
+                const query = input.trim();
+
+                if (controller)
+                    controller.abort();
+
+                if(!query) {
+                    //TODO: do something
+                    return;
+                }
+                
+                //controller = new AbortController();
+                //const { signal } = controller;
+
+                try {
+                    //const response = await fetch(`http:localhost:3000/offers/search/query?=${encodeURIComponent(query)}`,
+                      //  {signal});
+                    const response = await fetch(`http://localhost:3000/offers/search?query=${encodeURIComponent(query)}`);                    
+
+                    if(!response.ok) {
+                        const error = await response.json();
+                        throw new Error(error.message);
+                    }
+
+                    const products = await response.json();
+                    renderSearchResults(products);
+                } catch (error) {
+                    if(error.name === 'AbortError')
+                        return;
+                    console.error(error.message);
+                }
+            }
+
+            function renderSearchResults(products) {
+                if (products.length === 0) {
+                    productsGrid.innerHTML = "No products found";   
+                }
+                productsGrid.innerHTML = products.map(product => {
+                    const productData = product.customProduct ? product.customProduct : product.identifiedProduct;
+                    if (product.customProduct) {
+                        return `
+                            <article onclick="window.location.href='/productListing/${productData.productId}'" class="product-card" title="Click to view local stores and details">
+                                <div class="product-img-wrapper">
+                                    <img id="viewProductImg-${productData.productId}" src="http://localhost:3000/${productData.images[0].path}" alt="Product Image">
+                                    <span class="stock-badge badge-in-stock">In Stock</span>
+                                </div>
+
+                                <div class="product-info">
+                                    <h3 class="product-title" title="${productData.name}">${productData.name}</h3>
+                                    <p class="product-desc" title="${productData.description}">
+                                        ${productData.description || 'No Description Provided'}
+                                    </p>
+                                </div>
+                            </article>
+                        `;
+                    } else {
+                        return `
+                            <article onclick="window.location.href='/productListing/${productData.productId}'" class="product-card" title="Click to view local stores and details">
+                                <div class="product-img-wrapper">
+                                    <img id="viewProductImg-${productData.productId}" src="${productData.images[0].path}" alt="Product Image">
+                                    <span class="stock-badge badge-in-stock">In Stock</span>
+                                </div>
+
+                                <div class="product-info">
+                                    <h3 class="product-title" title="${productData.name}">${productData.name}</h3>
+                                    <p class="product-desc" title="${productData.description}">
+                                        ${productData.description || 'No Description Provided'}
+                                    </p>
+                                </div>
+                            </article>
+                        `;
+                    }
+                }).join('');
+            }
+        </script>
     </body>
 </html>

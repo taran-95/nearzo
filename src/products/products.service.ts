@@ -66,6 +66,69 @@ export class ProductsService {
         return products;
     }
 
+    async getProductsByIds(ids: number[]) {
+        const customProducts = await this.prisma.product.findMany({
+            where: {
+                id: {
+                    in: ids
+                },
+                type: ProductType.CUSTOM
+            },
+            include: {
+                customProduct: {
+                    include: {
+                        images: true
+                    }
+                }
+            }
+        });
+
+        const identifiedProductRecords = await this.prisma.product.findMany({
+            where: {
+                id: {
+                    in: ids
+                },
+                type: ProductType.IDENTIFIED
+            },
+            include: {
+                identifiedProduct: true
+            }
+        });
+
+        const updatedRecords = await Promise.all(
+            identifiedProductRecords.map(async (product) => {
+                try {
+                    const identifier = product.identifiedProduct?.gtin;
+                    if(!identifier) {
+                        console.error(`${product.id} not stored properly in db`);
+                        return product;
+                    }
+                    const productObj = await this.callApi(identifier);
+
+                    if(!productObj) {
+                        throw new NotFoundException(`Product with identifier ${identifier} not found`);
+                    }
+
+                    return {
+                    ...product,
+                    identifiedProduct: {
+                        ...product.identifiedProduct,
+                        ...productObj,
+                    },
+                };
+                } catch (error) {
+                    console.error(`Failed to fetch identified products: ${error}`)
+                }
+
+                return product;
+            })
+        );
+        
+        const products = [...customProducts, ...updatedRecords];
+        //console.log(products);
+        return products;
+    }
+
     async getProduct(id: number) {
         const product = await this.prisma.product.findUnique({
             where: {id},
