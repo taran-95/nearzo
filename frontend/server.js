@@ -37,17 +37,26 @@ app.get('/productListing/:id', async (req, res) => {
     }
 
     const product = await productRes.json();
+
+    const authRes = await fetch("http://localhost:3000/auth/me", {
+      method: "GET",
+      headers: {
+        Cookie: req.headers.cookie || ""
+      }
+    });
     
-    const offerRes = await fetch(`http://localhost:3000/offers/product/${product.id}`)
-    
-    if(!offerRes.ok) {
-        const error = await productRes.json();
-        throw new Error(error.message);
+    if(authRes.ok) {
+      const authData = await authRes.json();
+      res.render('products/productView', {product, isShop: authData.userType === 'shop'});
+      console.log("authRes: ok");
+      console.log(authData.userType === 'shop');
+    } else {
+      res.render('products/productView', {product, isShop: false});
+      console.log("authRes: not ok");
+
+      const error = await authRes.json();
+      console.log(error);
     }
-  
-    const offers = await offerRes.json();
-  
-    res.render('products/productView', {product, offers});
 });
 
 

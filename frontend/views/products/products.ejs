@@ -253,6 +253,7 @@
             function renderSearchResults(products) {
                 if (products.length === 0) {
                     productsGrid.innerHTML = "No products found";   
+                    return;
                 }
                 productsGrid.innerHTML = products.map(product => {
                     const productData = product.customProduct ? product.customProduct : product.identifiedProduct;

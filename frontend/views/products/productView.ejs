@@ -47,6 +47,11 @@
                     <div class="product-view-meta-row">
                         <span class="product-view-cat-badge" id="viewProductCategory">Category</span>
                         <span class="product-view-stock-tag in" id="viewStockBadge">In Stock</span>
+                        <% if(isShop) { %>
+                        <span class="product-view-stock-tag in" id="viewStockBadge">
+                            <a href="/offers/createOffer?productId=<%= productData.productId %>">Create offer for this product</a>
+                        </span>
+                        <% } %>
                     </div>
 
                     <h1 class="product-view-title" id="viewProductTitle"><%= productData.name %></h1>
@@ -127,6 +132,12 @@
 
                             const offers = await response.json();
                             totalStores = offers.length;
+                            if (offers.length === 0) {
+                                storeListDiv.innerHTML = "No stores selling this product found nearby. Try increasing your search radius.";
+                                storeCountBadgeDiv.textContent = "0 Nearby Stores";
+                                cheapestPriceDiv.textContent = "No nearby shops found";
+                                return;
+                            }
                             storeListDiv.innerHTML = offers.map(offer => {
                                 cheapestPrice = (cheapestPrice > offer.price) || !cheapestPrice ? offer.price : cheapestPrice;
                                 const formattedStorePrice = Number(offer.price).toLocaleString('en-IN');
