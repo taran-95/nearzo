@@ -106,15 +106,13 @@ export class ProductsService {
     }
 
     async uploadIdentifiedProduct(identifier: string) {
-        const exist = await this.prisma.product.findMany({
+        const exist = await this.prisma.identifiedProduct.findUnique({
             where: {
-                type: ProductType.IDENTIFIED,
-                identifiedProduct: {
-                    gtin: identifier
-                }
+                gtin: identifier
             }
         });
         if(exist) {
+            console.log(exist);
             throw new BadRequestException("Error fetching product details. The product was probably uploaded previously. Try searching for it and creating offer for it.");
         } 
         const product = await this.callApi(identifier);

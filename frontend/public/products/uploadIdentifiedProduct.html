@@ -40,7 +40,7 @@
 		
 			uploadForm.addEventListener("submit", async function(e) {
 				e.preventDefault();
-				
+				errorDiv.textContent = "Loading...";
 				try {	
 					const identifier = document.getElementById("identifier").value.replace(/\s+/g, "");
 
