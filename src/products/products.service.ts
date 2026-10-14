@@ -245,13 +245,16 @@ export class ProductsService {
     async callApi(identifier: string, sourceProvider: ProductSource = ProductSource.UPC_DEV) {
         const key = `productIdentifier:${identifier}`;
         const cached = await this.cache.get(key);
-        if (cached) return cached;
+        if (cached) {
+            console.log(`cached response identifier: ${identifier}`);
+            return cached;
+        }
 
         if(sourceProvider === ProductSource.UPC_DEV && await this.canQueryApi(ProductSource.UPC_DEV)) {
             try {
                 console.log("upcdev");
                 const product = await this.callUpcDevApi(identifier);
-                await this.cache.set(key, product, 60_000);
+                await this.cache.set(key, product, 3_600_000);
                 return product;
             } catch (error) {
                 console.error(error);
@@ -259,7 +262,7 @@ export class ProductsService {
                     try {
                         console.log("openfoodfacts");
                         const product = await this.callOpenFoodFactApi(identifier);
-                        await this.cache.set(key, product, 60_000);
+                        await this.cache.set(key, product, 3_600_000);
                         return product;
                     } catch (error) {
                         console.error(error);
@@ -267,7 +270,7 @@ export class ProductsService {
                             try {
                                 console.log("upcitemdb");
                                 const product = await this.callUpcItemDbApi(identifier);
-                                await this.cache.set(key, product, 60_000);
+                                await this.cache.set(key, product, 3_600_000);
                                 return product;
                             } catch (error) {
                                 console.error(error);
@@ -281,7 +284,7 @@ export class ProductsService {
             try {
                 console.log("openfoodfacts");
                 const product = await this.callOpenFoodFactApi(identifier);
-                await this.cache.set(key, product, 60_000);
+                await this.cache.set(key, product, 3_600_000);
                 return product;
             } catch (error) {
                 console.error(error);
@@ -289,7 +292,7 @@ export class ProductsService {
                     try {
                         console.log("upcdev");
                         const product = await this.callUpcDevApi(identifier);
-                        await this.cache.set(key, product, 60_000);
+                        await this.cache.set(key, product, 3_600_000);
                         return product;
                     } catch (error) {
                         console.error(error);
@@ -297,7 +300,7 @@ export class ProductsService {
                             try {
                                 console.log("upcitemdb");
                                 const product = await this.callUpcItemDbApi(identifier);
-                                await this.cache.set(key, product, 60_000);
+                                await this.cache.set(key, product, 3_600_000);
                                 return product;
                             } catch (error) {
                                 console.error(error);
@@ -312,7 +315,7 @@ export class ProductsService {
                 try {
                     console.log("upcitemdb");
                     const product = await this.callUpcItemDbApi(identifier);
-                    await this.cache.set(key, product, 60_000);
+                    await this.cache.set(key, product, 3_600_000);
                     return product;
                 } catch (error) {
                     console.error(error);
@@ -320,7 +323,7 @@ export class ProductsService {
                         try {
                             console.log("upcdev");
                             const product = await this.callUpcDevApi(identifier);
-                            await this.cache.set(key, product, 60_000);
+                            await this.cache.set(key, product, 3_600_000);
                             return product;
                         } catch (error) {
                             console.error(error);
@@ -328,7 +331,7 @@ export class ProductsService {
                                 try {
                                     console.log("openfoodfacts");
                                     const product = await this.callOpenFoodFactApi(identifier);
-                                    await this.cache.set(key, product, 60_000);
+                                    await this.cache.set(key, product, 3_600_000);
                                     return product;
                                 } catch (error) {
                                     console.error(error);
