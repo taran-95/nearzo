@@ -1,13 +1,15 @@
-import { BadGatewayException, BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadGatewayException, BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { UploadCustomProductDto } from './dtos/uploadCustomProduct.dto.js';
 import { ProductSource, ProductType } from '../generated/prisma/enums.js';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import type { Cache } from 'cache-manager';
 
 
 @Injectable()
 export class ProductsService {
 
-    constructor(private readonly prisma: PrismaService) {}
+    constructor(private readonly prisma: PrismaService, @Inject(CACHE_MANAGER) private cache: Cache) {}
 
     async getProducts() {
         const customProducts = await this.prisma.product.findMany({
@@ -241,22 +243,32 @@ export class ProductsService {
 
     ///TODO: Refactor
     async callApi(identifier: string, sourceProvider: ProductSource = ProductSource.UPC_DEV) {
+        const key = `productIdentifier:${identifier}`;
+        const cached = await this.cache.get(key);
+        if (cached) return cached;
+
         if(sourceProvider === ProductSource.UPC_DEV && await this.canQueryApi(ProductSource.UPC_DEV)) {
             try {
                 console.log("upcdev");
-                return await this.callUpcDevApi(identifier);
+                const product = await this.callUpcDevApi(identifier);
+                await this.cache.set(key, product, 60_000);
+                return product;
             } catch (error) {
                 console.error(error);
                 if(await this.canQueryApi(ProductSource.OPENFOODFACTS)) {
                     try {
                         console.log("openfoodfacts");
-                        return await this.callOpenFoodFactApi(identifier);
+                        const product = await this.callOpenFoodFactApi(identifier);
+                        await this.cache.set(key, product, 60_000);
+                        return product;
                     } catch (error) {
                         console.error(error);
                         if(await this.canQueryApi(ProductSource.UPCITEMDB)) {
                             try {
                                 console.log("upcitemdb");
-                                return await this.callUpcItemDbApi(identifier);
+                                const product = await this.callUpcItemDbApi(identifier);
+                                await this.cache.set(key, product, 60_000);
+                                return product;
                             } catch (error) {
                                 console.error(error);
                                 console.error("All apis failed.");
@@ -268,19 +280,25 @@ export class ProductsService {
         } else if(sourceProvider === ProductSource.OPENFOODFACTS && await this.canQueryApi(ProductSource.OPENFOODFACTS)) {
             try {
                 console.log("openfoodfacts");
-                return await this.callOpenFoodFactApi(identifier);
+                const product = await this.callOpenFoodFactApi(identifier);
+                await this.cache.set(key, product, 60_000);
+                return product;
             } catch (error) {
                 console.error(error);
                 if(await this.canQueryApi(ProductSource.UPC_DEV)) {
                     try {
                         console.log("upcdev");
-                        return await this.callUpcDevApi(identifier);
+                        const product = await this.callUpcDevApi(identifier);
+                        await this.cache.set(key, product, 60_000);
+                        return product;
                     } catch (error) {
                         console.error(error);
                         if(await this.canQueryApi(ProductSource.UPCITEMDB)) {
                             try {
                                 console.log("upcitemdb");
-                                return await this.callUpcItemDbApi(identifier);
+                                const product = await this.callUpcItemDbApi(identifier);
+                                await this.cache.set(key, product, 60_000);
+                                return product;
                             } catch (error) {
                                 console.error(error);
                                 console.error("All apis failed.");
@@ -293,19 +311,25 @@ export class ProductsService {
             if(await this.canQueryApi(ProductSource.UPCITEMDB)) {
                 try {
                     console.log("upcitemdb");
-                    return await this.callUpcItemDbApi(identifier);
+                    const product = await this.callUpcItemDbApi(identifier);
+                    await this.cache.set(key, product, 60_000);
+                    return product;
                 } catch (error) {
                     console.error(error);
                     if(await this.canQueryApi(ProductSource.UPC_DEV)) {
                         try {
                             console.log("upcdev");
-                            return await this.callUpcDevApi(identifier);
+                            const product = await this.callUpcDevApi(identifier);
+                            await this.cache.set(key, product, 60_000);
+                            return product;
                         } catch (error) {
                             console.error(error);
                             if(await this.canQueryApi(ProductSource.OPENFOODFACTS)) {
                                 try {
                                     console.log("openfoodfacts");
-                                    return await this.callOpenFoodFactApi(identifier);
+                                    const product = await this.callOpenFoodFactApi(identifier);
+                                    await this.cache.set(key, product, 60_000);
+                                    return product;
                                 } catch (error) {
                                     console.error(error);
                                     console.error("All apis failed.");
