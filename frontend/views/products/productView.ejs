@@ -96,6 +96,49 @@
             const cheapestPriceDiv = document.getElementById('viewProductPrice');
             const storeListDiv = document.getElementById('viewStoresList');
             const errorDiv = document.getElementById('error-div');
+            const viewStockBadge = document.getElementById('viewStockBadge');
+
+            const userId = null;
+
+            //TODO: offer btns for buisness users
+            async function loadUser() {
+                try {
+                    const authResponse = await fetch("http://localhost:3000/auth/me", {
+                        method: "GET",
+                        credentials:"include"
+                    });
+
+                    if(!authResponse.ok) {
+                        return;
+                    }
+
+                    const user = await authResponse.json();
+                    if(user.userType === 'shop') {
+                        const offerResponse = await fetch(`http://localhost:3000/offers/seller_product?seller=${user.user.id}&product=${productId}`);
+                        
+                        if(!offerResponse.ok) {
+                            const error = await offerResponse.json();
+                            throw new Error(error.message);
+                        }                           
+
+                        const text = await offerResponse.text();
+                        const offer = text ? JSON.parse(text) : null;
+                        console.log("offer: ", offer);
+                        
+                        if(!offer) {
+                            viewStockBadge.innerHTML = `
+                            <a href="/offers/createOffer?productId=${productId}">Create offer for this product</a>
+                            `;    
+                        } else {
+                            viewStockBadge.innerHTML = `
+                            <a href="/offers/editOffer?productId=${productId}&offerId=${offer.id}">Edit your offer for this product</a>
+                            `;    
+                        }
+                    }
+                } catch (error) {
+                    errorDiv.textContent = error.message;
+                }
+            }
 
             function escapeHtml(str) {
                 if (!str) return '';
@@ -191,7 +234,7 @@
                         }
                 });
             }
-
+            loadUser();
             loadStores();
         </script>
     </body>

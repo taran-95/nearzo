@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { CreateOfferDto } from './dtos/createOffer.dto.js';
 import { ProductsService } from '../products/products.service.js';
+import { UpdateOfferDto } from './dtos/updateOffer.dto.js';
 
 @Injectable()
 export class OffersService {
@@ -28,6 +29,32 @@ export class OffersService {
                 seller: true
             }
         });
+    }
+
+    async getOffer(id: number) {
+        return this.prisma.offer.findUnique({
+            where: {id: id}
+        });
+    }
+
+    async getOfferBySellerAndProductId(sellerId: number, productId: number) {
+        return await this.prisma.offer.findFirst({
+            where: {
+                sellerId: sellerId,
+                productId: productId
+            }
+        });
+    }
+
+    async updateOffer(id: number, dto: UpdateOfferDto) {
+        return this.prisma.offer.update({
+            where: {id: id},
+            data: dto
+        });
+    }
+
+    async deleteOffer(id: number) { 
+        return this.prisma.offer.delete({where: {id: id}});
     }
 
     async getNearByOffers(productId: number, radiusKm: number, latitude: number, longitude: number) {

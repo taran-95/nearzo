@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="/style/style-home.css">
+		<link rel="stylesheet" href="/style/style-auth.css">
+		<title>NearZo Just Search it-up</title>
+	</head>
+
+	<body class="uploadbody">
+		<header id="header" class="navbar"></header>
+		<script src="/scripts/header.js"></script>
+		<script src="/scripts/auth_guard.js"></script>
+		<script>
+			requireLogin();
+			requireUserTypeShop();
+		</script>
+
+		<main class="upload-page">
+			<div class="upload-heading"><h1>List Your Products</h1></div>
+
+			<div class="upload-layout">
+				<section class="upload-card">
+					<h2 id="productNameH2"></h2>
+					<p>Edit your offer details below.</p>
+                    <button id="delOfferBtn" class="submit-button">Delete Offer</button>
+					<form class="uploadForm" method="POST">
+						
+						<label>Price</label>
+						<span>₹</span>
+						<input type="number" id="productPrice" placeholder="₹899" required><br>
+
+						<label>Quantity</label>
+						<input type="number" id="productQuantity" placeholder="e.g. 50" required><br>
+
+						<label>Search Keywords</label>
+						<input type="text" id="searchKeywords" placeholder="e.g. phone, smartphone, apple, iphone (seperate by ,)" required><br>
+
+						<div class="error" id="error-div"></div>
+						<button type="submit" class="submit-button">Edit Offer</button>
+					</form>
+				</section>
+					
+			</div>
+		</main>
+	<script>
+		const params = new URLSearchParams(window.location.search);
+		const productId = parseInt(params.get('productId'), 10);
+        const offerId = parseInt(params.get('offerId'), 10);
+
+		if (!productId || !offerId) {
+			window.location.href = '/products/uploadProduct'
+		}
+
+		document.addEventListener("DOMContentLoaded", async () => {
+			const uploadForm = document.querySelector(".uploadForm");
+			const imageInput = document.getElementById("productImage");
+			const previewContainer = document.getElementById("previewContainer");
+			const errorDiv = document.getElementById("error-div");
+			const productNameH2 = document.getElementById("productNameH2");
+
+            const delOfferBtn = document.getElementById("delOfferBtn");
+
+            const priceInput = document.getElementById("productPrice");
+            const quantityInput = document.getElementById("productQuantity");
+            const searchKeywordsInput = document.getElementById('searchKeywords');
+
+			const productResponse = await fetch(`http://localhost:3000/products/${productId}`, {method: "GET"});
+			if(!productResponse.ok) {
+				const error = await productResponse.json();
+				errorDiv.textContent = error.message;
+			}
+			const product = await productResponse.json();
+			const productData = product.customProduct ? product.customProduct : product.identifiedProduct;
+			productNameH2.textContent = "Create offer for " + productData.name;
+
+            const offerResponse = await fetch(`http://localhost:3000/offers/${offerId}`, {method: "GET"});
+            if(!offerResponse.ok) {
+				const error = await offerResponse.json();
+				errorDiv.textContent = error.message;
+			}
+			const offer = await offerResponse.json();
+            priceInput.value = offer.price;
+            quantityInput.value = offer.quantity;
+            searchKeywordsInput.value = offer.searchKeywords;
+		
+			uploadForm.addEventListener("submit", async function(e) {
+				e.preventDefault();
+				
+				try {
+					//restriction price and quantity
+					const searchKeywords = searchKeywordsInput.value.split(/\s*,\s*/);
+
+
+					const body = {
+						price: Number(priceInput.value),
+						quantity: Number(quantityInput.value),
+						searchKeywords: searchKeywords
+					};
+
+					const response = await fetch(`http://localhost:3000/offers/${offerId}`, {
+						method: "PATCH",
+						credentials: "include",
+						headers: {
+        					"Content-Type": "application/json"
+    					},
+						body: JSON.stringify(body)
+					});
+
+					if(!response.ok) {
+						const error = await response.json();
+						console.log("hi");
+						throw new Error(error.message);
+					}
+
+					errorDiv.textContent = "Offer Updated Successfully. Redirecting...";
+					errorDiv.style.color = "Green";
+					setTimeout(() => {window.location.href = `/productListing/${productId}`;}, 2000);
+				} catch (error) {
+					errorDiv.textContent = error.message;
+				}
+			});
+
+            delOfferBtn.addEventListener('click', async (e) => {
+                try{
+                    const resposne = await fetch(`http://localhost:3000/offers/delete/${offerId}`, {method:"POST"});
+                    if(!response.ok) {
+                        const error = await response.json();
+                        throw new Error(error.message);
+				    }
+                    errorDiv.textContent = "Offer Deleted Successfully. Redirecting...";
+					errorDiv.style.color = "Green";
+					setTimeout(() => {window.location.href = "/";}, 2000);
+                } catch (error) {
+                    errorDiv.textContent = error.message;
+                }
+            });
+		});
+	</script>
+	</body>
+</html>
