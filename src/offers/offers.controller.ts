@@ -21,6 +21,11 @@ export class OffersController {
         return this.offersService.getOfferByProductId(id);
     }
 
+    @Get('seller/:id')
+    getOfferBySellerId(@Param("id", ParseIntPipe) id: number) {
+        return this.offersService.getOfferBySellerId(id);
+    }
+
     @Get('nearby')
     getNearByOffers(
         @Query('productId', ParseIntPipe) productId: number, 

@@ -31,6 +31,18 @@ export class OffersService {
         });
     }
 
+    async getOfferBySellerId(id: number) {
+        return this.prisma.offer.findMany({
+            where: {
+                sellerId: id
+            },
+            include: {
+                product: true
+            }
+        });
+    }
+
+
     async getOffer(id: number) {
         return this.prisma.offer.findUnique({
             where: {id: id}
