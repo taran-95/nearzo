@@ -107,6 +107,11 @@
 
     </div>
 
+    <section>
+      <div id="offersGrid" class="products-grid">
+      </div>
+    </section>
+
     <button id="logoutButton">Logout</button>
 
   </div>
@@ -118,6 +123,8 @@
       const loading = document.getElementById('loading');
       const message = document.getElementById('message');
       const profile = document.getElementById('profile');
+
+      const offersGrid = document.getElementById('offersGrid');
 
       try {
 
@@ -181,6 +188,37 @@
 
           document.getElementById('registeredAt2').textContent =
             new Date(user.registered_at).toLocaleString();
+
+          
+          //display offers
+          const offerRes = await fetch(`http://localhost:3000/offers/seller/${user.id}`);
+          
+          if(!offerRes.ok) {
+            const error = await offerRes.json();
+            throw new Error(error.message);
+          }
+
+          const text = await offerRes.text();
+          const offers = text ? JSON.parse(text) : null;
+
+          offersGrid.innerHTML = offers.map(offer => {
+            const productData = offer.product.customProduct ? offer.product.customProduct : offer.product.identifiedProduct;
+            return `
+              <article onclick="window.location.href='/productListing/${offer.productId}'" class="product-card" title="Click to view offer">
+                <div class="product-img-wrapper">
+                    <img id="viewProductImg-${offer.productId}" src="http://localhost:3000/${productData.images[0].path}" alt="Product Image">
+                    <span class="stock-badge badge-in-stock">In Stock</span>
+                </div>
+
+                <div class="product-info">
+                    <h3 class="product-title" title="${productData.name}">${productData.name}</h3>
+                    <p class="product-desc" title="${productData.description}">
+                        ${productData.description || 'No Description Provided'}
+                    </p>
+                </div>
+            </article>
+            `;
+          });
         }
 
       } catch (error) {
@@ -190,7 +228,7 @@
         message.textContent = error.message;
 
         // If not logged in, send user to login page
-        // window.location.href = 'login.html';
+        //window.location.href = 'login.html';
       }
     }
 
