@@ -6,7 +6,7 @@ import { UpdateOfferDto } from './dtos/updateOffer.dto.js';
 
 @Injectable()
 export class OffersService {
-    constructor(private readonly prisma: PrismaService, private readonly products: ProductsService) {}
+    constructor(private readonly prisma: PrismaService, private readonly productsService: ProductsService) {}
 
     async createOffer(dto: CreateOfferDto, sellerId: number) {
         return this.prisma.offer.create({
@@ -32,7 +32,7 @@ export class OffersService {
     }
 
     async getOfferBySellerId(id: number) {
-        return this.prisma.offer.findMany({
+        const offers = await this.prisma.offer.findMany({
             where: {
                 sellerId: id
             },
@@ -40,6 +40,17 @@ export class OffersService {
                 product: true
             }
         });
+
+        const productIds = offers.map((offer) => offer.product.id);
+        const products = await this.productsService.getProductsByIds(productIds);
+
+        const productMap = new Map(products.map((p) => [p.id, p]));
+        const data = offers.map((offer) => ({
+            ...offer,
+            product: productMap.get(offer.productId) || null
+        }));
+        console.log(data);
+        return data;
     }
 
 
@@ -136,7 +147,7 @@ export class OffersService {
         if (rows.length === 0) return [];
 
         // 2. Load the products with the regular client
-        const products = await this.products.getProductsByIds(rows.map((r) => r.id));
+        const products = await this.productsService.getProductsByIds(rows.map((r) => r.id));
 
         // 3. `IN` doesn't preserve order, so restore the ranking
         const byId = new Map(products.map((p) => [p.id, p]));
