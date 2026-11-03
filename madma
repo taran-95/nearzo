@@ -1,0 +1,119 @@
+[33mcommit 835db5889102e15a920bffdb9b5fd19efc15d9a1[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Author: taran-95 <taranf95@gmail.com>
+Date:   Sun Oct 18 12:19:43 2026 +0530
+
+    add offers to store profile
+
+[33mcommit 27f3d2766b14b366c419eeb387384855379aefca[m
+Author: taran-95 <taranf95@gmail.com>
+Date:   Sun Oct 18 12:19:22 2026 +0530
+
+    feat: getOffersBySellerId returns product details too
+
+[33mcommit bb14fdde4e54c0292cbcf86e44e5bd566927c500[m
+Author: taran-95 <taranf95@gmail.com>
+Date:   Sat Oct 17 12:08:44 2026 +0530
+
+    add getOffersBySellerId
+
+[33mcommit 21c007458c77a4459e6ac5d607d22011ad88f0db[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: taran-95 <taranf95@gmail.com>
+Date:   Wed Oct 14 21:50:05 2026 +0530
+
+    feat: edit offer
+
+[33mcommit 464edc0ae397f4027b61c527d71aaf65b81159cc[m
+Author: taran-95 <taranf95@gmail.com>
+Date:   Wed Oct 14 20:21:43 2026 +0530
+
+    feat: google maps directions for offer
+
+[33mcommit c73e72d19837af3d435b8aa0826512f671535fa8[m
+Author: taran-95 <taranf95@gmail.com>
+Date:   Wed Oct 14 20:01:56 2026 +0530
+
+    feat: add caching. cache api calls
+
+[33mcommit 026ca26a9b7b030e9bae0cea732509681aa89837[m
+Author: taran-95 <taranf95@gmail.com>
+Date:   Fri Oct 2 19:52:28 2026 +0530
+
+    feat: productView page authorization for shops
+
+[33mcommit b5d67b925cbf3d1a939557b21243e94f772ef4d1[m
+Author: taran-95 <taranf95@gmail.com>
+Date:   Fri Oct 2 17:58:41 2026 +0530
+
+    search feat: add product search feature. rough
+
+[33mcommit 68767e85125a56e7e89ac7cb753aac1c2b4818f1[m
+Author: taran-95 <taranf95@gmail.com>
+Date:   Fri Oct 2 16:53:12 2026 +0530
+
+    search feat: make prisma migration
+
+[33mcommit 2021eb4ae0be831e6af3b354188d3e18ae4af65e[m
+Author: taran-95 <taranf95@gmail.com>
+Date:   Fri Oct 2 15:15:46 2026 +0530
+
+    add product view cheapest price and nearby stores counter
+
+[33mcommit 2440f6f9933cfb60ecc794c6df9d5352f42c549d[m
+Author: taran-95 <taranf95@gmail.com>
+Date:   Fri Oct 2 12:51:30 2026 +0530
+
+    fix identifiedproductupload bug
+
+[33mcommit 69cd0d4cf849bacdad99dd155a259eb6534fd6a2[m
+Author: taran-95 <taranf95@gmail.com>
+Date:   Fri Oct 2 12:17:39 2026 +0530
+
+    add fallback apis
+
+[33mcommit b22bbca7e8e4b277306d29d49bf677a2d519f4e0[m
+Author: taran-95 <taranf95@gmail.com>
+Date:   Sat Sep 26 10:16:33 2026 +0530
+
+    add maps in frontend
+
+[33mcommit a44aabd948269699810c93c31d2c1369a76a56ab[m
+Author: taran-95 <taranf95@gmail.com>
+Date:   Wed Sep 23 19:07:33 2026 +0530
+
+    create express frontend server and offer system for custom product
+
+[33mcommit b72c22000dd0f193c1a6550be2de0bd180f5e4c2[m
+Author: taran-95 <taranf95@gmail.com>
+Date:   Mon Sep 14 17:19:03 2026 +0530
+
+    fix product upload bugs
+
+[33mcommit 94a5b9b6e43afd7aab9466af903b69d15e9f3122[m
+Author: taran-95 <taranf95@gmail.com>
+Date:   Mon Sep 14 15:54:32 2026 +0530
+
+    fix auth bugs
+
+[33mcommit 52875a16604957ee6da67fa7c3056f4f073d2df5[m
+Author: taran-95 <taranf95@gmail.com>
+Date:   Sun Sep 13 13:12:02 2026 +0530
+
+    add session based user and shop authentication
+
+[33mcommit ca8655cf08ca99dab59bd203f5c95677516c8d02[m
+Author: taran-95 <taranf95@gmail.com>
+Date:   Thu Aug 20 20:28:45 2026 +0530
+
+    Connect frontend and add image upload feature
+
+[33mcommit 01bc78af93d2c94d470d3adfcc130fd1778e6f6b[m
+Author: taran-95 <taranf95@gmail.com>
+Date:   Wed Aug 12 19:57:06 2026 +0530
+
+    chore: set up Prisma with postgresql
+
+[33mcommit 5aee5f7d96de23761c25652c6e1f891a44f43a25[m
+Author: taran-95 <taranf95@gmail.com>
+Date:   Thu Aug 6 22:25:58 2026 +0530
+
+    Initial Commit

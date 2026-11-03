@@ -1,69 +1,161 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<link rel="stylesheet" href="/style/style-home.css">
-		<title>NearZo Just Search it-up</title>
-	</head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enter Barcode - NearZo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/style/style-home.css">
+</head>
+<body class="uploadbody">
+    <header id="header" class="navbar"></header>
+    <script src="/scripts/header.js"></script>
+    <script src="/scripts/auth_guard.js"></script>
+    <script>
+        requireLogin();
+        requireUserTypeShop();
+    </script>
 
-	<body class="uploadbody">
-		<header id="header" class="navbar"></header>
-		<script src="/scripts/header.js"></script>
-		<script src="/scripts/auth_guard.js"></script>
-		<script>
-			requireLogin();
-			requireUserTypeShop();
-		</script>
+    <main class="barcode-page-container">
+        <a href="/products/uploadProductTypeSelectMenu" class="back-link">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back to Selection
+        </a>
 
-		<main class="upload-page">
-			<div class="upload-heading"><h1>List Your Products</h1></div>
+        <div class="barcode-card">
+            <div class="barcode-card-header">
+                <div class="barcode-icon-box">
+                    <i class="fa-solid fa-barcode"></i>
+                </div>
+                <div>
+                    <h1>Enter Barcode</h1>
+                    <p>Lookup product information by UPC or EAN</p>
+                </div>
+            </div>
 
-			<div class="upload-layout">
-				<section class="upload-card">
-					<h2>Add Product</h2>
-					<p>Enter your product details below.</p>
+            <form id="barcodeForm" method="POST">
+                <div class="barcode-form-group">
+                    <label class="barcode-form-label" for="identifier">Barcode Number</label>
+                    <div class="barcode-input-wrapper">
+                        <i class="fa-solid fa-barcode barcode-input-icon"></i>
+                        <input
+                            type="text"
+                            id="identifier"
+                            name="identifier"
+                            class="barcode-input"
+                            inputmode="numeric"
+                            pattern="[0-9]*"
+                            placeholder="Enter 8 to 14 digit barcode"
+                            autocomplete="off"
+                            required
+                        >
+                    </div>
+                    <div class="barcode-sample-row">
+                        <span class="barcode-sample-label">Examples:</span>
+                        <button type="button" class="barcode-sample-btn" onclick="fillCode('049000006346')">049000006346</button>
+                        <button type="button" class="barcode-sample-btn" onclick="fillCode('8906058350079')">8906058350079</button>
+                        <button type="button" class="barcode-sample-btn" onclick="fillCode('011110417001')">011110417001</button>
+                    </div>
+                </div>
 
-					<form class="uploadForm" method="POST">
-						<label>Barcode Number</label>
-						<input type="number" id="identifier" placeholder="Barcode Number. eg. 890.." required><br>
-			
-						<div class="error" id="error-div"></div>
-						<button type="submit" class="submit-button">Add Product</button>
-					</form>
-				</section>
-					
-			</div>
-		</main>
-	<script>
-		document.addEventListener("DOMContentLoaded", async () => {
-			const uploadForm = document.querySelector(".uploadForm");
-			const errorDiv = document.getElementById("error-div");
-		
-			uploadForm.addEventListener("submit", async function(e) {
-				e.preventDefault();
-				errorDiv.textContent = "Loading...";
-				try {	
-					const identifier = document.getElementById("identifier").value.replace(/\s+/g, "");
+                <div id="statusBox" class="barcode-status-box">
+                    <div id="statusSpinner" class="barcode-status-spinner" style="display: none;"></div>
+                    <span id="statusIcon"></span>
+                    <span id="statusText"></span>
+                </div>
 
-					const response = await fetch(`http://localhost:3000/products/identified/${identifier}`, {
-						method: "POST",
-						credentials: "include"
-					});
-                    
-					if(!response.ok) {
-						const error = await response.json();
-						throw new Error(error.message);
-					}
+                <button type="submit" id="submitBtn" class="barcode-submit-btn">
+                    <span>Lookup Product</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </form>
 
-                    const result = await response.json();
-					
-                    errorDiv.textContent = "Product Uploaded Successfully. Redirecting...";
-					errorDiv.style.color = "Green";
-					setTimeout(() => {window.location.href = `/offers/createOffer?productId=${result.id}`;}, 2000);
-				} catch (error) {
-					errorDiv.textContent = error.message;
-				}
-			});
-		});
-	</script>
-	</body>
+            <div class="barcode-card-footer">
+                <span>No barcode on product?</span>
+                <a href="/products/uploadProduct">Create Custom Listing</a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function fillCode(code) {
+            const input = document.getElementById("identifier");
+            input.value = code;
+            input.focus();
+            hideStatus();
+        }
+
+        function showStatus(type, text, spinner = false, icon = '') {
+            const box = document.getElementById("statusBox");
+            const sp = document.getElementById("statusSpinner");
+            const ic = document.getElementById("statusIcon");
+            const tx = document.getElementById("statusText");
+
+            box.className = "barcode-status-box " + type;
+            sp.style.display = spinner ? "block" : "none";
+            ic.innerHTML = icon;
+            tx.innerHTML = text;
+        }
+
+        function hideStatus() {
+            document.getElementById("statusBox").className = "barcode-status-box";
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const form = document.getElementById("barcodeForm");
+            const input = document.getElementById("identifier");
+            const btn = document.getElementById("submitBtn");
+
+            input.addEventListener("input", hideStatus);
+
+            form.addEventListener("submit", async (e) => {
+                e.preventDefault();
+
+                const val = input.value.replace(/[^0-9]/g, "");
+                if (val.length < 8) {
+                    showStatus("error", "Please enter a valid barcode of at least 8 digits.", false, '<i class="fa-solid fa-circle-exclamation"></i>');
+                    return;
+                }
+
+                btn.disabled = true;
+                btn.innerHTML = '<span>Looking up...</span>';
+                showStatus("loading", "Searching catalog databases...", true);
+
+                try {
+                    const res = await fetch("http://localhost:3000/products/identified/" + val, {
+                        method: "POST",
+                        credentials: "include"
+                    });
+                    const data = await res.json();
+
+                    if (!res.ok) {
+                        const msg = data.message || "Product not found.";
+                        if (res.status === 400) {
+                            showStatus("error", msg + ' <a href="/productList" style="color:#2563eb;text-decoration:underline;font-weight:600;">View Catalog</a>', false, '<i class="fa-solid fa-circle-info"></i>');
+                        } else if (res.status === 404) {
+                            showStatus("error", 'Barcode not found. <a href="/products/uploadProduct" style="color:#2563eb;text-decoration:underline;font-weight:600;">Create custom product</a>', false, '<i class="fa-solid fa-magnifying-glass"></i>');
+                        } else {
+                            showStatus("error", msg, false, '<i class="fa-solid fa-circle-exclamation"></i>');
+                        }
+                        btn.disabled = false;
+                        btn.innerHTML = '<span>Lookup Product</span> <i class="fa-solid fa-arrow-right"></i>';
+                        return;
+                    }
+
+                    showStatus("success", "Product found! Redirecting to create offer...", false, '<i class="fa-solid fa-circle-check"></i>');
+                    setTimeout(() => {
+                        window.location.href = "/offers/createOffer?productId=" + data.id;
+                    }, 1400);
+                } catch (err) {
+                    showStatus("error", err.message, false, '<i class="fa-solid fa-circle-exclamation"></i>');
+                    btn.disabled = false;
+                    btn.innerHTML = '<span>Lookup Product</span> <i class="fa-solid fa-arrow-right"></i>';
+                }
+            });
+        });
+    </script>
+</body>
 </html>

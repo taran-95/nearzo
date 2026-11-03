@@ -1,2 +1,64 @@
-<a href="/products/uploadProduct.html">Upload Custom Product</a>
-<a href="/products/uploadIdentifiedProduct.html">Upload Identified Product</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Product Type - NearZo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/style/style-home.css">
+</head>
+<body class="uploadbody">
+    <header id="header" class="navbar"></header>
+    <script src="/scripts/header.js"></script>
+    <script src="/scripts/auth_guard.js"></script>
+    <script>
+        requireLogin();
+        requireUserTypeShop();
+    </script>
+
+    <main class="select-container">
+        <a href="/productList" class="back-link">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back to Products
+        </a>
+
+        <div class="select-header">
+            <h1>Add Product</h1>
+            <p>Select how you would like to list this item in your inventory</p>
+        </div>
+
+        <div class="select-grid">
+            <div class="select-card">
+                <div>
+                    <div class="select-icon-box blue">
+                        <i class="fa-solid fa-barcode"></i>
+                    </div>
+                    <h2>Identified Product</h2>
+                    <p>Lookup packaged items instantly using standard UPC or EAN barcodes.</p>
+                </div>
+                <a href="/products/uploadIdentifiedProduct" class="select-btn primary">
+                    Enter Barcode
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="select-card">
+                <div>
+                    <div class="select-icon-box purple">
+                        <i class="fa-solid fa-camera"></i>
+                    </div>
+                    <h2>Custom Product</h2>
+                    <p>Manually upload storefront photos, custom titles, and descriptions.</p>
+                </div>
+                <a href="/products/uploadProduct" class="select-btn primary">
+                    Create Custom Listing
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

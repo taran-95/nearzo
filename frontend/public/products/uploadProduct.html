@@ -1,146 +1,132 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<link rel="stylesheet" href="/style/style-home.css">
-		<title>NearZo Just Search it-up</title>
-	</head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Custom Product - NearZo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/style/style-home.css">
+</head>
+<body class="uploadbody">
+    <header id="header" class="navbar"></header>
+    <script src="/scripts/header.js"></script>
+    <script src="/scripts/auth_guard.js"></script>
+    <script>
+        requireLogin();
+        requireUserTypeShop();
+    </script>
 
-	<body class="uploadbody">
-		<header id="header" class="navbar"></header>
-		<script src="/scripts/header.js"></script>
-		<script src="/scripts/auth_guard.js"></script>
-		<script>
-			requireLogin();
-			requireUserTypeShop();
-		</script>
+    <main class="upload-page">
+        <a href="/products/uploadProductTypeSelectMenu" class="back-link">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back to Selection
+        </a>
 
-		<main class="upload-page">
-			<div class="upload-heading"><h1>List Your Products</h1></div>
+        <div class="upload-heading">
+            <h1>List Your Products</h1>
+        </div>
 
-			<div class="upload-layout">
-				<section class="upload-card">
-					<h2>Add Product</h2>
-					<p>Enter your product details below.</p>
+        <div class="upload-layout">
+            <section class="upload-card">
+                <h2>Add Product</h2>
+                <p>Enter your product details below.</p>
 
-					<form class="uploadForm" method="POST">
-						<label>Upload product Image here</label>
-						<input type="file" accept=".jpeg, .png, .webp" id="productImage" multiple>
-						<div id="previewContainer" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 15px;"></div> <!-- required -->
-						<br>
-			
-						<label>Product Name</label>
-						<input type="text" id="productName" placeholder="e.g. Charger" required><br>
-						
-						<!--
-						<label>Price</label>
-						<span>₹</span>
-						<input type="text" id="productPrice" placeholder="₹899" required><br>
-						-->
+                <form class="uploadForm" method="POST">
+                    <label>Upload product Image here</label>
+                    <input type="file" accept=".jpeg, .png, .webp" id="productImage" multiple>
+                    <div id="previewContainer" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 15px;"></div>
+                    <br>
+        
+                    <label>Product Name</label>
+                    <input type="text" id="productName" placeholder="e.g. Charger" required><br>
 
-						<label>Description</label><br>
-						<textarea id="productDescription" placeholder="Describe your product..." rows="5" required></textarea><br>
-			
-						<!--
-						<label>Availability</label>
-						<select id="productAvailablity">
-							<option value="In Stock">In Stock</option>
-							<option value="Low Stock">Low Stock</option>
-							<option value="Out of Stock">Out of Stock</option>
-						</select><br>
-						-->
+                    <label>Description</label><br>
+                    <textarea id="productDescription" placeholder="Describe your product..." rows="5" required></textarea><br>
 
-						<div class="error" id="error-div"></div>
-						<button type="submit" class="submit-button">Add Product</button>
-					</form>
-				</section>
-					
-			</div>
-		</main>
-	<script>
-		document.addEventListener("DOMContentLoaded", async () => {
-			const uploadForm = document.querySelector(".uploadForm");
-			const imageInput = document.getElementById("productImage");
-			const previewContainer = document.getElementById("previewContainer");
-			const errorDiv = document.getElementById("error-div");
-		
-			uploadForm.addEventListener("submit", async function(e) {
-				e.preventDefault();
-				
-				try {	
-					const files = imageInput ? imageInput.files : null;
+                    <div class="error" id="error-div"></div>
+                    <button type="submit" class="submit-button">Add Product</button>
+                </form>
+            </section>
+        </div>
+    </main>
 
-					if(!files || files.length === 0) {
-						throw new Error("Please select at least one image.");
-					}
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            const uploadForm = document.querySelector(".uploadForm");
+            const imageInput = document.getElementById("productImage");
+            const previewContainer = document.getElementById("previewContainer");
+            const errorDiv = document.getElementById("error-div");
+        
+            uploadForm.addEventListener("submit", async function(e) {
+                e.preventDefault();
+                
+                try {	
+                    const files = imageInput ? imageInput.files : null;
 
-					//restriction price and number
-					//const rawPrice = document.getElementById("productPrice")?.value || "0";
-					//const cleanedPrice = rawPrice.replace(/[^0-9.]/g, '') || "0";
+                    if(!files || files.length === 0) {
+                        throw new Error("Please select at least one image.");
+                    }
 
-					const formData = new FormData();
-					formData.append('name', document.getElementById("productName")?.value.trim() || "");
-					//formData.append('price', cleanedPrice);
-					formData.append('description', document.getElementById("productDescription")?.value.trim() || "");
-					
-					if(files.length) {
-						for(const file of files) {
-							formData.append('images', file);
-						}
-					}
+                    const formData = new FormData();
+                    formData.append('name', document.getElementById("productName")?.value.trim() || "");
+                    formData.append('description', document.getElementById("productDescription")?.value.trim() || "");
+                    
+                    if(files.length) {
+                        for(const file of files) {
+                            formData.append('images', file);
+                        }
+                    }
 
-					const response = await fetch("http://localhost:3000/products/custom", {
-						method: "POST",
-						credentials: "include",
-						body: formData
-					});
+                    const response = await fetch("http://localhost:3000/products/custom", {
+                        method: "POST",
+                        credentials: "include",
+                        body: formData
+                    });
 
-					if(!response.ok) {
-						const error = await response.json();
-						throw new Error(error.message);
-					}
+                    if(!response.ok) {
+                        const error = await response.json();
+                        throw new Error(error.message);
+                    }
 
-					const result = await response.json();
+                    const result = await response.json();
 
-					errorDiv.textContent = "Product Uploaded Successfully. Redirecting...";
-					errorDiv.style.color = "Green";
-					setTimeout(() => {window.location.href = `/offers/createOffer?productId=${result.product.id}`;}, 2000);
-				} catch (error) {
-					errorDiv.textContent = error.message;
-				}
-			});
+                    errorDiv.textContent = "Product Uploaded Successfully. Redirecting...";
+                    errorDiv.style.color = "Green";
+                    setTimeout(() => {window.location.href = `/offers/createOffer?productId=${result.product.id}`;}, 2000);
+                } catch (error) {
+                    errorDiv.textContent = error.message;
+                }
+            });
 
-			imageInput.addEventListener("change", () => {
-				// Clear previous previews
-				previewContainer.innerHTML = "";
+            imageInput.addEventListener("change", () => {
+                previewContainer.innerHTML = "";
 
-				const files = Array.from(imageInput.files);
+                const files = Array.from(imageInput.files);
 
-				files.forEach((file) => {
-					// Ensure the file is an image before previewing
-					if (!file.type.startsWith("image/")) return;
+                files.forEach((file) => {
+                    if (!file.type.startsWith("image/")) return;
 
-					// Generate a temporary local URL for the file
-					const objectUrl = URL.createObjectURL(file);
+                    const objectUrl = URL.createObjectURL(file);
+                    const img = document.createElement("img");
+                    img.src = objectUrl;
+                    img.alt = file.name;
+                    img.style.width = "100px";
+                    img.style.height = "100px";
+                    img.style.objectFit = "cover";
+                    img.style.borderRadius = "8px";
+                    img.style.border = "1px solid #ccc";
 
-					// Create an image element
-					const img = document.createElement("img");
-					img.src = objectUrl;
-					img.alt = file.name;
-					img.style.width = "100px";
-					img.style.height = "100px";
-					img.style.objectFit = "cover";
-					img.style.borderRadius = "8px";
-					img.style.border = "1px solid #ccc";
+                    img.onload = () => {
+                        URL.revokeObjectURL(objectUrl);
+                    };
 
-					// Free memory once the image has rendered
-					img.onload = () => {
-						URL.revokeObjectURL(objectUrl);
-				};
-
-				previewContainer.appendChild(img);
-				});
-			});
-		});
-	</script>
-	</body>
+                    previewContainer.appendChild(img);
+                });
+            });
+        });
+    </script>
+</body>
 </html>
