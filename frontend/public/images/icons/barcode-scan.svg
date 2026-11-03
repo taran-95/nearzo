@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="phoneG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+  </defs>
+  <!-- Smartphone Outline -->
+  <rect x="12" y="7" width="24" height="34" rx="4" fill="url(#phoneG)" stroke="#334155" stroke-width="1.5" />
+  <rect x="15" y="11" width="18" height="26" rx="2" fill="#0f172a" />
+  <!-- Barcode on screen -->
+  <line x1="18" y1="18" x2="18" y2="28" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" />
+  <line x1="21" y1="18" x2="21" y2="28" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" />
+  <line x1="25" y1="18" x2="25" y2="28" stroke="#ffffff" stroke-width="1" stroke-linecap="round" />
+  <line x1="28" y1="18" x2="28" y2="28" stroke="#ffffff" stroke-width="2" stroke-linecap="round" />
+  <!-- Red Laser Scan line -->
+  <line x1="14" y1="23" x2="34" y2="23" stroke="#ef4444" stroke-width="2" stroke-linecap="round" />
+  <!-- Corner Viewfinder Marks -->
+  <path d="M16 16H18M16 16V18" stroke="#38bdf8" stroke-width="1.5" stroke-linecap="round" />
+  <path d="M32 16H30M32 16V18" stroke="#38bdf8" stroke-width="1.5" stroke-linecap="round" />
+  <path d="M16 30H18M16 30V28" stroke="#38bdf8" stroke-width="1.5" stroke-linecap="round" />
+  <path d="M32 30H30M32 30V28" stroke="#38bdf8" stroke-width="1.5" stroke-linecap="round" />
+</svg>

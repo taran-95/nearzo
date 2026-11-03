@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="walkG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+  </defs>
+  <!-- Speed lines -->
+  <line x1="8" y1="20" x2="14" y2="20" stroke="#a7f3d0" stroke-width="2.5" stroke-linecap="round" />
+  <line x1="6" y1="26" x2="16" y2="26" stroke="#a7f3d0" stroke-width="2.5" stroke-linecap="round" />
+  <line x1="9" y1="32" x2="13" y2="32" stroke="#a7f3d0" stroke-width="2.5" stroke-linecap="round" />
+  <!-- Walking Shopper -->
+  <circle cx="28" cy="11" r="4.5" fill="url(#walkG)" />
+  <path d="M22 23L27 18L32 20L36 24" stroke="url(#walkG)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M27 20V29L33 37" stroke="url(#walkG)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M27 29L21 38" stroke="url(#walkG)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+</svg>

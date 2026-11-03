@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="roofG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#1d4ed8" />
+    </linearGradient>
+  </defs>
+  <!-- Shop Awning -->
+  <path d="M7 18L10 9H38L41 18H7Z" fill="url(#roofG)" />
+  <path d="M7 18C7 20 9 21.5 11 21.5C13 21.5 15 20 15 18C15 20 17 21.5 19 21.5C21 21.5 23 20 23 18C23 20 25 21.5 27 21.5C29 21.5 31 20 31 18C31 20 33 21.5 35 21.5C37 21.5 39 20 39 18H41V22C41 22 39 24 37 24C35 24 33 22 33 22C33 22 31 24 29 24C29 24 27 22 27 22C27 22 25 24 23 24C21 24 19 22 19 22C19 22 17 24 15 24C13 24 11 22 11 22C11 22 9 24 7 22V18Z" fill="#60a5fa" />
+  <!-- Store Front Building -->
+  <rect x="10" y="22" width="28" height="18" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2" />
+  <!-- Glass Window -->
+  <rect x="14" y="26" width="9" height="9" rx="1.5" fill="#dbeafe" stroke="#93c5fd" stroke-width="1.5" />
+  <!-- Door -->
+  <rect x="27" y="26" width="8" height="14" rx="1" fill="#3b82f6" />
+  <circle cx="29" cy="33" r="1" fill="#ffffff" />
+</svg>
