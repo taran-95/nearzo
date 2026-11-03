@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="pharmBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ecfdf5" />
+      <stop offset="100%" stop-color="#d1fae5" />
+    </linearGradient>
+    <linearGradient id="crossG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#047857" />
+    </linearGradient>
+    <linearGradient id="pillG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06b6d4" />
+      <stop offset="100%" stop-color="#0891b2" />
+    </linearGradient>
+  </defs>
+  <rect width="48" height="48" rx="14" fill="url(#pharmBg)" />
+  <!-- Pill Bottle -->
+  <rect x="14" y="16" width="16" height="22" rx="4" fill="url(#crossG)" />
+  <rect x="12" y="12" width="20" height="5" rx="2" fill="#ffffff" stroke="#a7f3d0" stroke-width="1.5" />
+  <!-- Cross on bottle -->
+  <path d="M22 23V31M18 27H26" stroke="#ffffff" stroke-width="3" stroke-linecap="round" />
+  <!-- Capsule leaning -->
+  <g transform="rotate(30 33 28)">
+    <rect x="29" y="18" width="8" height="18" rx="4" fill="url(#pillG)" />
+    <path d="M29 27H37V32C37 34.2 35.2 36 33 36C30.8 36 29 34.2 29 32V27Z" fill="#f43f5e" />
+  </g>
+</svg>

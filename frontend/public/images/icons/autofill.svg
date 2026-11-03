@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="wandG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8b5cf6" />
+      <stop offset="100%" stop-color="#6d28d9" />
+    </linearGradient>
+  </defs>
+  <!-- Magic Wand Handle -->
+  <path d="M12 36L28 20L31 23L15 39L12 36Z" fill="url(#wandG)" />
+  <path d="M28 20L31 17L34 20L31 23Z" fill="#fbbf24" />
+  <!-- Sparkles -->
+  <path d="M34 11L35 8L38 7L35 6L34 3L33 6L30 7L33 8Z" fill="#fbbf24" />
+  <path d="M21 11L21.5 9L23.5 8.5L21.5 8L21 6L20.5 8L18.5 8.5L20.5 9Z" fill="#38bdf8" />
+  <path d="M39 23L39.5 21L41.5 20.5L39.5 20L39 18L38.5 20L36.5 20.5L38.5 21Z" fill="#34d399" />
+</svg>

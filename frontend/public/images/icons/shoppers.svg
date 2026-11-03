@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="usrG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#1d4ed8" />
+    </linearGradient>
+  </defs>
+  <!-- Center Main User -->
+  <circle cx="24" cy="16" r="6" fill="url(#usrG)" />
+  <path d="M14 36C14 30.5 18.5 26 24 26C29.5 26 34 30.5 34 36V38H14V36Z" fill="url(#usrG)" />
+  <!-- Left Side User -->
+  <circle cx="12" cy="19" r="4.5" fill="#93c5fd" />
+  <path d="M5 36C5 32 8 28.5 12 28.5C13.5 28.5 14.8 29 16 29.8V35H5V36Z" fill="#93c5fd" />
+  <!-- Right Side User -->
+  <circle cx="36" cy="19" r="4.5" fill="#93c5fd" />
+  <path d="M43 36C43 32 40 28.5 36 28.5C34.5 28.5 33.2 29 32 29.8V35H43V36Z" fill="#93c5fd" />
+</svg>

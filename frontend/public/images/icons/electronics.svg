@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="elecBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f5f3ff" />
+      <stop offset="100%" stop-color="#ede9fe" />
+    </linearGradient>
+    <linearGradient id="padG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8b5cf6" />
+      <stop offset="100%" stop-color="#6d28d9" />
+    </linearGradient>
+  </defs>
+  <rect width="48" height="48" rx="14" fill="url(#elecBg)" />
+  <!-- Controller Body -->
+  <path d="M15 17C12 17 9 20 10 28C10.5 32 13 36 17 35C20 34.2 21 29 24 29C27 29 28 34.2 31 35C35 36 37.5 32 38 28C39 20 36 17 33 17C29 17 26 19 24 19C22 19 19 17 15 17Z" fill="url(#padG)" />
+  <!-- D-Pad -->
+  <path d="M16 23V27M14 25H18" stroke="#ffffff" stroke-width="2" stroke-linecap="round" />
+  <!-- Action Buttons -->
+  <circle cx="31" cy="23" r="1.5" fill="#38bdf8" />
+  <circle cx="33" cy="25" r="1.5" fill="#f43f5e" />
+  <circle cx="29" cy="25" r="1.5" fill="#4ade80" />
+  <circle cx="31" cy="27" r="1.5" fill="#facc15" />
+  <!-- Center lights -->
+  <circle cx="22" cy="24" r="1" fill="#c4b5fd" />
+  <circle cx="26" cy="24" r="1" fill="#c4b5fd" />
+</svg>

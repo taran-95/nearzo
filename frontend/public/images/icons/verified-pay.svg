@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="payG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#1d4ed8" />
+    </linearGradient>
+    <linearGradient id="shieldG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+  </defs>
+  <!-- Shopping Bag -->
+  <path d="M12 18H36L34 38C34 39.5 32.5 41 31 41H17C15.5 41 14 39.5 14 38L12 18Z" fill="url(#payG)" />
+  <path d="M18 18V13C18 9.7 20.7 7 24 7C27.3 7 30 9.7 30 13V18" fill="none" stroke="#93c5fd" stroke-width="3" stroke-linecap="round" />
+  <!-- Shield Badge -->
+  <path d="M24 23C27 23 31 22 31 22V29C31 34 26 36.5 24 37.5C22 36.5 17 34 17 29V22C17 22 21 23 24 23Z" fill="url(#shieldG)" stroke="#ffffff" stroke-width="1.5" />
+  <!-- Checkmark on Shield -->
+  <path d="M21 29L23 31L27 26" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+</svg>

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="pinG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#1d4ed8" />
+    </linearGradient>
+  </defs>
+  <!-- Signal Radar Waves -->
+  <circle cx="24" cy="40" r="10" fill="none" stroke="#93c5fd" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.6" />
+  <circle cx="24" cy="40" r="6" fill="#dbeafe" opacity="0.8" />
+  <!-- Map Pin Body -->
+  <path d="M24 6C16.8 6 11 11.8 11 19C11 28.5 24 41 24 41C24 41 37 28.5 37 19C37 11.8 31.2 6 24 6Z" fill="url(#pinG)" />
+  <!-- Pin Inner Hole / Store symbol -->
+  <circle cx="24" cy="19" r="6" fill="#ffffff" />
+  <circle cx="24" cy="19" r="3.5" fill="#2563eb" />
+</svg>
