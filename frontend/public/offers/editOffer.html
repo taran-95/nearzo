@@ -1,143 +1,354 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<link rel="stylesheet" href="/style/style-home.css">
-		<link rel="stylesheet" href="/style/style-auth.css">
-		<title>NearZo Just Search it-up</title>
-	</head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Offer — NearZo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="/style/style-home.css">
+    <style>
+        .offer-page {
+            max-width: 500px;
+            margin: 48px auto;
+            padding: 0 20px;
+            font-family: 'Inter', sans-serif;
+        }
 
-	<body class="uploadbody">
-		<header id="header" class="navbar"></header>
-		<script src="/scripts/header.js"></script>
-		<script src="/scripts/auth_guard.js"></script>
-		<script>
-			requireLogin();
-			requireUserTypeShop();
-		</script>
+        .offer-back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13.5px;
+            color: #5c5f62;
+            text-decoration: none;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
 
-		<main class="upload-page">
-			<div class="upload-heading"><h1>List Your Products</h1></div>
+        .offer-back-link:hover {
+            color: #000000;
+        }
 
-			<div class="upload-layout">
-				<section class="upload-card">
-					<h2 id="productNameH2"></h2>
-					<p>Edit your offer details below.</p>
-                    <button id="delOfferBtn" class="submit-button">Delete Offer</button>
-					<form class="uploadForm" method="POST">
-						
-						<label>Price</label>
-						<span>₹</span>
-						<input type="number" id="productPrice" placeholder="₹899" required><br>
+        .offer-card {
+            background: #ffffff;
+            border: 1px solid #e1e3e5;
+            border-radius: 14px;
+            padding: 28px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+        }
 
-						<label>Quantity</label>
-						<input type="number" id="productQuantity" placeholder="e.g. 50" required><br>
+        .offer-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 22px;
+            font-weight: 800;
+            color: #000000;
+            margin: 0 0 4px 0;
+        }
 
-						<label>Search Keywords</label>
-						<input type="text" id="searchKeywords" placeholder="e.g. phone, smartphone, apple, iphone (seperate by ,)" required><br>
+        .offer-subtitle {
+            font-size: 14px;
+            color: #64748b;
+            margin: 0 0 22px 0;
+        }
 
-						<div class="error" id="error-div"></div>
-						<button type="submit" class="submit-button">Edit Offer</button>
-					</form>
-				</section>
-					
-			</div>
-		</main>
-	<script>
-		const params = new URLSearchParams(window.location.search);
-		const productId = parseInt(params.get('productId'), 10);
+        .offer-alert {
+            display: none;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 13.5px;
+            margin-bottom: 18px;
+        }
+
+        .offer-alert.error {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+
+        .offer-alert.success {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #f0fdf4;
+            color: #15803d;
+            border: 1px solid #bbf7d0;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #202223;
+            margin-bottom: 6px;
+        }
+
+        .form-group input {
+            width: 100%;
+            height: 42px;
+            border: 1.5px solid #d2d5d8;
+            border-radius: 8px;
+            padding: 0 14px;
+            font-size: 14.5px;
+            font-family: 'Inter', sans-serif;
+            color: #202223;
+            background: #ffffff;
+            outline: none;
+            box-sizing: border-box;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .form-group input:focus {
+            border-color: #000000;
+            box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+
+        .btn-submit {
+            flex: 1;
+            height: 42px;
+            background: #000000;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: background 0.15s ease;
+        }
+
+        .btn-submit:hover {
+            background: #202223;
+        }
+
+        .btn-delete {
+            height: 42px;
+            padding: 0 16px;
+            background: #fff1f2;
+            color: #e11d48;
+            border: 1px solid #fecdd3;
+            border-radius: 8px;
+            font-size: 13.5px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.15s ease;
+        }
+
+        .btn-delete:hover {
+            background: #e11d48;
+            color: #ffffff;
+            border-color: #e11d48;
+        }
+
+        .btn-cancel {
+            height: 42px;
+            padding: 0 16px;
+            border: 1px solid #d2d5d8;
+            background: #ffffff;
+            color: #5c5f62;
+            border-radius: 8px;
+            font-size: 13.5px;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-cancel:hover {
+            background: #f6f6f7;
+            color: #000000;
+        }
+    </style>
+</head>
+
+<body>
+    <header id="header" class="navbar"></header>
+    <script src="/scripts/header.js"></script>
+    <script src="/scripts/auth_guard.js"></script>
+    <script>
+        requireLogin();
+        requireUserTypeShop();
+    </script>
+
+    <main class="offer-page">
+        <a href="/auth/profile" class="offer-back-link">
+            <i class="fa-solid fa-arrow-left"></i> Back to Profile
+        </a>
+
+        <div class="offer-card">
+            <h1 class="offer-title">Edit Offer</h1>
+            <p class="offer-subtitle" id="productNameSub">Updating offer details</p>
+
+            <div class="offer-alert" id="error-div"></div>
+
+            <form id="editOfferForm" method="POST">
+                <div class="form-group">
+                    <label for="productPrice">Price (₹)</label>
+                    <input type="number" id="productPrice" placeholder="Enter shelf price" min="1" step="any" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="productQuantity">Quantity</label>
+                    <input type="number" id="productQuantity" placeholder="Available units in store" min="0" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="searchKeywords">Keywords</label>
+                    <input type="text" id="searchKeywords" placeholder="Keywords (e.g. mobile, electronics)" required>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-submit" id="btnSaveOffer">
+                        <i class="fa-solid fa-check"></i> Save Changes
+                    </button>
+                    <button type="button" id="delOfferBtn" class="btn-delete">
+                        <i class="fa-solid fa-trash-can"></i> Delete
+                    </button>
+                    <a href="/auth/profile" class="btn-cancel">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const productId = parseInt(params.get('productId'), 10);
         const offerId = parseInt(params.get('offerId'), 10);
 
-		if (!productId || !offerId) {
-			window.location.href = '/products/uploadProduct'
-		}
+        if (!productId || !offerId) {
+            window.location.href = '/auth/profile';
+        }
 
-		document.addEventListener("DOMContentLoaded", async () => {
-			const uploadForm = document.querySelector(".uploadForm");
-			const imageInput = document.getElementById("productImage");
-			const previewContainer = document.getElementById("previewContainer");
-			const errorDiv = document.getElementById("error-div");
-			const productNameH2 = document.getElementById("productNameH2");
-
-            const delOfferBtn = document.getElementById("delOfferBtn");
+        document.addEventListener("DOMContentLoaded", async () => {
+            const form = document.getElementById("editOfferForm");
+            const errorDiv = document.getElementById("error-div");
+            const productNameSub = document.getElementById("productNameSub");
+            const btnSave = document.getElementById("btnSaveOffer");
+            const btnDelete = document.getElementById("delOfferBtn");
 
             const priceInput = document.getElementById("productPrice");
             const quantityInput = document.getElementById("productQuantity");
-            const searchKeywordsInput = document.getElementById('searchKeywords');
+            const searchKeywordsInput = document.getElementById("searchKeywords");
 
-			const productResponse = await fetch(`http://localhost:3000/products/${productId}`, {method: "GET"});
-			if(!productResponse.ok) {
-				const error = await productResponse.json();
-				errorDiv.textContent = error.message;
-			}
-			const product = await productResponse.json();
-			const productData = product.customProduct ? product.customProduct : product.identifiedProduct;
-			productNameH2.textContent = "Create offer for " + productData.name;
+            try {
+                const pRes = await fetch(`http://localhost:3000/products/${productId}`);
+                if (pRes.ok) {
+                    const pData = await pRes.json();
+                    const prod = pData.customProduct || pData.identifiedProduct || {};
+                    if (prod.name) productNameSub.textContent = "For: " + prod.name;
+                }
 
-            const offerResponse = await fetch(`http://localhost:3000/offers/${offerId}`, {method: "GET"});
-            if(!offerResponse.ok) {
-				const error = await offerResponse.json();
-				errorDiv.textContent = error.message;
-			}
-			const offer = await offerResponse.json();
-            priceInput.value = offer.price;
-            quantityInput.value = offer.quantity;
-            searchKeywordsInput.value = offer.searchKeywords;
-		
-			uploadForm.addEventListener("submit", async function(e) {
-				e.preventDefault();
-				
-				try {
-					//restriction price and quantity
-					const searchKeywords = searchKeywordsInput.value.split(/\s*,\s*/);
+                const oRes = await fetch(`http://localhost:3000/offers/${offerId}`);
+                if (oRes.ok) {
+                    const offer = await oRes.json();
+                    priceInput.value = offer.price;
+                    quantityInput.value = offer.quantity;
+                    searchKeywordsInput.value = Array.isArray(offer.searchKeywords)
+                        ? offer.searchKeywords.join(", ")
+                        : (offer.searchKeywords || "");
+                }
+            } catch (_) {}
 
+            form.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                errorDiv.className = "offer-alert";
+                errorDiv.textContent = "";
 
-					const body = {
-						price: Number(priceInput.value),
-						quantity: Number(quantityInput.value),
-						searchKeywords: searchKeywords
-					};
+                try {
+                    const price = Number(priceInput.value);
+                    const qty = Number(quantityInput.value);
+                    const keywords = searchKeywordsInput.value
+                        .split(",")
+                        .map(k => k.trim())
+                        .filter(Boolean);
 
-					const response = await fetch(`http://localhost:3000/offers/${offerId}`, {
-						method: "PATCH",
-						credentials: "include",
-						headers: {
-        					"Content-Type": "application/json"
-    					},
-						body: JSON.stringify(body)
-					});
+                    if (!price || price <= 0) throw new Error("Please enter a valid price");
+                    if (qty < 0 || isNaN(qty)) throw new Error("Please enter a valid quantity");
 
-					if(!response.ok) {
-						const error = await response.json();
-						console.log("hi");
-						throw new Error(error.message);
-					}
+                    btnSave.disabled = true;
+                    btnSave.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Saving...`;
 
-					errorDiv.textContent = "Offer Updated Successfully. Redirecting...";
-					errorDiv.style.color = "Green";
-					setTimeout(() => {window.location.href = `/productListing/${productId}`;}, 2000);
-				} catch (error) {
-					errorDiv.textContent = error.message;
-				}
-			});
+                    const body = { price, quantity: qty, searchKeywords: keywords };
 
-            delOfferBtn.addEventListener('click', async (e) => {
-                try{
-                    const response = await fetch(`http://localhost:3000/offers/delete/${offerId}`, {
+                    const res = await fetch(`http://localhost:3000/offers/${offerId}`, {
+                        method: "PATCH",
+                        credentials: "include",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(body)
+                    });
+
+                    if (!res.ok) {
+                        const err = await res.json();
+                        throw new Error(err.message || "Failed to update offer");
+                    }
+
+                    errorDiv.className = "offer-alert success";
+                    errorDiv.innerHTML = `<i class="fa-solid fa-check-circle"></i> Offer updated successfully!`;
+                    setTimeout(() => {
+                        window.location.href = "/auth/profile";
+                    }, 1000);
+
+                } catch (err) {
+                    btnSave.disabled = false;
+                    btnSave.innerHTML = `<i class="fa-solid fa-check"></i> Save Changes`;
+                    errorDiv.className = "offer-alert error";
+                    errorDiv.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> ${err.message}`;
+                }
+            });
+
+            btnDelete.addEventListener("click", async () => {
+                if (!confirm("Are you sure you want to delete this offer?")) return;
+
+                btnDelete.disabled = true;
+                btnDelete.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i>`;
+
+                try {
+                    const res = await fetch(`http://localhost:3000/offers/delete/${offerId}`, {
                         method: "POST",
                         credentials: "include"
                     });
-                    if(!response.ok) {
-                        const error = await response.json();
-                        throw new Error(error.message);
-				    }
-                    errorDiv.textContent = "Offer Deleted Successfully. Redirecting...";
-					errorDiv.style.color = "Green";
-					setTimeout(() => {window.location.href = "/";}, 2000);
-                } catch (error) {
-                    errorDiv.textContent = error.message;
+                    if (!res.ok) {
+                        const err = await res.json();
+                        throw new Error(err.message || "Failed to delete offer");
+                    }
+                    errorDiv.className = "offer-alert success";
+                    errorDiv.innerHTML = `<i class="fa-solid fa-check-circle"></i> Offer deleted. Redirecting...`;
+                    setTimeout(() => {
+                        window.location.href = "/auth/profile";
+                    }, 1000);
+                } catch (err) {
+                    btnDelete.disabled = false;
+                    btnDelete.innerHTML = `<i class="fa-solid fa-trash-can"></i> Delete`;
+                    errorDiv.className = "offer-alert error";
+                    errorDiv.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> ${err.message}`;
                 }
             });
-		});
-	</script>
-	</body>
+        });
+    </script>
+</body>
 </html>

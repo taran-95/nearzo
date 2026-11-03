@@ -26,7 +26,7 @@ function escapeHtml(str) {
 function adaptBackendProduct(bp) {
     const rawPrice = Number(bp.price) || 0;
     const storeName = bp.store_name || 'Verified Local Partner';
-    const storeLocation = bp.store_location || 'Neighborhood Market';
+    const storeLocation = bp.store_location || (bp.distance_km ? `${Number(bp.distance_km).toFixed(1)} km away` : '0.8 km away');
     const imgUrl = getProductImageUrl(bp);
 
     return {

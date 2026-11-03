@@ -26,11 +26,11 @@ async function loadHeader() {
         }
 
         const navLinksHtml = `
-            <div class="nav-links">
+            <nav class="nav-links" aria-label="Main Navigation">
                 <a href="/" class="nav-link ${isHome && !isAbout ? 'active' : ''}">Home</a>
                 <a href="/products/products" class="nav-link ${isProducts ? 'active' : ''}">Products</a>
-                <a href="/#about" class="nav-link ${isAbout ? 'active' : ''}">About</a>
-            </div>
+                <a href="/#how-it-works" class="nav-link ${isAbout ? 'active' : ''}" id="navHowItWorks">How It Works</a>
+            </nav>
         `;
 
         let navActionsHtml = '';
@@ -40,40 +40,35 @@ async function loadHeader() {
                 <div class="nav-actions">
                     <!-- LOGIN DROPDOWN -->
                     <div class="nav-dropdown">
-                        <a href="/auth/userLogin" class="nav-pill-btn">
-                            <i class="fa-solid fa-arrow-right-to-bracket"></i> Login
-                        </a>
-                        <div class="dropdown-menu">
-                            <a href="/auth/userLogin"><i class="fa-solid fa-user"></i> Login as Customer</a>
-                            <a href="/auth/buisnessLogin"><i class="fa-solid fa-store"></i> Login as Business</a>
+                        <button type="button" class="nav-pill-btn nav-pill-ghost" id="navLoginBtn">
+                            <span>Log in</span> <i class="fa-solid fa-chevron-down nav-dropdown-arrow"></i>
+                        </button>
+                        <div class="nav-dropdown-menu">
+                            <a href="/auth/userLogin" class="nav-dropdown-item"><i class="fa-solid fa-user"></i> Customer Login</a>
+                            <a href="/auth/buisnessLogin" class="nav-dropdown-item"><i class="fa-solid fa-store"></i> Merchant Login</a>
                         </div>
                     </div>
 
                     <!-- REGISTER DROPDOWN -->
                     <div class="nav-dropdown">
-                        <a href="/auth/userRegister" class="nav-pill-btn">
-                            <i class="fa-solid fa-user-plus"></i> Register
-                        </a>
-                        <div class="dropdown-menu">
-                            <a href="/auth/userRegister"><i class="fa-solid fa-user"></i> Register as Customer</a>
-                            <a href="/auth/buisnessRegister"><i class="fa-solid fa-store"></i> Register as Business</a>
+                        <button type="button" class="nav-pill-btn nav-pill-primary" id="navRegisterBtn">
+                            <span>Register</span> <i class="fa-solid fa-chevron-down nav-dropdown-arrow"></i>
+                        </button>
+                        <div class="nav-dropdown-menu">
+                            <a href="/auth/userRegister" class="nav-dropdown-item"><i class="fa-solid fa-user-plus"></i> Customer Register</a>
+                            <a href="/auth/buisnessRegister" class="nav-dropdown-item"><i class="fa-solid fa-shop"></i> Merchant Register</a>
                         </div>
                     </div>
-
-                    <!-- CART BUTTON -->
-                    <a href="/products/products" class="nav-pill-btn nav-pill-cart" title="View In-Stock Products">
-                        <i class="fa-solid fa-cart-shopping"></i> Cart (0)
-                    </a>
                 </div>
             `;
         } else if (isShop) {
             navActionsHtml = `
                 <div class="nav-actions">
                     <a href="/products/uploadProductTypeSelectMenu" class="nav-pill-btn nav-pill-primary">
-                        <i class="fa-solid fa-barcode"></i> Add Product
+                        <i class="fa-solid fa-plus"></i> Add Product
                     </a>
-                    <a href="/auth/profile" class="nav-pill-btn">
-                        <i class="fa-solid fa-store"></i> Store Profile
+                    <a href="/auth/profile" class="nav-pill-btn nav-pill-ghost">
+                        Store Profile
                     </a>
                     <button type="button" class="nav-pill-btn nav-pill-logout" id="navLogoutBtn">
                         <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
@@ -83,28 +78,38 @@ async function loadHeader() {
         } else {
             navActionsHtml = `
                 <div class="nav-actions">
-                    <a href="/auth/profile" class="nav-pill-btn">
-                        <i class="fa-solid fa-user"></i> My Profile
+                    <a href="/auth/profile" class="nav-pill-btn nav-pill-ghost">
+                        My Account
                     </a>
                     <button type="button" class="nav-pill-btn nav-pill-logout" id="navLogoutBtn">
                         <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
                     </button>
-                    <a href="/products/products" class="nav-pill-btn nav-pill-cart" title="View In-Stock Products">
-                        <i class="fa-solid fa-cart-shopping"></i> Cart (0)
-                    </a>
                 </div>
             `;
         }
 
         header.innerHTML = `
             <div class="navbar-container">
-                <a href="/" class="nav-brand" title="NearZo - Find Local Products Instantly">
+                <a href="/" class="nav-brand" title="NearZo — Hyperlocal In-Stock Shopping">
                     <span class="brand-text">Near<span class="brand-accent">Zo</span></span>
                 </a>
                 ${navLinksHtml}
                 ${navActionsHtml}
             </div>
         `;
+
+        // Smooth scroll for "How It Works"
+        const howItWorksLink = document.getElementById('navHowItWorks');
+        if (howItWorksLink && (currentPath === '/' || currentPath.endsWith('index.html'))) {
+            howItWorksLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = document.getElementById('how-it-works') || document.getElementById('about');
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                    history.pushState(null, null, '#how-it-works');
+                }
+            });
+        }
 
         // Handle Logout Click
         const logoutBtn = document.getElementById('navLogoutBtn');
@@ -119,6 +124,24 @@ async function loadHeader() {
                 window.location.href = '/';
             });
         }
+
+        // Handle Dropdown Click Toggles (Login & Register)
+        const dropdownToggles = header.querySelectorAll('.nav-dropdown > .nav-pill-btn');
+        dropdownToggles.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const parent = btn.closest('.nav-dropdown');
+                const wasOpen = parent.classList.contains('open');
+                header.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('open'));
+                if (!wasOpen) {
+                    parent.classList.add('open');
+                }
+            });
+        });
+
+        document.addEventListener('click', () => {
+            header.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('open'));
+        });
 
     } catch (error) {
         console.warn('Navbar load error:', error.message);

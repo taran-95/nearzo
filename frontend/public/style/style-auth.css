@@ -73,7 +73,7 @@
     height: 50px;
     border: none;
     border-radius: 10px;
-    background: #2563eb;
+    background: #000000;
     color: white;
     font-size: 16px;
     cursor: pointer;
@@ -82,7 +82,7 @@
 }
 
 .btn:hover {
-    background: #1d4ed8;
+    background: #202223;
 }
 
 .login-text {
@@ -169,7 +169,7 @@
     height: 60px;
     margin: -65px auto 20px;
     background: #ffffff;
-    color: #2563eb;
+    color: #000000;
     border-radius: 15px;
     display: flex;
     justify-content: center;
@@ -219,7 +219,7 @@
 }
 
 .form-section h3 i {
-    color: #2563eb;
+    color: #000000;
     margin-right: 8px;
 }
 
@@ -258,8 +258,8 @@
 .business-register-box .input select:focus,
 .business-register-box .input textarea:focus {
     background: #ffffff;
-    border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+    border-color: #000000;
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08);
 }
 
 .business-register-box .input > i {
@@ -329,7 +329,7 @@
 }
 
 .time-field label i {
-    color: #2563eb;
+    color: #000000;
     margin-right: 5px;
 }
 
@@ -347,8 +347,8 @@
 }
 
 .time-field input[type="time"]:focus {
-    border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+    border-color: #000000;
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08);
 }
 
 .working-days {
@@ -365,7 +365,7 @@
 }
 
 .working-days > label i {
-    color: #2563eb;
+    color: #000000;
     margin-right: 5px;
 }
 
@@ -396,14 +396,14 @@
 }
 
 .day-option input:checked + span {
-    background: #2563eb;
-    border-color: #2563eb;
+    background: #000000;
+    border-color: #000000;
     color: #ffffff;
 }
 
 .day-option span:hover {
-    border-color: #2563eb;
-    color: #2563eb;
+    border-color: #000000;
+    color: #000000;
 }
 
 .day-option input:checked + span:hover {
@@ -417,7 +417,7 @@
     justify-content: center;
     align-items: center;
     margin-top: 5px;
-    background: #2563eb;
+    background: #000000;
     color: #ffffff;
     border-radius: 10px;
     text-decoration: none;
@@ -427,8 +427,8 @@
 }
 
 .business-register-btn:hover {
-    background: #1d4ed8;
-    transform: translateY(-1px);
+    background: #202223;
+    
 }
 
 .business-register-box .login-text {

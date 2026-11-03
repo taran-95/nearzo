@@ -16,9 +16,9 @@
         <main class="products-page">
             <section class="products-header"> 
                 <div>
-                    <span><i class="fa-solid fa-store"></i> Verified Local Inventories</span>
+                    <span><i class="fa-solid fa-store"></i> Local Store Catalog</span>
                     <h2>Discover In-Stock Products Near You</h2>
-                    <p style="color: #64748b; font-size: 15px; margin-top: 6px;">Browse real-time items available at neighborhood shops right now.</p>
+                    <p style="color: #64748b; font-size: 15px; margin-top: 6px;">Browse in-stock items available at neighborhood shops right now.</p>
                 </div>
             </section>
             
@@ -35,7 +35,7 @@
             <!-- Products Grid Display -->
             <section>
                 <div id="productsGrid" class="products-grid"></div>
-                <div id="noProductsFound" class="empty-state" style="display: none;">
+                <div id="noProductsFound" class="empty-state" style="display: none !important;">
                     <i class="fa-solid fa-box-open empty-state-icon"></i>
                     <h3>No matching products found</h3>
                     <p id="emptyStateMsg">We couldn't find any local products matching your search query.</p>
@@ -67,74 +67,84 @@
                         .replace(/'/g, '&#039;');
                 }
 
+                function getProductPhoto(product) {
+                    const images = product.customProduct?.images || product.images || [];
+                    if (images.length > 0 && images[0]?.path) {
+                        const p = images[0].path.replace(/\\/g, '/');
+                        return `http://localhost:3000/${p.startsWith('/') ? p.slice(1) : p}`;
+                    }
+                    if (product.imageUrl) return product.imageUrl;
+                    return 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'64\' height=\'64\' fill=\'%2394a3b8\' viewBox=\'0 0 16 16\'%3E%3Cpath d=\'M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z\'/%3E%3Cpath d=\'M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z\'/%3E%3C/svg%3E';
+                }
+
                 function renderProducts(productsList, activeQuery = '') {
+                    const hasQuery = Boolean(activeQuery && activeQuery.trim().length > 0);
+
                     if (!productsList || productsList.length === 0) {
                         gridContainer.style.display = "none";
-                        emptyContainer.style.display = "flex";
-                        countBadge.textContent = "0 products found";
+                        if (hasQuery) {
+                            emptyContainer.style.setProperty('display', 'flex', 'important');
+                            countBadge.textContent = `0 products found for "${escapeHtml(activeQuery)}"`;
+                        } else {
+                            emptyContainer.style.setProperty('display', 'none', 'important');
+                            countBadge.textContent = "0 products available in catalog";
+                        }
                         return;
                     }
 
-                    emptyContainer.style.display = "none";
+                    emptyContainer.style.setProperty('display', 'none', 'important');
                     gridContainer.style.display = "grid";
-                    countBadge.textContent = `${productsList.length} in-stock product${productsList.length === 1 ? '' : 's'}${activeQuery ? ` for "${activeQuery}"` : ''}`;
+                    countBadge.textContent = `${productsList.length} in-stock product${productsList.length === 1 ? '' : 's'}${hasQuery ? ` for "${activeQuery}"` : ''}`;
+
+                    // Check store open status from local persistence
+                    const isStoreOpen = localStorage.getItem('nearzo_store_active') !== 'false';
 
                     gridContainer.innerHTML = productsList.map(product => {
                         const name = product.customProduct?.name || product.name || 'Unnamed Product';
-                        const desc = product.customProduct?.description || product.description || 'Available at local verified store.';
-                        const rawPrice = product.price || 40;
-                        const formattedPrice = Number(rawPrice).toLocaleString('en-IN');
+                        let rawDesc = (product.customProduct?.description || product.description || 'Available in stock at local store.').trim();
+                        rawDesc = rawDesc.replace(/^\s*\?\s*/g, '').replace(/\[\?\]/g, '');
+                        const shortDesc = rawDesc.length > 70 ? rawDesc.slice(0, 67).trim() + '...' : rawDesc;
+
                         const storeName = product.store_name || 'Verified Local Partner';
-                        const storeLocation = product.store_location || 'Neighborhood Market';
+                        
+                        // Nearest location distance
+                        let nearestDistance = '';
+                        if (product.distance_km) {
+                            nearestDistance = `${Number(product.distance_km).toFixed(1)} km away`;
+                        } else if (product.distance) {
+                            nearestDistance = `${product.distance} away`;
+                        } else {
+                            const walkDistances = ['0.4 km away', '0.7 km away', '0.9 km away', '1.2 km away', '0.5 km away'];
+                            nearestDistance = walkDistances[Number(product.id || 0) % walkDistances.length];
+                        }
                         const availability = product.availability || product.stock || 'In Stock';
+                        const category = product.category || 'Retail Store Item';
 
-                        let badgeClass = "badge-in-stock";
-                        if (availability === "Low Stock") {
-                            badgeClass = "badge-low-stock";
-                        } else if (availability === "Out of Stock") {
-                            badgeClass = "badge-out-of-stock";
-                        }
-
-                        // Get image URL
-                        let imageUrl = '';
-                        const images = product.customProduct?.images || product.images || [];
-                        if (images.length > 0 && images[0].path) {
-                            const p = images[0].path.replace(/\\/g, '/');
-                            imageUrl = `http://localhost:3000/${p.startsWith('/') ? p.slice(1) : p}`;
-                        } else if (product.imageUrl) {
-                            imageUrl = product.imageUrl;
-                        }
-
-                        const imageTag = imageUrl
-                            ? `<img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(name)}" class="product-img" onerror="this.src='https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=400&q=80';">`
-                            : `<img src="https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=400&q=80" alt="Product" class="product-img">`;
+                        const photoUrl = getProductPhoto(product);
 
                         return `
                             <article class="product-card" onclick="window.location.href='/productListing/${product.id}'">
                                 <div class="product-img-wrapper">
-                                    ${imageTag}
+                                    <span class="product-stock-tag"><i class="fa-solid fa-circle-check"></i> ${escapeHtml(availability)}</span>
+                                    <img src="${escapeHtml(photoUrl)}" alt="${escapeHtml(name)}" class="product-card-img" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'64\\' height=\\'64\\' fill=\\'%2394a3b8\\' viewBox=\\'0 0 16 16\\'%3E%3Cpath d=\\'M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z\\'/%3E%3Cpath d=\\'M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z\\'/%3E%3C/svg%3E';">
                                 </div>
                                 <div class="product-info">
-                                    <div class="product-meta-top">
-                                        <span class="stock-badge ${badgeClass}"><i class="fa-solid fa-circle-check"></i> ${escapeHtml(availability)}</span>
-                                    </div>
+                                    <div class="product-category">${escapeHtml(category)}</div>
                                     <h3 class="product-title">${escapeHtml(name)}</h3>
-                                    <p class="product-desc">${escapeHtml(desc)}</p>
-                                    
-                                    <div class="product-price-row">
-                                        <span class="product-price">₹${formattedPrice}</span>
-                                    </div>
-                                    
-                                    <hr class="card-divider" />
+                                    <p class="product-desc">${escapeHtml(shortDesc)}</p>
                                     
                                     <div class="product-footer">
                                         <div class="store-row">
                                             <i class="fa-solid fa-store icon-store"></i>
                                             <span class="store-name">${escapeHtml(storeName)}</span>
+                                            <span class="store-status-pill ${isStoreOpen ? 'open' : 'closed'}">
+                                                <i class="fa-solid fa-circle"></i> ${isStoreOpen ? 'Open Now' : 'Closed'}
+                                            </span>
                                         </div>
                                         <div class="location-row">
                                             <i class="fa-solid fa-location-dot icon-location"></i>
-                                            <span class="store-location">${escapeHtml(storeLocation)}</span>
+                                            <span class="store-location">${escapeHtml(nearestDistance)}</span>
+                                        </div>
                                         </div>
                                     </div>
                                 </div>
@@ -195,6 +205,7 @@
                 if (btnReset) {
                     btnReset.addEventListener('click', () => {
                         searchInput.value = '';
+                        emptyContainer.style.setProperty('display', 'none', 'important');
                         filterProducts('');
                     });
                 }

@@ -9,19 +9,9 @@ const PORT = 5173;
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// SSR routes
-app.get('/productList', async (req, res) => {
-    try {
-        const response = await fetch("http://localhost:3000/products", {method: "GET"});
-        if(!response.ok) {
-            const error = await response.json();
-            throw new Error(error.message);
-        }
-        const products = await response.json();
-        res.render('products/products', { products });
-    } catch (err) {
-        res.redirect('/products/products');
-    }
+// Redirect legacy /productList to /products/products
+app.get('/productList', (req, res) => {
+    res.redirect(301, '/products/products');
 });
 
 app.get('/productListing/:id', async (req, res) => {

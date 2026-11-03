@@ -8,9 +8,9 @@
     <!-- Google Fonts: Plus Jakarta Sans & Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- Font Awesome Icons (Strictly no emojis) -->
+    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     
     <!-- Stylesheet -->
@@ -23,7 +23,7 @@
 
     <main>
         <!-- ===================================================
-             1. HERO SECTION (Frosted White & Dribbble Inspired)
+             1. HERO SECTION (Clean Black & White Hyperlocal Theme)
              =================================================== -->
         <section class="hero-section">
             <div class="hero-grid">
@@ -66,7 +66,7 @@
                         <a href="/products/products?search=Coca" class="tag-pill">Coca-Cola</a>
                         <a href="/products/products?search=Gamepad" class="tag-pill">Gamepads</a>
                         <a href="/products/products?search=Cream" class="tag-pill">Skincare</a>
-                        <a href="/products/products?search=Biscuit" class="tag-pill">Biscuits</a>
+                        <a href="/products/products?search=Coffee" class="tag-pill">Coffee</a>
                         <a href="/products/products?search=Electronics" class="tag-pill">Electronics</a>
                     </div>
                 </div>
@@ -74,29 +74,19 @@
                 <!-- Right Hero Visual Showcase Card -->
                 <div class="hero-visual-card">
                     <img 
-                        src="https://images.unsplash.com/photo-1578916171728-46686eac8d58?auto=format&fit=crop&w=800&q=80" 
-                        alt="Local Store Shelf" 
+                        src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1200&q=80" 
+                        alt="Local Storefront Inventory" 
                         class="hero-main-img"
                     >
 
-                    <!-- Floating Frosted Badges -->
-                    <div class="floating-badge badge-top-right">
-                        <div class="badge-icon blue">
-                            <i class="fa-solid fa-flask"></i>
-                        </div>
-                        <div>
-                            <div class="badge-text-top">Interactive Prototype</div>
-                            <div class="badge-text-val">Simulated Local Inventory</div>
-                        </div>
-                    </div>
-
+                    <!-- Clean Minimalist Store Indicator -->
                     <div class="floating-badge badge-bottom-left">
-                        <div class="badge-icon blue">
-                            <i class="fa-solid fa-person-walking"></i>
+                        <div class="badge-icon">
+                            <i class="fa-solid fa-store"></i>
                         </div>
                         <div>
-                            <div class="badge-text-top">Nearest Partner</div>
-                            <div class="badge-text-val">250m Away • Walk In Now</div>
+                            <div class="badge-text-top">Neighborhood Inventory</div>
+                            <div class="badge-text-val">Local Shops Ready for Walk-In</div>
                         </div>
                     </div>
                 </div>
@@ -104,7 +94,7 @@
         </section>
 
         <!-- ===================================================
-             2. RECOMMENDED PRODUCTS SECTION (From Dribbble Shot)
+             2. RECOMMENDED PRODUCTS SECTION (From Previous Index)
              =================================================== -->
         <section class="recommendations-section">
             <div class="section-head-row">
@@ -131,13 +121,13 @@
             <!-- Slider Container -->
             <div class="slider-container" id="sliderContainer">
                 <div class="products-slider-track" id="recommendedTrack">
-                    <!-- Populated dynamically via JavaScript with fallback curated items -->
+                    <!-- Populated dynamically via JavaScript with backend / curated fallback items -->
                 </div>
             </div>
         </section>
 
         <!-- ===================================================
-             3. QUICK CATEGORY TILES (Inspired by Dribbble side tiles)
+             3. POPULAR LOCAL CATEGORIES (From Previous Index)
              =================================================== -->
         <section class="categories-section">
             <div class="section-head-row" style="margin-bottom: 24px;">
@@ -151,18 +141,18 @@
 
             <div class="categories-grid">
                 <a href="/products/products?search=Food" class="category-card">
-                    <div class="cat-icon-box" style="background: transparent;">
-                        <img src="/images/icons/groceries.svg" alt="Groceries & Snacks" style="width: 44px; height: 44px; border-radius: 12px;">
+                    <div class="cat-icon-badge">
+                        <i class="fa-solid fa-basket-shopping"></i>
                     </div>
                     <div>
                         <div class="cat-title">Groceries & Snacks</div>
-                        <div class="cat-count">Chilled sodas, chips, biscuits, dairy</div>
+                        <div class="cat-count">Chilled sodas, chips, coffee, essentials</div>
                     </div>
                 </a>
 
                 <a href="/products/products?search=Electronics" class="category-card">
-                    <div class="cat-icon-box" style="background: transparent;">
-                        <img src="/images/icons/electronics.svg" alt="Gaming & Electronics" style="width: 44px; height: 44px; border-radius: 12px;">
+                    <div class="cat-icon-badge">
+                        <i class="fa-solid fa-gamepad"></i>
                     </div>
                     <div>
                         <div class="cat-title">Gaming & Electronics</div>
@@ -171,173 +161,230 @@
                 </a>
 
                 <a href="/products/products?search=Cream" class="category-card">
-                    <div class="cat-icon-box" style="background: transparent;">
-                        <img src="/images/icons/pharmacy.svg" alt="Pharmacy & Skincare" style="width: 44px; height: 44px; border-radius: 12px;">
+                    <div class="cat-icon-badge">
+                        <i class="fa-solid fa-prescription-bottle-medical"></i>
                     </div>
                     <div>
                         <div class="cat-title">Pharmacy & Skincare</div>
-                        <div class="cat-count">Topical creams, OTC health, first-aid</div>
+                        <div class="cat-count">Topical creams, OTC health, daily care</div>
                     </div>
                 </a>
 
                 <a href="/products/products?search=General" class="category-card">
-                    <div class="cat-icon-box" style="background: transparent;">
-                        <img src="/images/icons/essentials.svg" alt="Daily Essentials" style="width: 44px; height: 44px; border-radius: 12px;">
+                    <div class="cat-icon-badge">
+                        <i class="fa-solid fa-pump-soap"></i>
                     </div>
                     <div>
                         <div class="cat-title">Daily Essentials</div>
-                        <div class="cat-count">Soaps, grooming, personal care</div>
+                        <div class="cat-count">Personal care, hygiene, household</div>
                     </div>
                 </a>
             </div>
         </section>
 
         <!-- ===================================================
-             4. ABOUT NEARZO & HOW IT WORKS (Guided Walkthrough)
+             4. HOW NEARZO WORKS (From Previous Index)
              =================================================== -->
-        <section class="about-section" id="about">
+        <section class="about-section" id="how-it-works">
+            <span id="about"></span>
             <div class="about-header-card">
                 <div class="section-tag" style="justify-content: center;">
                     <i class="fa-solid fa-circle-question"></i> Instant Guide
                 </div>
                 <h2>How NearZo Works</h2>
                 <p>
-                    Stop searching online only to wait days for delivery. NearZo bridges you to physical shelves in your neighborhood with real-time stock verification.
+                    Stop searching online only to wait days for courier delivery. NearZo bridges you directly to physical shelves in your neighborhood.
                 </p>
 
                 <!-- Interactive Role Switcher -->
                 <div class="guide-tabs" role="tablist">
-                    <button type="button" class="guide-tab-btn active" id="tabShopper" role="tab">
+                    <button type="button" class="guide-tab-btn active" id="tabShopper" role="tab" onclick="switchGuideTab('shopper')">
                         <i class="fa-solid fa-bag-shopping"></i> Customer Guide
                     </button>
-                    <button type="button" class="guide-tab-btn" id="tabMerchant" role="tab">
+                    <button type="button" class="guide-tab-btn" id="tabMerchant" role="tab" onclick="switchGuideTab('merchant')">
                         <i class="fa-solid fa-store"></i> Store Owner Guide
                     </button>
                 </div>
+                <script>
+                    function switchGuideTab(type) {
+                        const tabShopper = document.getElementById('tabShopper');
+                        const tabMerchant = document.getElementById('tabMerchant');
+                        const stepsShopper = document.getElementById('stepsShopper');
+                        const stepsMerchant = document.getElementById('stepsMerchant');
+                        if (!tabShopper || !tabMerchant || !stepsShopper || !stepsMerchant) return;
+
+                        if (type === 'merchant') {
+                            tabMerchant.classList.add('active');
+                            tabShopper.classList.remove('active');
+                            stepsShopper.style.display = 'none';
+                            stepsMerchant.style.display = 'grid';
+                        } else {
+                            tabShopper.classList.add('active');
+                            tabMerchant.classList.remove('active');
+                            stepsShopper.style.display = 'grid';
+                            stepsMerchant.style.display = 'none';
+                        }
+                    }
+                </script>
             </div>
 
             <!-- 4 Guided Steps Grid (Shopper View) -->
             <div class="steps-grid" id="stepsShopper">
                 <div class="step-card">
                     <div class="step-number-tag">01</div>
-                    <div class="step-icon-circle" style="background: #eff6ff; border-color: #bfdbfe;">
-                        <img src="/images/icons/search-scan.svg" alt="Search & Barcode" style="width: 32px; height: 32px;">
+                    <div class="step-icon-badge">
+                        <i class="fa-solid fa-magnifying-glass"></i>
                     </div>
-                    <h3>Search or Barcode Scan</h3>
-                    <p>Type any product name or scan a barcode from an empty wrapper at home. Our engine finds the exact specs instantly.</p>
+                    <h3>Search or Barcode Lookup</h3>
+                    <p>Type any product name or enter a barcode. Our local engine indexes catalog specs instantly.</p>
                 </div>
 
                 <div class="step-card">
                     <div class="step-number-tag">02</div>
-                    <div class="step-icon-circle" style="background: #eff6ff; border-color: #bfdbfe;">
-                        <img src="/images/icons/local-map.svg" alt="Local Stock & Price" style="width: 32px; height: 32px;">
+                    <div class="step-icon-badge">
+                        <i class="fa-solid fa-store"></i>
                     </div>
                     <h3>Compare Local Stock & Price</h3>
-                    <p>View which neighborhood shops have it on their shelves right now, compare prices in ₹, and verify walking distance.</p>
+                    <p>View which neighborhood shops have it on their shelves, compare prices in ₹, and check walking distances.</p>
                 </div>
 
                 <div class="step-card">
                     <div class="step-number-tag">03</div>
-                    <div class="step-icon-circle" style="background: #ecfdf5; border-color: #a7f3d0;">
-                        <img src="/images/icons/walk-in.svg" alt="Walk In" style="width: 32px; height: 32px;">
+                    <div class="step-icon-badge">
+                        <i class="fa-solid fa-bookmark"></i>
                     </div>
-                    <h3>Walk In with 100% Certainty</h3>
-                    <p>Never make a wasted trip to an out-of-stock shop again. Walk in directly using map directions or reserve for instant pickup.</p>
+                    <h3>Reserve or Walk-In Directly</h3>
+                    <p>Get instant store directions or reserve with a 4-digit pickup code. The merchant holds your item behind the counter.</p>
                 </div>
 
                 <div class="step-card">
                     <div class="step-number-tag">04</div>
-                    <div class="step-icon-circle" style="background: #eff6ff; border-color: #bfdbfe;">
-                        <img src="/images/icons/verified-pay.svg" alt="Inspect & Pay" style="width: 32px; height: 32px;">
+                    <div class="step-icon-badge">
+                        <i class="fa-solid fa-person-walking-arrow-right"></i>
                     </div>
-                    <h3>Inspect & Pay In Person</h3>
-                    <p>Touch and inspect real products before paying. Zero shipping fees, zero transit damages, and zero counterfeit risk.</p>
+                    <h3>Walk Out in 15 Minutes</h3>
+                    <p>Inspect the product physically before paying via UPI or cash. Zero delivery fees, zero shipping delays.</p>
                 </div>
             </div>
 
-            <!-- 4 Guided Steps Grid (Merchant View - Hidden by default) -->
+            <!-- 4 Guided Steps Grid (Merchant View) -->
             <div class="steps-grid" id="stepsMerchant" style="display: none;">
                 <div class="step-card">
                     <div class="step-number-tag">01</div>
-                    <div class="step-icon-circle" style="background: #eff6ff; border-color: #bfdbfe;">
-                        <img src="/images/icons/store-owner.svg" alt="Store Account" style="width: 32px; height: 32px;">
+                    <div class="step-icon-badge">
+                        <i class="fa-solid fa-shop"></i>
                     </div>
                     <h3>Create Your Store Account</h3>
-                    <p>Register your retail shop in 30 seconds with your business name and neighborhood map location.</p>
+                    <p>Register your retail shop with your business name and neighborhood map coordinates.</p>
                 </div>
 
                 <div class="step-card">
                     <div class="step-number-tag">02</div>
-                    <div class="step-icon-circle" style="background: #fef2f2; border-color: #fecaca;">
-                        <img src="/images/icons/barcode-scan.svg" alt="Barcode Camera" style="width: 32px; height: 32px;">
+                    <div class="step-icon-badge">
+                        <i class="fa-solid fa-barcode"></i>
                     </div>
-                    <h3>Snap Any Product Barcode</h3>
-                    <p>Point your smartphone camera and click "Click Photo to Scan". Our multi-pass vision model reads the code in milliseconds.</p>
+                    <h3>Enter Barcode or Custom Item</h3>
+                    <p>Enter the 8-14 digit UPC/EAN code or list a custom artisanal product with photos in seconds.</p>
                 </div>
 
                 <div class="step-card">
                     <div class="step-number-tag">03</div>
-                    <div class="step-icon-circle" style="background: #faf5ff; border-color: #e9d5ff;">
-                        <img src="/images/icons/autofill.svg" alt="Auto-Filled Details" style="width: 32px; height: 32px;">
+                    <div class="step-icon-badge">
+                        <i class="fa-solid fa-tag"></i>
                     </div>
-                    <h3>Auto-Filled Product Details</h3>
-                    <p>Product name, brand, high-res photos, and descriptions are fetched automatically. Just set your price in ₹ and stock count.</p>
+                    <h3>Set Your Price & Stock</h3>
+                    <p>Master catalog details autofill automatically. Simply set your shelf price in ₹ and current stock count.</p>
                 </div>
 
                 <div class="step-card">
                     <div class="step-number-tag">04</div>
-                    <div class="step-icon-circle" style="background: #eff6ff; border-color: #bfdbfe;">
-                        <img src="/images/icons/shoppers.svg" alt="Attract Shoppers" style="width: 32px; height: 32px;">
+                    <div class="step-icon-badge">
+                        <i class="fa-solid fa-users"></i>
                     </div>
-                    <h3>Attract Nearby Walk-In Shoppers</h3>
-                    <p>Your items immediately appear to thousands of customers searching for products in your immediate locality.</p>
+                    <h3>Attract Walk-In Shoppers</h3>
+                    <p>Your items immediately appear to local buyers searching for in-stock products in your neighborhood.</p>
                 </div>
             </div>
         </section>
 
         <!-- ===================================================
-             5. MERCHANT CALL TO ACTION BANNER
+             5. ACTION BOTTOM CTA
              =================================================== -->
-        <section style="padding: 0 40px; max-width: 1400px; margin: 0 auto 90px;">
-            <div class="merchant-cta-card">
-                <div class="merchant-cta-content">
-                    <h2>Own a Retail Shop in Your Area?</h2>
-                    <p>
-                        List your inventory in minutes with our one-click barcode camera scanner. Reach thousands of neighborhood shoppers searching for products around you.
-                    </p>
+        <section class="nearzo-bottom-cta">
+            <div class="section-container">
+                <div class="bottom-cta-box">
+                    <h2>Start shopping your neighborhood shelves today.</h2>
+                    <p>Discover products available within walking distance right now.</p>
+                    <div class="bottom-cta-buttons">
+                        <a href="/products/products" class="cta-btn-white">
+                            Explore Local Catalog <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                        <a href="/products/uploadProductTypeSelectMenu" class="cta-btn-outline">
+                            Merchant Portal
+                        </a>
+                    </div>
                 </div>
-                <a href="/products/uploadProductTypeSelectMenu" class="merchant-cta-btn">
-                    <i class="fa-solid fa-barcode"></i> Add Products via Barcode
-                </a>
             </div>
         </section>
     </main>
 
     <!-- ===================================================
-         6. MINIMALIST CLEAN FOOTER (Strictly NO contact link)
+         6. MAIN FOOTER
          =================================================== -->
-    <footer class="site-footer">
-        <div class="footer-inner">
-            <div class="footer-top">
-                <a href="/" class="footer-brand">
-                    Near<span style="color: #2563eb;">Zo</span>
-                </a>
-                <div class="footer-links">
-                    <a href="/"><i class="fa-solid fa-house"></i> Home</a>
-                    <a href="/products/products"><i class="fa-solid fa-box-open"></i> Products</a>
-                    <a href="#about"><i class="fa-solid fa-circle-info"></i> About</a>
-                    <a href="/products/uploadProductTypeSelectMenu"><i class="fa-solid fa-store"></i> Merchant Portal</a>
+    <footer class="nearzo-footer">
+        <div class="section-container">
+            <div class="footer-top-grid">
+                <div class="footer-brand-col">
+                    <a href="/" class="footer-logo">
+                        Near<span>Zo</span>
+                    </a>
+                    <p class="footer-about-text">
+                        The hyperlocal offline-to-online commerce platform connecting neighborhood shoppers with real-time in-store inventory.
+                    </p>
+                    <div class="footer-location-tag">
+                        <i class="fa-solid fa-location-dot"></i> Available in select neighborhood markets across India
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Shoppers</h4>
+                    <a href="/products/products">Browse Catalog</a>
+                    <a href="/#about">How NearZo Works</a>
+                    <a href="/products/products?search=Food">Groceries & Snacks</a>
+                    <a href="/products/products?search=Electronics">Electronics</a>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Retailers</h4>
+                    <a href="/products/uploadProductTypeSelectMenu">Merchant Onboarding</a>
+                    <a href="/products/uploadIdentifiedProduct">Barcode Upload</a>
+                    <a href="/products/uploadProduct">Custom Listing</a>
+                    <a href="/auth/buisnessLogin">Merchant Sign In</a>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Account</h4>
+                    <a href="/auth/userLogin">Customer Login</a>
+                    <a href="/auth/userRegister">Customer Register</a>
+                    <a href="/auth/profile">My Profile</a>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <span>&copy; NearZo. All rights reserved.</span>
-                <span>Discover in-stock products in local neighborhood stores.</span>
+
+            <div class="footer-bottom-bar">
+                <div class="footer-copyright">
+                    &copy; 2026 NearZo. Built for local offline commerce.
+                </div>
+                <div class="footer-badges">
+                    <span class="footer-badge-pill"><i class="fa-solid fa-bolt"></i> Local Express</span>
+                    <span class="footer-badge-pill"><i class="fa-solid fa-shield-halved"></i> 100% Genuine</span>
+                    <span class="footer-badge-pill"><i class="fa-solid fa-indian-rupee-sign"></i> INR (₹)</span>
+                </div>
             </div>
         </div>
     </footer>
 
     <!-- ===================================================
-         7. CLIENT LOGIC: WORKING SEARCH & RECOMMENDATIONS
+         7. CLIENT LOGIC: WORKING SEARCH, SLIDER & TABS
          =================================================== -->
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
@@ -348,6 +395,7 @@
             const sliderContainer = document.getElementById('sliderContainer');
             const btnPrev = document.getElementById('sliderPrevBtn');
             const btnNext = document.getElementById('sliderNextBtn');
+
             const tabShopper = document.getElementById('tabShopper');
             const tabMerchant = document.getElementById('tabMerchant');
             const stepsShopper = document.getElementById('stepsShopper');
@@ -365,64 +413,6 @@
                     .replace(/'/g, '&#039;');
             }
 
-            // Fallback curated products if backend has 0 items or offline
-            const fallbackProducts = [
-                {
-                    id: '1',
-                    name: 'Coca-Cola 330ml Can',
-                    category: 'Food & Beverages',
-                    price: 40,
-                    store_name: 'Metro Daily Mart',
-                    store_location: '250m away • Sector 4',
-                    imageUrl: 'https://images.openfoodfacts.org/images/products/004/900/000/6346/front_fr.18.400.jpg'
-                },
-                {
-                    id: '2',
-                    name: 'Claw Shoot Wireless Gamepad',
-                    category: 'Electronics & Gaming',
-                    price: 1790,
-                    store_name: 'TechZone Gadgets',
-                    store_location: '500m away • Commercial Complex',
-                    imageUrl: 'https://5.imimg.com/data5/GLADMIN/Default/2022/11/XD/DQ/KU/2912323/claw-shoot-wireless-gamepad-controller-500x500.jpg'
-                },
-                {
-                    id: '3',
-                    name: 'H&H Tretinoin Tretin Cream 30g',
-                    category: 'Pharmacy & Skincare',
-                    price: 245,
-                    store_name: 'Apollo Neighborhood Pharmacy',
-                    store_location: '150m away • Main Market',
-                    imageUrl: 'https://cdn.eurasiasupplies.com.bd/live/public/products/4961/gallery/9977.webp'
-                },
-                {
-                    id: '4',
-                    name: 'Parle-G Gold Biscuits (1kg)',
-                    category: 'Groceries & Pantry',
-                    price: 130,
-                    store_name: 'Shree Ganesh Supermarket',
-                    store_location: '300m away • Station Road',
-                    imageUrl: 'https://images.openfoodfacts.org/images/products/890/171/910/1038/front_en.20.400.jpg'
-                },
-                {
-                    id: '5',
-                    name: 'Maggi 2-Minute Masala Noodles',
-                    category: 'Packaged Grocery',
-                    price: 14,
-                    store_name: 'QuickBite Corner Store',
-                    store_location: '400m away • Block B',
-                    imageUrl: 'https://images.openfoodfacts.org/images/products/890/105/800/0290/front_en.36.400.jpg'
-                },
-                {
-                    id: '6',
-                    name: 'Amul Pasteurized Butter 500g',
-                    category: 'Dairy & Fresh',
-                    price: 275,
-                    store_name: 'City Fresh Dairy',
-                    store_location: '350m away • Market Lane',
-                    imageUrl: 'https://images.openfoodfacts.org/images/products/890/126/201/0016/front_en.53.400.jpg'
-                }
-            ];
-
             // 1. Fetch Real Products from Backend
             try {
                 const response = await fetch('http://localhost:3000/products');
@@ -439,7 +429,7 @@
 
                             let img = '';
                             const images = p.customProduct?.images || p.images || [];
-                            if (images.length > 0 && images[0].path) {
+                            if (images.length > 0 && images[0]?.path) {
                                 const clean = images[0].path.replace(/\\/g, '/');
                                 img = `http://localhost:3000/${clean.startsWith('/') ? clean.slice(1) : clean}`;
                             } else if (p.imageUrl) {
@@ -447,9 +437,9 @@
                             }
 
                             return {
-                                id: p.id,
+                                id: String(p.id),
                                 name,
-                                desc,
+                                description: desc,
                                 price,
                                 store_name: storeName,
                                 store_location: storeLocation,
@@ -460,23 +450,30 @@
                     }
                 }
             } catch (err) {
-                console.warn('Backend products not loaded, using curated local items:', err);
+                console.warn('Backend products not loaded:', err);
             }
 
-            // Combine backend products with curated items for a rich carousel
-            const displayProducts = catalogProducts.length > 0 ? catalogProducts : fallbackProducts;
+            const displayProducts = catalogProducts;
 
             // 2. Render Recommended Products Carousel
             if (recommendedTrack) {
-                recommendedTrack.innerHTML = displayProducts.map(p => {
-                    const formattedPrice = Number(p.price).toLocaleString('en-IN');
-                    const imageSrc = p.imageUrl || 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=400&q=80';
+                if (displayProducts.length === 0) {
+                    recommendedTrack.innerHTML = `
+                        <div style="padding: 40px; text-align: center; color: #64748b; font-size: 15px; width: 100%;">
+                            <i class="fa-solid fa-box-open" style="font-size: 32px; color: #94a3b8; margin-bottom: 12px; display: block;"></i>
+                            No local products listed yet. Click <strong>Merchant Portal</strong> to list your first item!
+                        </div>
+                    `;
+                } else {
+                    recommendedTrack.innerHTML = displayProducts.map(p => {
+                        const formattedPrice = Number(p.price).toLocaleString('en-IN');
+                        const imageSrc = p.imageUrl || 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'64\' height=\'64\' fill=\'%2394a3b8\' viewBox=\'0 0 16 16\'%3E%3Cpath d=\'M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z\'/%3E%3Cpath d=\'M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z\'/%3E%3C/svg%3E';
 
-                    return `
-                        <article class="recommend-card" onclick="window.location.href='/products/products?search=${encodeURIComponent(p.name)}'">
+                        return `
+                        <article class="recommend-card" onclick="window.location.href='/productListing/${p.id}'">
                             <div class="recommend-img-box">
                                 <span class="recommend-badge"><i class="fa-solid fa-circle-check"></i> In Stock</span>
-                                <img src="${escapeHtml(imageSrc)}" alt="${escapeHtml(p.name)}" class="recommend-img" onerror="this.src='https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=400&q=80'">
+                                <img src="${escapeHtml(imageSrc)}" alt="${escapeHtml(p.name)}" class="recommend-img" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'64\\' height=\\'64\\' fill=\\'%2394a3b8\\' viewBox=\\'0 0 16 16\\'%3E%3Cpath d=\\'M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z\\'/%3E%3Cpath d=\\'M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z\\'/%3E%3C/svg%3E'">
                             </div>
                             <div class="recommend-card-body">
                                 <div class="recommend-category">${escapeHtml(p.category)}</div>
@@ -486,15 +483,15 @@
                                     <span>${escapeHtml(p.store_location)}</span>
                                 </div>
                                 <div class="recommend-footer">
-                                    <div class="recommend-price">₹${formattedPrice}</div>
-                                    <span class="recommend-view-btn">
+                                    <span class="recommend-view-btn" style="width: 100%; justify-content: center;">
                                         Check Stock <i class="fa-solid fa-arrow-right"></i>
                                     </span>
                                 </div>
                             </div>
                         </article>
-                    `;
-                }).join('');
+                        `;
+                    }).join('');
+                }
             }
 
             // 3. Carousel Left/Right Smooth Scrolling
@@ -534,7 +531,7 @@
                         return;
                     }
 
-                    const pool = [...displayProducts, ...fallbackProducts];
+                    const pool = displayProducts;
                     const matched = pool.filter(p => 
                         p.name.toLowerCase().includes(val) || 
                         p.category.toLowerCase().includes(val) ||
@@ -543,14 +540,14 @@
 
                     if (matched.length === 0) {
                         suggestionsBox.innerHTML = `
-                            <div style="padding: 12px; font-size: 13px; color: #64748b; text-align: center;">
+                            <div style="padding: 12px; font-size: 13px; color: #5c5f62; text-align: center;">
                                 No direct match. Press Enter to search entire store catalog.
                             </div>
                         `;
                     } else {
                         suggestionsBox.innerHTML = matched.map(m => `
-                            <a href="/products/products?search=${encodeURIComponent(m.name)}" class="suggestion-item">
-                                <img src="${escapeHtml(m.imageUrl || 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=400&q=80')}" class="suggestion-img" alt="">
+                            <a class="suggestion-item" href="/products/products?search=${encodeURIComponent(m.name)}">
+                                <img src="${escapeHtml(m.imageUrl || 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=100&q=80')}" alt="${escapeHtml(m.name)}" class="suggestion-img" onerror="this.src='https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=100&q=80'">
                                 <div class="suggestion-info">
                                     <div class="suggestion-title">${escapeHtml(m.name)}</div>
                                     <div class="suggestion-meta">${escapeHtml(m.store_name)} • ${escapeHtml(m.category)}</div>
@@ -565,13 +562,13 @@
 
                 // Close suggestions when clicking outside
                 document.addEventListener('click', (e) => {
-                    if (!searchForm.contains(e.target) && !suggestionsBox.contains(e.target)) {
+                    if (!searchForm.contains(e.target)) {
                         suggestionsBox.classList.remove('active');
                     }
                 });
             }
 
-            // 5. Interactive Guide Tab Switcher (Shopper vs Merchant)
+            // 5. How NearZo Works: Interactive Tab Switcher
             if (tabShopper && tabMerchant && stepsShopper && stepsMerchant) {
                 tabShopper.addEventListener('click', () => {
                     tabShopper.classList.add('active');

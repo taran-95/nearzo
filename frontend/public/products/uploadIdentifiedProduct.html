@@ -134,7 +134,7 @@
                     if (!res.ok) {
                         const msg = data.message || "Product not found.";
                         if (res.status === 400) {
-                            showStatus("error", msg + ' <a href="/productList" style="color:#2563eb;text-decoration:underline;font-weight:600;">View Catalog</a>', false, '<i class="fa-solid fa-circle-info"></i>');
+                            showStatus("error", msg + ' <a href="/products/products" style="color:#2563eb;text-decoration:underline;font-weight:600;">View Catalog</a>', false, '<i class="fa-solid fa-circle-info"></i>');
                         } else if (res.status === 404) {
                             showStatus("error", 'Barcode not found. <a href="/products/uploadProduct" style="color:#2563eb;text-decoration:underline;font-weight:600;">Create custom product</a>', false, '<i class="fa-solid fa-magnifying-glass"></i>');
                         } else {
