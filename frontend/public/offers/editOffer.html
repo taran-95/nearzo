@@ -64,7 +64,7 @@
             const quantityInput = document.getElementById("productQuantity");
             const searchKeywordsInput = document.getElementById('searchKeywords');
 
-			const productResponse = await fetch(`http://localhost:3000/products/${productId}`, {method: "GET"});
+			const productResponse = await fetch(`http://localhost:3000/products/${productId}`, {method: "GET", credentials: "include"});
 			if(!productResponse.ok) {
 				const error = await productResponse.json();
 				errorDiv.textContent = error.message;
@@ -73,7 +73,7 @@
 			const productData = product.customProduct ? product.customProduct : product.identifiedProduct;
 			productNameH2.textContent = "Create offer for " + productData.name;
 
-            const offerResponse = await fetch(`http://localhost:3000/offers/${offerId}`, {method: "GET"});
+            const offerResponse = await fetch(`http://localhost:3000/offers/${offerId}`, {method: "GET", credentials: "include"});
             if(!offerResponse.ok) {
 				const error = await offerResponse.json();
 				errorDiv.textContent = error.message;
