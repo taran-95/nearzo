@@ -50,15 +50,15 @@ app.get('/productListing/:id', async (req, res) => {
 });
 
 // Upload Aliases and Direct Routing
-app.get(['/upload', '/upload/select', '/upload/type', '/products/upload', '/products/uploadType'], (req, res) => {
+app.get(['/upload', '/upload/select', '/upload/type', '/products/upload', '/products/uploadType', '/uploadProductTypeSelectMenu', '/products/uploadProductTypeSelectMenu'], (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'products', 'uploadProductTypeSelectMenu.html'));
 });
 
-app.get(['/upload/manual-upload', '/upload/manual', '/upload/custom', '/products/uploadCustom'], (req, res) => {
+app.get(['/upload/manual-upload', '/upload/manual', '/upload/custom', '/products/uploadCustom', '/uploadProduct', '/products/uploadProduct'], (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'products', 'uploadProduct.html'));
 });
 
-app.get(['/upload/barcode', '/upload/identified', '/products/uploadBarcode'], (req, res) => {
+app.get(['/upload/barcode', '/upload/identified', '/products/uploadBarcode', '/uploadIdentifiedProduct', '/products/uploadIdentifiedProduct'], (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'products', 'uploadIdentifiedProduct.html'));
 });
 
