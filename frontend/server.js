@@ -9,82 +9,78 @@ const PORT = 5173;
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-
-// SSR route
+// SSR routes
 app.get('/productList', async (req, res) => {
-    const response = await fetch("http://localhost:3000/products", {method: "GET"});
-
-    if(!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message);
+    try {
+        const response = await fetch("http://localhost:3000/products", {method: "GET"});
+        if(!response.ok) {
+            const error = await response.json();
+            throw new Error(error.message);
+        }
+        const products = await response.json();
+        res.render('products/products', { products });
+    } catch (err) {
+        res.redirect('/products/products');
     }
-
-    const products = await response.json();
-
-    res.render('products/products', {
-        products
-    });
 });
 
 app.get('/productListing/:id', async (req, res) => {
     const productId = req.params.id;
-
-    const productRes = await fetch(`http://localhost:3000/products/${productId}`, {method: "GET"});
-    
-    if(!productRes.ok) {
-        const error = await productRes.json();
-        throw new Error(error.message);
-    }
-
-    const product = await productRes.json();
-
-    const authRes = await fetch("http://localhost:3000/auth/me", {
-      method: "GET",
-      headers: {
-        Cookie: req.headers.cookie || ""
-      }
-    });
-    
-    if(authRes.ok) {
-      const authData = await authRes.json();
-      res.render('products/productView', {product, isShop: authData.userType === 'shop'});
-      console.log("authRes: ok");
-      console.log(authData.userType === 'shop');
-    } else {
-      res.render('products/productView', {product, isShop: false});
-      console.log("authRes: not ok");
-
-      const error = await authRes.json();
-      console.log(error);
+    try {
+        const productRes = await fetch(`http://localhost:3000/products/${productId}`, {method: "GET"});
+        if(!productRes.ok) {
+            const error = await productRes.json();
+            throw new Error(error.message);
+        }
+        const product = await productRes.json();
+        const authRes = await fetch("http://localhost:3000/auth/me", {
+            method: "GET",
+            headers: { Cookie: req.headers.cookie || "" }
+        });
+        
+        if(authRes.ok) {
+            const authData = await authRes.json();
+            res.render('products/productView', {product, isShop: authData.userType === 'shop'});
+        } else {
+            res.render('products/productView', {product, isShop: false});
+        }
+    } catch (err) {
+        res.redirect('/products/products');
     }
 });
 
+// Upload Aliases and Direct Routing
+app.get(['/upload', '/upload/select', '/upload/type', '/products/upload', '/products/uploadType'], (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'products', 'uploadProductTypeSelectMenu.html'));
+});
 
-//Home page
+app.get(['/upload/manual-upload', '/upload/manual', '/upload/custom', '/products/uploadCustom'], (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'products', 'uploadProduct.html'));
+});
+
+app.get(['/upload/barcode', '/upload/identified', '/products/uploadBarcode'], (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'products', 'uploadIdentifiedProduct.html'));
+});
+
+// Home page
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-
-// Static files middleware
-app.get('/{*splat}', (req, res, next) => {
-  const filePath = path.join(
-    __dirname,
-    'public',
-    `${req.path}.html`
-  );
-
-  if (fs.existsSync(filePath)) {
-    return res.sendFile(filePath);
-  }
-
-  next();
+// Static files middleware for clean html URLs
+app.use((req, res, next) => {
+    if (req.method !== 'GET') return next();
+    const cleanPath = req.path.endsWith('/') ? req.path.slice(0, -1) : req.path;
+    const filePath = path.join(__dirname, 'public', `${cleanPath}.html`);
+    if (fs.existsSync(filePath)) {
+        return res.sendFile(filePath);
+    }
+    next();
 });
 
-// Static files
+// Static files (CSS, JS, images, icons, etc.)
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.listen(PORT, () => {
-  console.log(`Frontend running at http://localhost:${PORT}`);
-  console.log(path.join(__dirname, 'public'));
+    console.log(`Frontend running at http://localhost:${PORT}`);
 });
