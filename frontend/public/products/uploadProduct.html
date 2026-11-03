@@ -3,13 +3,204 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Custom Product - NearZo</title>
+    <title>Create Custom Product Listing — NearZo</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="/style/style-home.css">
+
+    <style>
+        .custom-upload-container {
+            max-width: 760px;
+            margin: 40px auto 80px;
+            padding: 0 20px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .custom-nav-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #64748b;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            margin-bottom: 24px;
+            transition: color 0.2s ease;
+        }
+
+        .custom-nav-back:hover {
+            color: #2563eb;
+        }
+
+        .custom-glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(16px);
+            border: 1.5px solid #e2e8f0;
+            border-radius: 24px;
+            padding: 36px;
+            box-shadow: 0 15px 35px rgba(15, 23, 42, 0.05);
+        }
+
+        .custom-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .custom-header-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .custom-header-icon img {
+            width: 36px;
+            height: 36px;
+        }
+
+        .custom-header h1 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 26px;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 0;
+            letter-spacing: -0.4px;
+        }
+
+        .custom-header p {
+            font-size: 14.5px;
+            color: #64748b;
+            margin: 4px 0 0;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #334155;
+            margin-bottom: 8px;
+        }
+
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 13px 18px;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 14px;
+            outline: none;
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+            background: #ffffff;
+            color: #0f172a;
+        }
+
+        .form-input:focus, .form-textarea:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        /* Image Upload Box */
+        .img-drop-area {
+            border: 2px dashed #cbd5e1;
+            border-radius: 16px;
+            background: #f8fafc;
+            padding: 32px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .img-drop-area:hover {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+
+        .img-drop-area i {
+            font-size: 34px;
+            color: #2563eb;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .preview-grid {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 14px;
+        }
+
+        .preview-thumb {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 1px solid #cbd5e1;
+            box-shadow: 0 4px 10px rgba(15, 23, 42, 0.05);
+        }
+
+        .btn-submit-listing {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 14px 24px;
+            border-radius: 9999px;
+            background: #2563eb;
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2);
+            font-family: 'Inter', sans-serif;
+            margin-top: 10px;
+        }
+
+        .btn-submit-listing:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        .status-msg {
+            display: none;
+            padding: 14px 18px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 20px;
+        }
+
+        .status-msg.error {
+            display: block;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #b91c1c;
+        }
+
+        .status-msg.success {
+            display: block;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #15803d;
+        }
+    </style>
 </head>
+
 <body class="uploadbody">
     <header id="header" class="navbar"></header>
     <script src="/scripts/header.js"></script>
@@ -19,65 +210,121 @@
         requireUserTypeShop();
     </script>
 
-    <main class="upload-page">
-        <a href="/products/uploadProductTypeSelectMenu" class="back-link">
-            <i class="fa-solid fa-arrow-left"></i>
-            Back to Selection
+    <main class="custom-upload-container">
+        <a href="/products/uploadProductTypeSelectMenu" class="custom-nav-back">
+            <i class="fa-solid fa-arrow-left"></i> Back to Selection
         </a>
 
-        <div class="upload-heading">
-            <h1>List Your Products</h1>
-        </div>
+        <div class="custom-glass-card">
+            <div class="custom-header">
+                <div class="custom-header-icon">
+                    <img src="/images/icons/store-owner.svg" alt="Custom Listing">
+                </div>
+                <div>
+                    <h1>Create Custom Product Listing</h1>
+                    <p>Add unique products, craft items, or un-barcoded goods to your shop</p>
+                </div>
+            </div>
 
-        <div class="upload-layout">
-            <section class="upload-card">
-                <h2>Add Product</h2>
-                <p>Enter your product details below.</p>
+            <form id="customProductForm">
+                <!-- Image Upload -->
+                <div class="form-group">
+                    <label class="form-label">Product Photos (JPEG, PNG, WebP)</label>
+                    <div class="img-drop-area" id="imgDropArea">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        <div style="font-weight: 700; color: #0f172a; margin-bottom: 4px;">Click to select or drag and drop photos</div>
+                        <div style="font-size: 13px; color: #64748b;">Supports high-resolution storefront photos</div>
+                        <input type="file" id="productImageInput" accept=".jpeg, .jpg, .png, .webp" multiple style="display: none;">
+                    </div>
+                    <div id="previewContainer" class="preview-grid"></div>
+                </div>
 
-                <form class="uploadForm" method="POST">
-                    <label>Upload product Image here</label>
-                    <input type="file" accept=".jpeg, .png, .webp" id="productImage" multiple>
-                    <div id="previewContainer" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 15px;"></div>
-                    <br>
-        
-                    <label>Product Name</label>
-                    <input type="text" id="productName" placeholder="e.g. Charger" required><br>
+                <!-- Product Name -->
+                <div class="form-group">
+                    <label class="form-label" for="productName">Product Name</label>
+                    <input type="text" id="productName" class="form-input" placeholder="e.g. Handmade Ceramic Mug or USB-C Cable" required>
+                </div>
 
-                    <label>Description</label><br>
-                    <textarea id="productDescription" placeholder="Describe your product..." rows="5" required></textarea><br>
+                <!-- Product Description -->
+                <div class="form-group">
+                    <label class="form-label" for="productDescription">Detailed Description</label>
+                    <textarea id="productDescription" class="form-textarea" rows="4" placeholder="Describe materials, sizing, warranty, or packaging details..." required></textarea>
+                </div>
 
-                    <div class="error" id="error-div"></div>
-                    <button type="submit" class="submit-button">Add Product</button>
-                </form>
-            </section>
+                <div id="statusMsg" class="status-msg"></div>
+
+                <button type="submit" class="btn-submit-listing" id="btnSubmitCustom">
+                    <i class="fa-solid fa-plus"></i> Save Product & Set Price
+                </button>
+            </form>
         </div>
     </main>
 
     <script>
-        document.addEventListener("DOMContentLoaded", async () => {
-            const uploadForm = document.querySelector(".uploadForm");
-            const imageInput = document.getElementById("productImage");
+        document.addEventListener("DOMContentLoaded", () => {
+            const form = document.getElementById("customProductForm");
+            const fileInput = document.getElementById("productImageInput");
+            const dropArea = document.getElementById("imgDropArea");
             const previewContainer = document.getElementById("previewContainer");
-            const errorDiv = document.getElementById("error-div");
-        
-            uploadForm.addEventListener("submit", async function(e) {
+            const statusMsg = document.getElementById("statusMsg");
+            const btnSubmit = document.getElementById("btnSubmitCustom");
+
+            dropArea.addEventListener("click", () => fileInput.click());
+
+            dropArea.addEventListener("dragover", (e) => {
                 e.preventDefault();
-                
-                try {	
-                    const files = imageInput ? imageInput.files : null;
+                dropArea.style.borderColor = "#2563eb";
+            });
 
-                    if(!files || files.length === 0) {
-                        throw new Error("Please select at least one image.");
-                    }
+            dropArea.addEventListener("dragleave", () => {
+                dropArea.style.borderColor = "#cbd5e1";
+            });
 
+            dropArea.addEventListener("drop", (e) => {
+                e.preventDefault();
+                dropArea.style.borderColor = "#cbd5e1";
+                if (e.dataTransfer.files.length) {
+                    fileInput.files = e.dataTransfer.files;
+                    renderPreviews();
+                }
+            });
+
+            fileInput.addEventListener("change", renderPreviews);
+
+            function renderPreviews() {
+                previewContainer.innerHTML = "";
+                const files = Array.from(fileInput.files || []);
+                files.forEach(file => {
+                    if (!file.type.startsWith("image/")) return;
+                    const url = URL.createObjectURL(file);
+                    const img = document.createElement("img");
+                    img.src = url;
+                    img.className = "preview-thumb";
+                    img.onload = () => URL.revokeObjectURL(url);
+                    previewContainer.appendChild(img);
+                });
+            }
+
+            form.addEventListener("submit", async (e) => {
+                e.preventDefault();
+
+                const files = fileInput.files;
+                if (!files || files.length === 0) {
+                    statusMsg.className = "status-msg error";
+                    statusMsg.textContent = "Please select at least one product photo.";
+                    statusMsg.style.display = "block";
+                    return;
+                }
+
+                btnSubmit.disabled = true;
+                btnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Uploading product...';
+
+                try {
                     const formData = new FormData();
-                    formData.append('name', document.getElementById("productName")?.value.trim() || "");
-                    formData.append('description', document.getElementById("productDescription")?.value.trim() || "");
-                    
-                    if(files.length) {
-                        for(const file of files) {
-                            formData.append('images', file);
-                        }
+                    formData.append('name', document.getElementById("productName").value.trim());
+                    formData.append('description', document.getElementById("productDescription").value.trim());
+                    for (const f of files) {
+                        formData.append('images', f);
                     }
 
                     const response = await fetch("http://localhost:3000/products/custom", {
@@ -86,45 +333,26 @@
                         body: formData
                     });
 
-                    if(!response.ok) {
-                        const error = await response.json();
-                        throw new Error(error.message);
+                    const data = await response.json();
+                    if (!response.ok) {
+                        throw new Error(data.message || "Failed to upload product");
                     }
 
-                    const result = await response.json();
+                    statusMsg.className = "status-msg success";
+                    statusMsg.textContent = "Product created successfully! Redirecting to set your price...";
+                    statusMsg.style.display = "block";
 
-                    errorDiv.textContent = "Product Uploaded Successfully. Redirecting...";
-                    errorDiv.style.color = "Green";
-                    setTimeout(() => {window.location.href = `/offers/createOffer?productId=${result.product.id}`;}, 2000);
-                } catch (error) {
-                    errorDiv.textContent = error.message;
+                    setTimeout(() => {
+                        window.location.href = `/offers/createOffer?productId=${data.product.id}`;
+                    }, 1200);
+
+                } catch (err) {
+                    btnSubmit.disabled = false;
+                    btnSubmit.innerHTML = '<i class="fa-solid fa-plus"></i> Save Product & Set Price';
+                    statusMsg.className = "status-msg error";
+                    statusMsg.textContent = err.message;
+                    statusMsg.style.display = "block";
                 }
-            });
-
-            imageInput.addEventListener("change", () => {
-                previewContainer.innerHTML = "";
-
-                const files = Array.from(imageInput.files);
-
-                files.forEach((file) => {
-                    if (!file.type.startsWith("image/")) return;
-
-                    const objectUrl = URL.createObjectURL(file);
-                    const img = document.createElement("img");
-                    img.src = objectUrl;
-                    img.alt = file.name;
-                    img.style.width = "100px";
-                    img.style.height = "100px";
-                    img.style.objectFit = "cover";
-                    img.style.borderRadius = "8px";
-                    img.style.border = "1px solid #ccc";
-
-                    img.onload = () => {
-                        URL.revokeObjectURL(objectUrl);
-                    };
-
-                    previewContainer.appendChild(img);
-                });
             });
         });
     </script>
