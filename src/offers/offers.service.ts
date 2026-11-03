@@ -26,7 +26,16 @@ export class OffersService {
                 productId: id
             },
             include: {
-                seller: true
+                seller: {
+                    select: {
+                        id: true,
+                        store_name: true,
+                        owner_name: true,
+                        address: true,
+                        phone: true,
+                        email: true
+                    }
+                }
             }
         });
     }
