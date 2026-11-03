@@ -122,7 +122,10 @@
 
             delOfferBtn.addEventListener('click', async (e) => {
                 try{
-                    const resposne = await fetch(`http://localhost:3000/offers/delete/${offerId}`, {method:"POST"});
+                    const response = await fetch(`http://localhost:3000/offers/delete/${offerId}`, {
+                        method: "POST",
+                        credentials: "include"
+                    });
                     if(!response.ok) {
                         const error = await response.json();
                         throw new Error(error.message);
