@@ -23,8 +23,8 @@ export class ProductsController {
         return await this.productsService.getProduct(id);
     }
 
-    //@UseGuards(SessionAuthGuard, UserTypeGuard)
-    //@UserTypes('shop')
+    @UseGuards(SessionAuthGuard, UserTypeGuard)
+    @UserTypes('shop')
     @Post('identified/:identifier')
     async uploadIdentifiedProduct(@Param("identifier") identifier: string) {
         return await this.productsService.uploadIdentifiedProduct(identifier);
@@ -45,15 +45,17 @@ export class ProductsController {
                 'image/webp',
                 'image/gif',
             ];
+            const allowedExts = ['.jpg', '.jpeg', '.png', '.webp', '.gif'];
+            const fileExt = extname(file.originalname).toLowerCase();
 
-            if (allowedTypes.includes(file.mimetype)) {
+            if (allowedTypes.includes(file.mimetype) && allowedExts.includes(fileExt)) {
                 callback(null, true);
             } else {
                 callback(
-                new BadRequestException(
-                    'Only JPEG, PNG, WebP and GIF images are allowed',
-                ),
-                false,
+                    new BadRequestException(
+                        'Only JPEG, PNG, WebP and GIF images (.jpg, .jpeg, .png, .webp, .gif) are allowed',
+                    ),
+                    false,
                 );
             }
         },
@@ -61,8 +63,14 @@ export class ProductsController {
         storage: diskStorage({
             destination: './uploads/products',
             filename: (req, file, callback) => {
-                const extension = extname(file.originalname);
-                callback(null, `${randomUUID()}${extension}`);
+                const mimeToExt: Record<string, string> = {
+                    'image/jpeg': '.jpg',
+                    'image/png': '.png',
+                    'image/webp': '.webp',
+                    'image/gif': '.gif',
+                };
+                const safeExtension = mimeToExt[file.mimetype] || '.jpg';
+                callback(null, `${randomUUID()}${safeExtension}`);
             },
         }),
     }))
@@ -74,7 +82,4 @@ export class ProductsController {
         }
         return this.productsService.uploadCustomProduct(uploadCustomProductDto, files);
     }
-
-
-
 }

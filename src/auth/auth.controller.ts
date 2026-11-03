@@ -46,9 +46,6 @@ export class AuthController {
     @UseGuards(SessionAuthGuard)
     @Get('me')
     async getProfile(@Req() req: Request) {
-        //if (!req.session.userId || !req.session.userType) { 
-          //  throw new UnauthorizedException('Not authenticated'); 
-        //}
         const userId = req.session.userId!;
         if (req.session.userType === 'shop') {
             const shop = await this.authService.getShopProfile(userId);
@@ -56,19 +53,20 @@ export class AuthController {
         }
 
         const user = await this.authService.getUserProfile(userId);
-        return { userType: 'user', user: user, };
+        return { userType: 'user', user: user };
     }
 
     @Post('logout') 
-    logout(@Req() req: Request) { 
-        console.log("1");
-        req.session.destroy((err) => {
-            if (err) { 
-                throw err;
-             } 
-            }
-        );
-        console.log("2");
-        return { message: 'Logged out successfully', }; 
+    async logout(@Req() req: Request, @Res({ passthrough: true }) res: Response) { 
+        await new Promise<void>((resolve, reject) => {
+            req.session.destroy((err) => {
+                if (err) { 
+                    return reject(err);
+                } 
+                resolve();
+            });
+        });
+        res.clearCookie('connect.sid');
+        return { message: 'Logged out successfully' }; 
     }
 }

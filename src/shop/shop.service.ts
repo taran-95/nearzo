@@ -9,7 +9,16 @@ export class ShopService {
 
     findById(id: number) {
         return this.prisma.shop.findUnique({
-            where: {id},
+            where: { id },
+            select: {
+                id: true,
+                store_name: true,
+                owner_name: true,
+                address: true,
+                email: true,
+                phone: true,
+                registered_at: true,
+            }
         });
     }
 
