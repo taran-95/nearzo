@@ -3,385 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barcode Scanner & Lookup — NearZo</title>
+    <title>Enter Barcode - NearZo</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="/style/style-home.css">
-
-    <!-- Barcode Scanner Library -->
-    <script src="/scripts/html5-qrcode.min.js"></script>
-
-    <style>
-        .barcode-container {
-            max-width: 760px;
-            margin: 40px auto 80px;
-            padding: 0 20px;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .barcode-nav-back {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: #64748b;
-            font-size: 14px;
-            font-weight: 600;
-            text-decoration: none;
-            margin-bottom: 24px;
-            transition: color 0.2s ease;
-        }
-
-        .barcode-nav-back:hover {
-            color: #2563eb;
-        }
-
-        .barcode-glass-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(16px);
-            border: 1.5px solid #e2e8f0;
-            border-radius: 24px;
-            padding: 36px;
-            box-shadow: 0 15px 35px rgba(15, 23, 42, 0.05);
-        }
-
-        .barcode-header {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 28px;
-        }
-
-        .barcode-header-icon {
-            width: 56px;
-            height: 56px;
-            border-radius: 16px;
-            background: #eff6ff;
-            border: 1px solid #bfdbfe;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .barcode-header-icon img {
-            width: 36px;
-            height: 36px;
-        }
-
-        .barcode-header h1 {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 26px;
-            font-weight: 800;
-            color: #0f172a;
-            margin: 0;
-            letter-spacing: -0.4px;
-        }
-
-        .barcode-header p {
-            font-size: 14.5px;
-            color: #64748b;
-            margin: 4px 0 0;
-        }
-
-        /* 3 Segmented Mode Tabs */
-        .barcode-tabs {
-            display: flex;
-            background: #f1f5f9;
-            padding: 5px;
-            border-radius: 9999px;
-            gap: 4px;
-            margin-bottom: 28px;
-        }
-
-        .tab-btn {
-            flex: 1;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 11px 16px;
-            border-radius: 9999px;
-            border: none;
-            background: transparent;
-            font-size: 14px;
-            font-weight: 700;
-            color: #64748b;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .tab-btn.active {
-            background: #ffffff;
-            color: #2563eb;
-            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
-        }
-
-        .tab-panel {
-            display: none;
-        }
-
-        .tab-panel.active {
-            display: block;
-        }
-
-        /* Camera Viewport */
-        .camera-box {
-            position: relative;
-            background: #0f172a;
-            border-radius: 18px;
-            overflow: hidden;
-            min-height: 320px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-
-        #reader {
-            width: 100% !important;
-            border: none !important;
-        }
-
-        #reader video {
-            width: 100% !important;
-            height: auto !important;
-            border-radius: 18px;
-        }
-
-        .camera-placeholder {
-            text-align: center;
-            color: #94a3b8;
-            padding: 40px 20px;
-        }
-
-        .camera-placeholder i {
-            font-size: 42px;
-            color: #3b82f6;
-            margin-bottom: 14px;
-            display: block;
-        }
-
-        .camera-actions {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin-top: 14px;
-        }
-
-        /* Dropzone for File Upload */
-        .dropzone {
-            border: 2px dashed #cbd5e1;
-            border-radius: 18px;
-            background: #f8fafc;
-            padding: 48px 24px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            margin-bottom: 20px;
-        }
-
-        .dropzone:hover, .dropzone.dragover {
-            border-color: #2563eb;
-            background: #eff6ff;
-        }
-
-        .dropzone i {
-            font-size: 42px;
-            color: #2563eb;
-            margin-bottom: 14px;
-            display: block;
-        }
-
-        .dropzone h3 {
-            font-size: 16px;
-            font-weight: 700;
-            color: #0f172a;
-            margin-bottom: 6px;
-        }
-
-        .dropzone p {
-            font-size: 13.5px;
-            color: #64748b;
-            margin: 0;
-        }
-
-        /* Manual Input Form */
-        .barcode-input-group {
-            margin-bottom: 20px;
-        }
-
-        .barcode-label {
-            display: block;
-            font-size: 13.5px;
-            font-weight: 700;
-            color: #334155;
-            margin-bottom: 8px;
-        }
-
-        .barcode-field {
-            width: 100%;
-            padding: 13px 18px;
-            font-size: 16px;
-            font-family: 'Inter', sans-serif;
-            border: 1.5px solid #cbd5e1;
-            border-radius: 14px;
-            outline: none;
-            transition: all 0.2s ease;
-            box-sizing: border-box;
-        }
-
-        .barcode-field:focus {
-            border-color: #2563eb;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
-        }
-
-        /* Example Badges */
-        .sample-codes {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-top: 10px;
-        }
-
-        .sample-label {
-            font-size: 12.5px;
-            color: #64748b;
-            font-weight: 600;
-        }
-
-        .sample-pill {
-            background: #f1f5f9;
-            border: 1px solid #e2e8f0;
-            border-radius: 9999px;
-            padding: 4px 10px;
-            font-size: 12px;
-            font-weight: 600;
-            color: #334155;
-            cursor: pointer;
-            transition: all 0.15s ease;
-        }
-
-        .sample-pill:hover {
-            background: #eff6ff;
-            border-color: #bfdbfe;
-            color: #2563eb;
-        }
-
-        /* Action Buttons */
-        .btn-lookup {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            width: 100%;
-            padding: 14px 24px;
-            border-radius: 9999px;
-            background: #2563eb;
-            color: #ffffff;
-            font-size: 15px;
-            font-weight: 700;
-            border: none;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2);
-            font-family: 'Inter', sans-serif;
-        }
-
-        .btn-lookup:hover {
-            background: #1d4ed8;
-            transform: translateY(-1px);
-        }
-
-        .btn-lookup:disabled {
-            background: #94a3b8;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .btn-control {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 9px 18px;
-            border-radius: 9999px;
-            background: #ffffff;
-            border: 1px solid #cbd5e1;
-            color: #334155;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.15s ease;
-        }
-
-        .btn-control:hover {
-            background: #f8fafc;
-            border-color: #94a3b8;
-        }
-
-        /* Status Toast Box */
-        .status-box {
-            display: none;
-            padding: 14px 18px;
-            border-radius: 12px;
-            font-size: 14px;
-            font-weight: 600;
-            margin-top: 20px;
-            line-height: 1.5;
-        }
-
-        .status-box.loading {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: #eff6ff;
-            border: 1px solid #bfdbfe;
-            color: #1d4ed8;
-        }
-
-        .status-box.success {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: #f0fdf4;
-            border: 1px solid #bbf7d0;
-            color: #15803d;
-        }
-
-        .status-box.error {
-            display: block;
-            background: #fef2f2;
-            border: 1px solid #fecaca;
-            color: #b91c1c;
-        }
-
-        /* Footer Link */
-        .card-footer-cta {
-            margin-top: 28px;
-            padding-top: 20px;
-            border-top: 1px solid #f1f5f9;
-            text-align: center;
-            font-size: 14px;
-            color: #64748b;
-        }
-
-        .card-footer-cta a {
-            color: #2563eb;
-            font-weight: 600;
-            text-decoration: none;
-        }
-
-        .card-footer-cta a:hover {
-            text-decoration: underline;
-        }
-    </style>
 </head>
-
 <body class="uploadbody">
     <header id="header" class="navbar"></header>
     <script src="/scripts/header.js"></script>
@@ -391,319 +19,141 @@
         requireUserTypeShop();
     </script>
 
-    <main class="barcode-container">
-        <a href="/products/uploadProductTypeSelectMenu" class="barcode-nav-back">
-            <i class="fa-solid fa-arrow-left"></i> Back to Selection
+    <main class="barcode-page-container">
+        <a href="/products/uploadProductTypeSelectMenu" class="back-link">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back to Selection
         </a>
 
-        <div class="barcode-glass-card">
-            <!-- Header -->
-            <div class="barcode-header">
-                <div class="barcode-header-icon">
-                    <img src="/images/icons/barcode-scan.svg" alt="Barcode Scanner">
+        <div class="barcode-card">
+            <div class="barcode-card-header">
+                <div class="barcode-icon-box">
+                    <i class="fa-solid fa-barcode"></i>
                 </div>
                 <div>
-                    <h1>Scan Product Barcode</h1>
-                    <p>Lookup instant product details via camera, photo upload, or code entry</p>
+                    <h1>Enter Barcode</h1>
+                    <p>Lookup product information by UPC or EAN</p>
                 </div>
             </div>
 
-            <!-- Mode Selector Tabs -->
-            <div class="barcode-tabs">
-                <button type="button" class="tab-btn active" id="tabBtnCamera">
-                    <i class="fa-solid fa-camera"></i> Phone Camera
-                </button>
-                <button type="button" class="tab-btn" id="tabBtnUpload">
-                    <i class="fa-solid fa-cloud-arrow-up"></i> Browse File
-                </button>
-                <button type="button" class="tab-btn" id="tabBtnManual">
-                    <i class="fa-solid fa-keyboard"></i> Manual Entry
-                </button>
-            </div>
-
-            <!-- Tab 1: Live Camera Scanner -->
-            <div id="panelCamera" class="tab-panel active">
-                <div class="camera-box">
-                    <div id="cameraPlaceholder" class="camera-placeholder">
-                        <i class="fa-solid fa-camera-viewfinder"></i>
-                        <h3 style="font-size: 16px; color: #ffffff; margin-bottom: 6px;">Camera Ready</h3>
-                        <p style="font-size: 13.5px; color: #94a3b8; max-width: 380px; margin: 0 auto 18px;">
-                            Click the button below to turn on your camera and scan any UPC or EAN retail barcode.
-                        </p>
-                        <button type="button" class="btn-lookup" id="btnStartCamera" style="width: auto; padding: 11px 26px;">
-                            <i class="fa-solid fa-video"></i> Start Camera Scanner
-                        </button>
-                    </div>
-                    <div id="reader" style="display: none;"></div>
-                </div>
-
-                <div class="camera-actions" id="cameraControls" style="display: none;">
-                    <button type="button" class="btn-control" id="btnSwitchCamera">
-                        <i class="fa-solid fa-camera-rotate"></i> Switch Camera
-                    </button>
-                    <button type="button" class="btn-control" id="btnStopCamera">
-                        <i class="fa-solid fa-stop"></i> Stop Camera
-                    </button>
-                </div>
-            </div>
-
-            <!-- Tab 2: File Upload Scanner -->
-            <div id="panelUpload" class="tab-panel">
-                <div class="dropzone" id="dropzoneArea">
-                    <i class="fa-solid fa-file-image"></i>
-                    <h3>Click to Browse or Drag & Drop File</h3>
-                    <p>Supports product photos or barcode images (JPG, PNG, WebP)</p>
-                    <input type="file" id="fileBarcodeUpload" accept="image/png, image/jpeg, image/webp" style="display: none;">
-                </div>
-            </div>
-
-            <!-- Tab 3: Manual Barcode Entry -->
-            <div id="panelManual" class="tab-panel">
-                <form id="manualBarcodeForm">
-                    <div class="barcode-input-group">
-                        <label class="barcode-label" for="manualIdentifier">Enter Barcode Number</label>
-                        <input 
-                            type="text" 
-                            id="manualIdentifier" 
-                            class="barcode-field" 
-                            inputmode="numeric" 
-                            pattern="[0-9]*" 
-                            placeholder="Enter 8 to 14 digit barcode (UPC / EAN)" 
+            <form id="barcodeForm" method="POST">
+                <div class="barcode-form-group">
+                    <label class="barcode-form-label" for="identifier">Barcode Number</label>
+                    <div class="barcode-input-wrapper">
+                        <i class="fa-solid fa-barcode barcode-input-icon"></i>
+                        <input
+                            type="text"
+                            id="identifier"
+                            name="identifier"
+                            class="barcode-input"
+                            inputmode="numeric"
+                            pattern="[0-9]*"
+                            placeholder="Enter 8 to 14 digit barcode"
                             autocomplete="off"
+                            required
                         >
-                        <div class="sample-codes">
-                            <span class="sample-label">Try Examples:</span>
-                            <button type="button" class="sample-pill" onclick="setManualCode('049000006346')">049000006346 (Coca-Cola)</button>
-                            <button type="button" class="sample-pill" onclick="setManualCode('8901058000290')">8901058000290 (Maggi)</button>
-                            <button type="button" class="sample-pill" onclick="setManualCode('8901719101038')">8901719101038 (Parle-G)</button>
-                        </div>
                     </div>
+                    <div class="barcode-sample-row">
+                        <span class="barcode-sample-label">Examples:</span>
+                        <button type="button" class="barcode-sample-btn" onclick="fillCode('049000006346')">049000006346</button>
+                        <button type="button" class="barcode-sample-btn" onclick="fillCode('8906058350079')">8906058350079</button>
+                        <button type="button" class="barcode-sample-btn" onclick="fillCode('011110417001')">011110417001</button>
+                    </div>
+                </div>
 
-                    <button type="submit" class="btn-lookup" id="btnLookupManual">
-                        <i class="fa-solid fa-magnifying-glass"></i> Lookup Barcode Details
-                    </button>
-                </form>
-            </div>
+                <div id="statusBox" class="barcode-status-box">
+                    <div id="statusSpinner" class="barcode-status-spinner" style="display: none;"></div>
+                    <span id="statusIcon"></span>
+                    <span id="statusText"></span>
+                </div>
 
-            <!-- Status Alerts & Feedback -->
-            <div id="statusToast" class="status-box"></div>
+                <button type="submit" id="submitBtn" class="barcode-submit-btn">
+                    <span>Lookup Product</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </form>
 
-            <div class="card-footer-cta">
-                <span>No barcode on product packaging? </span>
-                <a href="/products/uploadProduct">Create Custom Store Listing &rarr;</a>
+            <div class="barcode-card-footer">
+                <span>No barcode on product?</span>
+                <a href="/products/uploadProduct">Create Custom Listing</a>
             </div>
         </div>
     </main>
 
     <script>
-        let html5QrCode = null;
-        let isCameraRunning = false;
-        let currentFacingMode = "environment";
-
-        function setManualCode(code) {
-            document.getElementById("manualIdentifier").value = code;
-            document.getElementById("manualIdentifier").focus();
+        function fillCode(code) {
+            const input = document.getElementById("identifier");
+            input.value = code;
+            input.focus();
             hideStatus();
         }
 
-        function showStatus(type, html) {
-            const toast = document.getElementById("statusToast");
-            toast.className = "status-box " + type;
-            toast.innerHTML = html;
+        function showStatus(type, text, spinner = false, icon = '') {
+            const box = document.getElementById("statusBox");
+            const sp = document.getElementById("statusSpinner");
+            const ic = document.getElementById("statusIcon");
+            const tx = document.getElementById("statusText");
+
+            box.className = "barcode-status-box " + type;
+            sp.style.display = spinner ? "block" : "none";
+            ic.innerHTML = icon;
+            tx.innerHTML = text;
         }
 
         function hideStatus() {
-            const toast = document.getElementById("statusToast");
-            toast.className = "status-box";
-            toast.style.display = "none";
-        }
-
-        // Send scanned code to backend
-        async function processBarcode(barcodeNumber) {
-            const clean = String(barcodeNumber || "").replace(/[^0-9]/g, "");
-            if (clean.length < 8) {
-                showStatus("error", '<i class="fa-solid fa-circle-exclamation"></i> Invalid barcode: Must be at least 8 digits.');
-                return;
-            }
-
-            if (isCameraRunning && html5QrCode) {
-                try {
-                    await html5QrCode.stop();
-                    isCameraRunning = false;
-                    document.getElementById("cameraControls").style.display = "none";
-                    document.getElementById("cameraPlaceholder").style.display = "block";
-                    document.getElementById("reader").style.display = "none";
-                } catch (_) {}
-            }
-
-            showStatus("loading", '<i class="fa-solid fa-spinner fa-spin"></i> Fetching product specifications for barcode <strong>' + clean + '</strong>...');
-
-            try {
-                const res = await fetch("http://localhost:3000/products/identified/" + clean, {
-                    method: "POST",
-                    credentials: "include"
-                });
-                const data = await res.json();
-
-                if (!res.ok) {
-                    const msg = data.message || "Product not found.";
-                    if (res.status === 400) {
-                        showStatus("error", '<i class="fa-solid fa-circle-info"></i> ' + msg + ' <a href="/products/products" style="color:#2563eb;text-decoration:underline;font-weight:700;">View in Catalog</a>');
-                    } else {
-                        showStatus("error", '<i class="fa-solid fa-triangle-exclamation"></i> Barcode not found in databases. <a href="/products/uploadProduct" style="color:#2563eb;text-decoration:underline;font-weight:700;">Add Manually as Custom Product</a>');
-                    }
-                    return;
-                }
-
-                showStatus("success", '<i class="fa-solid fa-circle-check"></i> Product found! Opening price entry...');
-                setTimeout(() => {
-                    window.location.href = "/offers/createOffer?productId=" + data.id;
-                }, 1200);
-
-            } catch (err) {
-                showStatus("error", '<i class="fa-solid fa-circle-exclamation"></i> Error contacting server: ' + err.message);
-            }
+            document.getElementById("statusBox").className = "barcode-status-box";
         }
 
         document.addEventListener("DOMContentLoaded", () => {
-            // Tab Switchers
-            const tabBtnCamera = document.getElementById("tabBtnCamera");
-            const tabBtnUpload = document.getElementById("tabBtnUpload");
-            const tabBtnManual = document.getElementById("tabBtnManual");
-            const panelCamera = document.getElementById("panelCamera");
-            const panelUpload = document.getElementById("panelUpload");
-            const panelManual = document.getElementById("panelManual");
+            const form = document.getElementById("barcodeForm");
+            const input = document.getElementById("identifier");
+            const btn = document.getElementById("submitBtn");
 
-            function switchTab(activeBtn, activePanel) {
-                [tabBtnCamera, tabBtnUpload, tabBtnManual].forEach(b => b.classList.remove("active"));
-                [panelCamera, panelUpload, panelManual].forEach(p => p.classList.remove("active"));
-                activeBtn.classList.add("active");
-                activePanel.classList.add("active");
-                hideStatus();
-            }
+            input.addEventListener("input", hideStatus);
 
-            tabBtnCamera.addEventListener("click", () => switchTab(tabBtnCamera, panelCamera));
-            tabBtnUpload.addEventListener("click", () => {
-                switchTab(tabBtnUpload, panelUpload);
-                if (isCameraRunning && html5QrCode) {
-                    html5QrCode.stop().catch(() => {});
-                    isCameraRunning = false;
-                }
-            });
-            tabBtnManual.addEventListener("click", () => {
-                switchTab(tabBtnManual, panelManual);
-                if (isCameraRunning && html5QrCode) {
-                    html5QrCode.stop().catch(() => {});
-                    isCameraRunning = false;
-                }
-            });
+            form.addEventListener("submit", async (e) => {
+                e.preventDefault();
 
-            // Camera Controls
-            const btnStart = document.getElementById("btnStartCamera");
-            const btnStop = document.getElementById("btnStopCamera");
-            const btnSwitch = document.getElementById("btnSwitchCamera");
-            const readerDiv = document.getElementById("reader");
-            const placeholderDiv = document.getElementById("cameraPlaceholder");
-            const controlsDiv = document.getElementById("cameraControls");
-
-            async function startCameraScanner() {
-                placeholderDiv.style.display = "none";
-                readerDiv.style.display = "block";
-                controlsDiv.style.display = "flex";
-
-                if (!html5QrCode) {
-                    html5QrCode = new Html5Qrcode("reader");
+                const val = input.value.replace(/[^0-9]/g, "");
+                if (val.length < 8) {
+                    showStatus("error", "Please enter a valid barcode of at least 8 digits.", false, '<i class="fa-solid fa-circle-exclamation"></i>');
+                    return;
                 }
 
-                const config = {
-                    fps: 15,
-                    qrbox: { width: 280, height: 180 },
-                    aspectRatio: 1.333334
-                };
+                btn.disabled = true;
+                btn.innerHTML = '<span>Looking up...</span>';
+                showStatus("loading", "Searching catalog databases...", true);
 
                 try {
-                    await html5QrCode.start(
-                        { facingMode: currentFacingMode },
-                        config,
-                        (decodedText) => {
-                            processBarcode(decodedText);
-                        },
-                        () => {} // scan error (normal in continuous loop)
-                    );
-                    isCameraRunning = true;
+                    const res = await fetch("http://localhost:3000/products/identified/" + val, {
+                        method: "POST",
+                        credentials: "include"
+                    });
+                    const data = await res.json();
+
+                    if (!res.ok) {
+                        const msg = data.message || "Product not found.";
+                        if (res.status === 400) {
+                            showStatus("error", msg + ' <a href="/productList" style="color:#2563eb;text-decoration:underline;font-weight:600;">View Catalog</a>', false, '<i class="fa-solid fa-circle-info"></i>');
+                        } else if (res.status === 404) {
+                            showStatus("error", 'Barcode not found. <a href="/products/uploadProduct" style="color:#2563eb;text-decoration:underline;font-weight:600;">Create custom product</a>', false, '<i class="fa-solid fa-magnifying-glass"></i>');
+                        } else {
+                            showStatus("error", msg, false, '<i class="fa-solid fa-circle-exclamation"></i>');
+                        }
+                        btn.disabled = false;
+                        btn.innerHTML = '<span>Lookup Product</span> <i class="fa-solid fa-arrow-right"></i>';
+                        return;
+                    }
+
+                    showStatus("success", "Product found! Redirecting to create offer...", false, '<i class="fa-solid fa-circle-check"></i>');
+                    setTimeout(() => {
+                        window.location.href = "/offers/createOffer?productId=" + data.id;
+                    }, 1400);
                 } catch (err) {
-                    placeholderDiv.style.display = "block";
-                    readerDiv.style.display = "none";
-                    controlsDiv.style.display = "none";
-                    isCameraRunning = false;
-                    showStatus("error", '<i class="fa-solid fa-camera"></i> Camera permission denied or not available: ' + err.message);
+                    showStatus("error", err.message, false, '<i class="fa-solid fa-circle-exclamation"></i>');
+                    btn.disabled = false;
+                    btn.innerHTML = '<span>Lookup Product</span> <i class="fa-solid fa-arrow-right"></i>';
                 }
-            }
-
-            btnStart.addEventListener("click", startCameraScanner);
-
-            btnStop.addEventListener("click", async () => {
-                if (html5QrCode && isCameraRunning) {
-                    await html5QrCode.stop();
-                    isCameraRunning = false;
-                }
-                readerDiv.style.display = "none";
-                controlsDiv.style.display = "none";
-                placeholderDiv.style.display = "block";
-            });
-
-            btnSwitch.addEventListener("click", async () => {
-                currentFacingMode = currentFacingMode === "environment" ? "user" : "environment";
-                if (html5QrCode && isCameraRunning) {
-                    await html5QrCode.stop();
-                    await startCameraScanner();
-                }
-            });
-
-            // File Upload Area
-            const dropzone = document.getElementById("dropzoneArea");
-            const fileInput = document.getElementById("fileBarcodeUpload");
-
-            dropzone.addEventListener("click", () => fileInput.click());
-            dropzone.addEventListener("dragover", (e) => {
-                e.preventDefault();
-                dropzone.classList.add("dragover");
-            });
-            dropzone.addEventListener("dragleave", () => dropzone.classList.remove("dragover"));
-            dropzone.addEventListener("drop", (e) => {
-                e.preventDefault();
-                dropzone.classList.remove("dragover");
-                if (e.dataTransfer.files.length) {
-                    fileInput.files = e.dataTransfer.files;
-                    handleFileUpload(fileInput.files[0]);
-                }
-            });
-
-            fileInput.addEventListener("change", () => {
-                if (fileInput.files.length) {
-                    handleFileUpload(fileInput.files[0]);
-                }
-            });
-
-            async function handleFileUpload(file) {
-                if (!file) return;
-                showStatus("loading", '<i class="fa-solid fa-spinner fa-spin"></i> Scanning barcode from photo <strong>' + file.name + '</strong>...');
-
-                try {
-                    const scannerInstance = new Html5Qrcode("reader");
-                    const decodedText = await scannerInstance.scanFile(file, true);
-                    processBarcode(decodedText);
-                } catch (scanErr) {
-                    showStatus("error", '<i class="fa-solid fa-triangle-exclamation"></i> Could not detect a clear barcode in this image. Please ensure good lighting and clear focus, or use <strong>Manual Entry</strong>.');
-                }
-            }
-
-            // Manual Submit
-            const manualForm = document.getElementById("manualBarcodeForm");
-            manualForm.addEventListener("submit", (e) => {
-                e.preventDefault();
-                const code = document.getElementById("manualIdentifier").value;
-                processBarcode(code);
             });
         });
     </script>
