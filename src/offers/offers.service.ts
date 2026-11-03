@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { CreateOfferDto } from './dtos/createOffer.dto.js';
 import { ProductsService } from '../products/products.service.js';
@@ -78,14 +78,25 @@ export class OffersService {
         });
     }
 
-    async updateOffer(id: number, dto: UpdateOfferDto) {
-        return this.prisma.offer.update({
-            where: {id: id},
-            data: dto
-        });
+    async updateOffer(id: number, dto: UpdateOfferDto, sellerId: number) {
+        const offer = await this.prisma.offer.findUnique({where: {id: id}});
+        if(!offer) {
+            throw new NotFoundException("Offer not found");
+        }
+        if(offer.sellerId !== sellerId) {
+            throw new ForbiddenException("You do not have the permission to modify this offer");
+        }
+        return this.prisma.offer.update({where: {id}, data: dto} );
     }
 
-    async deleteOffer(id: number) { 
+    async deleteOffer(id: number, sellerId: number) { 
+        const offer = await this.prisma.offer.findUnique({where: {id: id}});
+        if(!offer) {
+            throw new NotFoundException("Offer not found");
+        }
+        if(offer.sellerId !== sellerId) {
+            throw new ForbiddenException("You do not have the permission to delete this offer");
+        }
         return this.prisma.offer.delete({where: {id: id}});
     }
 

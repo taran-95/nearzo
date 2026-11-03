@@ -51,15 +51,15 @@ export class OffersController {
     @UseGuards(SessionAuthGuard, UserTypeGuard)
     @UserTypes("shop")
     @Patch(':id')
-    updateOffer(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateOfferDto) {
-        return this.offersService.updateOffer(id, dto);
+    updateOffer(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateOfferDto, @Req() req: Request) {
+        return this.offersService.updateOffer(id, dto, req.session.userId!);
     }
 
     @UseGuards(SessionAuthGuard, UserTypeGuard)
     @UserTypes("shop")
     @Post('delete/:id')
-    deleteOffer(@Param('id', ParseIntPipe) id: number) {
-        return this.offersService.deleteOffer(id);
+    deleteOffer(@Param('id', ParseIntPipe) id: number, @Req() req: Request) {
+        return this.offersService.deleteOffer(id, req.session.userId!);
     }
 
     @Get(':id')
