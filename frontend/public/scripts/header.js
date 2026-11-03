@@ -69,7 +69,7 @@ async function loadHeader() {
         } else if (isShop) {
             navActionsHtml = `
                 <div class="nav-actions">
-                    <a href="/products/uploadProduct" class="nav-pill-btn nav-pill-primary">
+                    <a href="/products/uploadProductTypeSelectMenu" class="nav-pill-btn nav-pill-primary">
                         <i class="fa-solid fa-barcode"></i> Add Product
                     </a>
                     <a href="/auth/profile" class="nav-pill-btn">
